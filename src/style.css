@@ -1,0 +1,138 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: Roboto;
+}
+/* Vista Registro */
+#containerRegistro {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  background: #fdf8f8;
+  padding: 30px 0;
+}
+#logoPrincipal {
+  margin-top: 90px;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  color: #24baac;
+}
+#dataLogIn {
+  margin: 40px 0;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+#dataLogIn p {
+  margin-bottom: 35px;
+  align-self: center;
+}
+#dataLogIn input {
+  width: 270px;
+  margin: 10px 0;
+  padding: 14px 20px;
+  border-radius: 15px;
+  border: 1px solid #5da6a6;
+  background-color: #f4f3f3;
+  outline: none;
+}
+#dataLogIn input::placeholder {
+  font-size: 17px;
+  background-image: url(img/flecha.png);
+  background-repeat: no-repeat;
+  background-position: right center;
+}
+#dataLogIn button {
+  color: #ffffff;
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-top: 20px;
+  padding: 10px 40px;
+  background: #184e77;
+  border-radius: 25px;
+  border: 1px;
+  outline: none;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+#signUp {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+#signUp p {
+  margin: 16px 0;
+  font-size: 16px;
+}
+#signUp p a {
+  color: #000;
+  font-weight: bold;
+  text-decoration: none;
+}
+#logosRegister {
+  display: flex;
+  width: 100px;
+  flex-flow: row;
+  justify-content: space-between;
+}
+/* Vista Inicio */
+#containerInicio {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  background: #fdf8f8;
+}
+#barraMenu {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  background: #184e77;
+  padding: 10px 15px;
+}
+#barraMenu div {
+  margin-left: 50px;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  color: #ffffff;
+}
+#barraMenu div h3 {
+  margin-right: 15px;
+}
+#infoUsuario {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+}
+#infoUsuario img {
+  width: 100px;
+  height: 100px;
+  margin: 30px;
+  border-radius: 50%;
+}
+#infoUsuario div h4 {
+  color: #24baac;
+  font-size: 21px;
+}
+#infoUsuario div p {
+  color: #837777;
+}
+#escribirPost {
+  border: 0.5px solid #184e77;
+  border-radius: 10px;
+  display: flex;
+  flex-flow: column;
+  margin: 20px 30px;
+  padding: 20px;
+}
+#escribirPost textarea {
+  border: 0.5px solid #184e77;
+  border-radius: 5px;
+  padding: 10px;
+  background: #fdf8f8;
+}

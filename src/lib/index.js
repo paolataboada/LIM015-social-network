@@ -12,7 +12,7 @@ export const changeView = (route) => {
   switch (route) {
     case '#/': { return container.appendChild(componentes.Registro()); }
     case '#/inicio': { return container.appendChild(componentes.Inicio()); }
+
     default: break;
   }
-  console.log(route);
 };

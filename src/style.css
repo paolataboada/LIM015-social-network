@@ -59,6 +59,7 @@ body {
   border: 1px;
   outline: none;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
 }
 #signUp {
   display: flex;
@@ -92,10 +93,20 @@ body {
   flex-flow: row nowrap;
   align-items: center;
   background: #184e77;
-  padding: 10px 15px;
+  padding: 10px 20px;
+}
+#barraMenu img {
+  cursor: pointer;
+  padding: 5px;
+}
+#barraMenu img:active {
+  background: #798996;
+  opacity: 0.5;
+  border: 1px solid #ffffff;
+  border-radius: 5px;
 }
 #barraMenu div {
-  margin-left: 50px;
+  margin-left: 55px;
   display: flex;
   flex-flow: row;
   align-items: center;
@@ -109,11 +120,18 @@ body {
   flex-flow: row;
   align-items: center;
 }
-#infoUsuario img {
+#infoUsuario figure {
   width: 100px;
   height: 100px;
   margin: 30px;
   border-radius: 50%;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  cursor: pointer;
+  overflow: hidden;
+}
+#infoUsuario figure img {
+  height: 100px;
+  margin-left: -15px;
 }
 #infoUsuario div h4 {
   color: #24baac;
@@ -122,17 +140,128 @@ body {
 #infoUsuario div p {
   color: #837777;
 }
+@media screen and (min-width: 768px) {
+  body {
+    width: 768px;
+  }
+  #barraMenu {
+    width: 500px;
+  }
+  #barraMenu div {
+    margin-left: 100px;
+  }
+  #escribirPost {
+    width: 440px;
+  }
+  #infoUsuario figure {
+    width: 160px;
+    height: 160px;
+    margin-left: 45px;
+  }
+  #infoUsuario figure img {
+    height: 160px;
+  }
+  #infoUsuario div h4 {
+    font-size: 26px;
+    line-height: 50px;
+  }
+  #infoUsuario div p {
+    font-size: 20px;
+  }
+}
 #escribirPost {
   border: 0.5px solid #184e77;
   border-radius: 10px;
   display: flex;
   flex-flow: column;
-  margin: 20px 30px;
+  margin: 10px 30px;
   padding: 20px;
 }
 #escribirPost textarea {
+  font-size: 16px;
   border: 0.5px solid #184e77;
   border-radius: 5px;
   padding: 10px;
   background: #fdf8f8;
+  height: 120px;
+  overflow-wrap: break-word;
+}
+#escribirPost div {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 10px 0 10px;
+}
+#escribirPost div img {
+  cursor: pointer;
+  border-radius: 5px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+#escribirPost div button {
+  padding: 10px 20px;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background: #184e77;
+  cursor: pointer;
+}
+#sectionPosts {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  margin: 0 22.5px 40px 22.5px;
+}
+#sectionPosts table {
+  width: 330px;
+  border-spacing: 0;
+  margin-top: 30px;
+}
+#sectionPosts table tr th {
+  display: flex;
+  border: 1px solid #5da6a6;
+  border-radius: 10px 10px 0 0;
+  padding: 10px;
+  background: #5da6a6;
+  color: #ffffff;
+  font-weight: 400;
+}
+#sectionPosts table tr td {
+  display: flex;
+  border: 1px solid #5da6a6;
+  border-top: none;
+  padding: 5px 10px;
+  overflow-wrap: break-word;
+  text-align: justify;
+  font-size: 16px;
+  line-height: 25px;
+}
+#sectionPosts table tr:last-child td:first-child {
+  border-bottom-left-radius: 10px;
+}
+#sectionPosts table tr:last-child td:last-child {
+  border-bottom-right-radius: 10px;
+}
+#logoLike {
+  padding: 5px;
+  border-radius: 50%;
+  border: 1px solid #837777;
+  margin-right: 10px;
+  cursor: pointer;
+}
+#logoComent {
+  padding: 7px;
+  border-radius: 50%;
+  border: 1px solid #837777;
+  cursor: pointer;
+}
+#logoLike:active {
+  background: #c74c4c;
+  border: 1px solid #ffffff;
+}
+#logoComent:active {
+  background: #c9c9c9;
+  border: 1px solid #ffffff;
 }

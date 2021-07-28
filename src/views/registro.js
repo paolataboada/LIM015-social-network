@@ -7,10 +7,12 @@ export default () => {
       <h2>Social Health </h2>
     </div>
     <div id="dataLogIn"> 
-      <p>¡Bienvenid@ a Social Health!</p> 
-      <input type="email" placeholder="Email">
-      <input type="password" placeholder="Contraseña">
-      <button>Ingresar</button> 
+      <p>¡Bienvenid@ a Social Health!</p>
+      <form id="signIn">
+        <input type="email" placeholder="Email" id="emaila">
+        <input type="password" placeholder="Contraseña" id="contraseñaa">
+        <button type="submit">Ingresar</button>
+      </form>
     </div>
     <div id="signUp">
       <p> O bien ingresa con: </p>
@@ -25,26 +27,26 @@ export default () => {
   divElement.innerHTML = registro;
   return divElement;
 };
-const modalRegistro = () => {
-  document.querySelector('#container-modal').innerHTML = `
-    <div> 
-      <h3> Registro de Usuario </h3>
-    </div>
-    <div>
-      <input type="text" id="nombre" placeholder="Nombre">
-    </div>
-    <div>
-      <input type="text" id="usuario" placeholder="Nombre de usuario">
-    </div>
-    <div>
-      <input type="email" id="e-mail" placeholder="E-mail">
-    </div>
-    <div>
-      <input type="password" id="constraseña" placeholder="Contraseña">
-    </div>
-    <div>
-      <input ype="password" id="confirmarContraseña" placeholder="Confirmar contrseña">
-    </div>`
 
-}
-document.getElementById('container-modal').addEventListener(click, ());
+/* const formSignIn = document.querySelector('#signIn');
+formSignIn.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const email = document.querySelector('#emaila').value;
+  const password = document.querySelector('#contraseñaa').value;
+
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      containerModal.reset();
+      console.log('sign up', userCredential);
+      // Signed in
+      const user = userCredential.user;
+      console.log(user);
+      // ...
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // ..
+      console.log(errorCode, errorMessage);
+    });
+}); */

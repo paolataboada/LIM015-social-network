@@ -31,7 +31,11 @@ body {
   margin-bottom: 35px;
   align-self: center;
 }
-#dataLogIn input {
+#dataLogIn form {
+  display: flex;
+  flex-flow: column;
+}
+#dataLogIn form input {
   width: 270px;
   margin: 10px 0;
   padding: 14px 20px;
@@ -40,13 +44,13 @@ body {
   background-color: #f4f3f3;
   outline: none;
 }
-#dataLogIn input::placeholder {
+#dataLogIn form input::placeholder {
   font-size: 17px;
   background-image: url(img/flecha.png);
   background-repeat: no-repeat;
   background-position: right center;
 }
-#dataLogIn button {
+#dataLogIn form button {
   color: #ffffff;
   font-family: Roboto;
   font-size: 16px;

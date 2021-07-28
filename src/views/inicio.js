@@ -11,7 +11,9 @@ export default () => {
     </div>
 
     <div id="infoUsuario">
-      <img src="img/foto-ejemplo.jpg" alt="Foto del usuario">
+      <figure>
+        <img src="img/foto-ejemplo.jpg" alt="Foto del usuario">
+      </figure>
       <div>
         <h4>Alexandra Smith</h4>
         <p>Cooker keto</p>
@@ -26,18 +28,34 @@ export default () => {
       </div>
     </div>
 
-    <div>
+    <div id="sectionPosts">
       <table>
         <tr>
           <th>Publicado por José Castro</th>
         </tr>
         <tr>
-          <td>...</td>
+          <td>Ahora podemos ver una caja que tenía una anchura de 300 px y que por culpa de una palabra muy larga se deforma la caja o el texto aparece por...</td>
         </tr>
         <tr>
           <td>
-            <img src="img/megusta.png" alt="Botón me gusta">
-            <img src="img/comentario.png" alt="Botón comentar">
+            <img id="logoLike" src="img/megusta.png" alt="Botón me gusta">
+            <img id="logoComent" src="img/comentario.png" alt="Botón comentar">
+          </td>
+        </tr>
+      </table>
+      <table>
+        <tr>
+          <th>Publicado por Mariana López</th>
+        </tr>
+        <tr>
+          <td>The user-select property specifies whether the text of an element can be selected.
+
+          In web browsers, if you double-click on some text it will be selected/highlighted. This property can be used to prevent this.</td>
+        </tr>
+        <tr>
+          <td>
+            <img id="logoLike" src="img/megusta.png" alt="Botón me gusta">
+            <img id="logoComent" src="img/comentario.png" alt="Botón comentar">
           </td>
         </tr>
       </table>

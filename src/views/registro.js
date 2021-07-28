@@ -18,10 +18,33 @@ export default () => {
         <img src="img/Facebook.png">
         <img src="img/Google.png">
       </div>
-      <p>No tienes una cuenta? <a href="#">Regístrate</a></p>
+      <p>No tienes una cuenta? <a href="#/modal">Regístrate</a></p>
     </div> `;
   const divElement = document.createElement('div');
   divElement.setAttribute('id', 'containerRegistro');
   divElement.innerHTML = registro;
   return divElement;
 };
+const modalRegistro = () => {
+  document.querySelector('#container-modal').innerHTML = `
+    <div> 
+      <h3> Registro de Usuario </h3>
+    </div>
+    <div>
+      <input type="text" id="nombre" placeholder="Nombre">
+    </div>
+    <div>
+      <input type="text" id="usuario" placeholder="Nombre de usuario">
+    </div>
+    <div>
+      <input type="email" id="e-mail" placeholder="E-mail">
+    </div>
+    <div>
+      <input type="password" id="constraseña" placeholder="Contraseña">
+    </div>
+    <div>
+      <input ype="password" id="confirmarContraseña" placeholder="Confirmar contrseña">
+    </div>`
+
+}
+document.getElementById('container-modal').addEventListener(click, ());

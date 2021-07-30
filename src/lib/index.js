@@ -10,9 +10,11 @@ export const changeView = (route) => {
   const container = document.getElementById('container');
   container.innerHTML = '';
   switch (route) {
+    case '':
     case '#/': { return container.appendChild(componentes.Registro()); }
     case '#/inicio': { return container.appendChild(componentes.Inicio()); }
-
-    default: break;
+    default:
+      break;
   }
+  return container;
 };

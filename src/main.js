@@ -31,6 +31,3 @@ containerModal.addEventListener('submit', (e) => {
       console.log(errorCode, errorMessage);
     });
 });
-
-const container = document.querySelector('#modal');
-console.log(container);

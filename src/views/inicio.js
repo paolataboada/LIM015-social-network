@@ -23,7 +23,8 @@ export default () => {
     <div id="escribirPost">
       <textarea placeholder="¿Qué quieres compartir?"></textarea>
       <div>
-        <img src="img/agregar-img.png" alt="Botón para cargar imagen">
+        <img id="btnFile" src="img/agregar-img.png" alt="Botón para cargar imagen">
+        <input id="subirFile" type="file" accept="image/jpeg" style="display:none">
         <button>Compartir</button>
       </div>
     </div>

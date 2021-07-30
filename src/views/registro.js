@@ -9,8 +9,8 @@ export default () => {
     <div id="dataLogIn"> 
       <p>¡Bienvenid@ a Social Health!</p>
       <form id="signIn">
-        <input type="email" placeholder="Email" id="emaila">
-        <input type="password" placeholder="Contraseña" id="contraseñaa">
+        <input type="email" placeholder="Email" id="emaila" autocomplete="off">
+        <input type="password" placeholder="Contraseña" id="contraseñaa" autocomplete="off">
         <button type="submit">Ingresar</button>
       </form>
     </div>
@@ -20,7 +20,7 @@ export default () => {
         <img src="img/Facebook.png">
         <img src="img/Google.png">
       </div>
-      <p>No tienes una cuenta? <a href="#/modal">Regístrate</a></p>
+      <p>No tienes una cuenta? <a id="btnRegistrar" href="#">Regístrate</a></p>
     </div> `;
   const divElement = document.createElement('div');
   divElement.setAttribute('id', 'containerRegistro');

@@ -161,6 +161,7 @@ body {
   flex-flow: column;
   justify-content: center;
   background: #fdf8f8;
+  margin-bottom: 30px;
 }
 #barraMenu {
   display: flex;
@@ -180,14 +181,11 @@ body {
   border-radius: 5px;
 }
 #barraMenu div {
-  margin-left: 55px;
   display: flex;
-  flex-flow: row;
+  flex-flow: row nowrap;
   align-items: center;
   color: #ffffff;
-}
-#barraMenu div h3 {
-  margin-right: 15px;
+  margin: auto;
 }
 #infoUsuario {
   display: flex;
@@ -195,8 +193,8 @@ body {
   align-items: center;
 }
 #infoUsuario figure {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   margin: 30px;
   border-radius: 50%;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
@@ -204,43 +202,35 @@ body {
   overflow: hidden;
 }
 #infoUsuario figure img {
-  height: 100px;
+  height: 120px;
   margin-left: -15px;
 }
 #infoUsuario div h4 {
   color: #24baac;
-  font-size: 21px;
+  font-size: 20px;
+  padding-bottom: 7px;
 }
 #infoUsuario div p {
+  font-size: 18px;
   color: #837777;
 }
-@media screen and (min-width: 768px) {
-  body {
-    width: 768px;
-  }
-  #barraMenu {
-    width: 500px;
-  }
-  #barraMenu div {
-    margin-left: 100px;
-  }
-  #escribirPost {
-    width: 440px;
-  }
+@media (min-width: 600px) {
   #infoUsuario figure {
-    width: 160px;
-    height: 160px;
-    margin-left: 45px;
+    width: 200px;
+    height: 200px;
+    margin-left: 60px;
+    margin-right: 50px;
   }
   #infoUsuario figure img {
-    height: 160px;
+    height: 200px;
+    margin-left: -15px;
   }
   #infoUsuario div h4 {
     font-size: 26px;
-    line-height: 50px;
+    padding-bottom: 10px;
   }
   #infoUsuario div p {
-    font-size: 20px;
+    font-size: 24px;
   }
 }
 #escribirPost {
@@ -286,10 +276,12 @@ body {
   display: flex;
   flex-flow: column;
   justify-content: center;
-  margin: 0 22.5px 40px 22.5px;
+  align-items: center;
 }
 #sectionPosts table {
-  width: 330px;
+  display: flex;
+  flex-flow: column;
+  width: 90%;
   border-spacing: 0;
   margin-top: 30px;
 }
@@ -301,6 +293,7 @@ body {
   background: #5da6a6;
   color: #ffffff;
   font-weight: 400;
+  font-size: 18px;
 }
 #sectionPosts table tr td {
   display: flex;
@@ -314,28 +307,32 @@ body {
 }
 #sectionPosts table tr:last-child td:first-child {
   border-bottom-left-radius: 10px;
-}
-#sectionPosts table tr:last-child td:last-child {
   border-bottom-right-radius: 10px;
 }
 #logoLike {
   padding: 5px;
   border-radius: 50%;
-  border: 1px solid #837777;
+  border: 1px solid #5da6a6;
   margin-right: 10px;
   cursor: pointer;
+  width: 35px;
+  height: 35px;
 }
 #logoComent {
   padding: 7px;
   border-radius: 50%;
-  border: 1px solid #837777;
+  border: 1px solid #5da6a6;
   cursor: pointer;
+  width: 35px;
+  height: 35px;
 }
 #logoLike:active {
   background: #c74c4c;
-  border: 1px solid #ffffff;
+  border: none;
+  transform: scale(1.2);
 }
 #logoComent:active {
   background: #c9c9c9;
-  border: 1px solid #ffffff;
+  border: none;
+  transform: scale(1.2);
 }

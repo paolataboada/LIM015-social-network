@@ -1,5 +1,5 @@
 export default () => {
-  document.querySelector('nav').style.display = 'none';
+  // document.querySelector('nav').style.display = 'none';
   document.querySelector('footer').style.display = 'none';
   const inicio = `
     <div id="barraMenu">

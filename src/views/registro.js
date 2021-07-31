@@ -1,5 +1,5 @@
 export default () => {
-  document.querySelector('nav').style.display = 'none';
+  // document.querySelector('nav').style.display = 'none';
   document.querySelector('footer').style.display = 'none';
   const registro = `
     <div id="logoPrincipal">
@@ -20,7 +20,7 @@ export default () => {
         <img src="img/Facebook.png">
         <img src="img/Google.png">
       </div>
-      <p>No tienes una cuenta? <a id="btnRegistrar" href="#">Regístrate</a></p>
+      <p>No tienes una cuenta? <a id="btnRegistrar" href="#/modal">Regístrate</a></p>
     </div> `;
   const divElement = document.createElement('div');
   divElement.setAttribute('id', 'containerRegistro');

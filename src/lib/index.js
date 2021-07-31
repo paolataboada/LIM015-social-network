@@ -13,6 +13,7 @@ export const changeView = (route) => {
     case '':
     case '#/': { return container.appendChild(componentes.Registro()); }
     case '#/inicio': { return container.appendChild(componentes.Inicio()); }
+    case '#/modal': { return container.appendChild(componentes.Modal()); }
     default:
       break;
   }

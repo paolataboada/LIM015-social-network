@@ -86,111 +86,112 @@ body {
   justify-content: space-between;
 }
 /* Vista Modal */
-#fondoModal{
+#fondoModal {
   z-index: 8;
   background-color: rgba(0, 0, 0, 0.25);
-  top:0;
-  left:0;
-  right:0;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 #modal {
-  display:flex;
-  flex-flow:column ;
+  display: flex;
+  flex-flow: column;
   justify-items: center;
   position: absolute;
   top: 0;
-  left:0;
-  right:0;
-  bottom:0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   width: 400px;
   height: 600px;
   z-index: 5;
-  align-items:center;
+  align-items: center;
   background: white;
   border: 1px solid white;
   margin: auto;
   border-radius: 15px 15px 15px 15px;
   box-shadow: 3px 2px 2px 6px rgba(0.2, 0.2, 0.2, 0.2);
   overflow: hidden;
-  
 }
-@media (max-width:768px) {
-  #modal{
+@media (max-width: 768px) {
+  #modal {
     width: 60%;
   }
 }
-@media (max-width:300px) {
-  #modal{
-    width:85%;
+@media (max-width: 300px) {
+  #modal {
+    width: 85%;
   }
 }
-#modal a{
+#modal a {
   /* position: relative; */
   font-family: Arial, Helvetica, sans-serif;
-  right:0;
+  right: 0;
   font-weight: 520;
   font-size: 20px;
   text-decoration: none;
   color: teal;
   margin-left: auto;
-  padding:15px 15px 0px 0px;
+  padding: 15px 15px 0px 0px;
   float: right;
 }
-#modal a:hover{
+#modal a:hover {
   cursor: pointer;
   opacity: 0.7;
 }
-#modal h2{
-  color: #5DA6A6;
-  margin-top:50px;
+#modal h2 {
+  color: #5da6a6;
+  margin-top: 50px;
   margin-bottom: -70px;
   margin-left: 15px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-size: 26px;
   font-weight: bolder;
 }
 #container-modal {
   margin: 100px 15px;
-  display:flex;
+  display: flex;
   flex-direction: column;
-  align-items: center; 
+  align-items: center;
 }
-#container-modal input{
+#container-modal input {
   height: 48px;
   width: 250px;
   position: center;
   margin-bottom: 15px;
   padding: 14px 20px;
-  background-color: #F2F2F2;
+  background-color: #f2f2f2;
   border: 1px solid #737373;
   border-radius: 15px;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
-  outline: none;  
+  outline: none;
 }
-@media (max-width: 768px){
-  #container-modal input{
+@media (max-width: 768px) {
+  #container-modal input {
     width: 100%;
   }
 }
-#container-modal input::placeholder{
+#container-modal input::placeholder {
   font-size: 17px;
 }
-#container-modal button{
+#container-modal button {
   height: 55px;
   width: 180px;
   margin-bottom: 25px;
   margin-top: 20px;
-  border: 1px solid #5DA6A6;
+  border: 1px solid #5da6a6;
   border-radius: 15px;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
-  background-color: #52B69A;
-  font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  font-weight:bolder;
+  background-color: #52b69a;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: bolder;
   font-size: 17px;
-  color:white;
-  letter-spacing:1px;  
+  color: white;
+  letter-spacing: 1px;
 }
-#container-modal button:hover{
+#container-modal button:hover {
   background-color: teal;
   cursor: pointer;
 }
@@ -208,23 +209,8 @@ body {
   align-items: center;
   background: #184e77;
   padding: 10px 20px;
-}
-#barraMenu img {
-  cursor: pointer;
-  padding: 5px;
-}
-#barraMenu img:active {
-  background: #798996;
-  opacity: 0.5;
-  border: 1px solid #ffffff;
-  border-radius: 5px;
-}
-#barraMenu div {
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
   color: #ffffff;
-  margin: auto;
+  justify-content: space-between;
 }
 #infoUsuario {
   display: flex;

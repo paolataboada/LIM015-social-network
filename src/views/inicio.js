@@ -1,13 +1,11 @@
 export default () => {
-  // document.querySelector('nav').style.display = 'none';
+  document.querySelector('nav').style.display = 'none';
   document.querySelector('footer').style.display = 'none';
   const inicio = `
     <div id="barraMenu">
-      <img src="img/btn-menu.png" alt="Botón de menú desplegable">
-      <div>
-        <h3> Health Social</h3>
-        <img src="img/logo-blanco.png" alt="Logo Social Health Blanco">
-      </div>
+      <img src="img/logo-blanco.png" alt="Logo Social Health Blanco">
+      <h3> Health Social</h3>
+      <img id="btnSalir"src="img/cerrar-sesion.png" alt="Botón cerrar sesión">
     </div>
 
     <div id="infoUsuario">
@@ -65,5 +63,20 @@ export default () => {
   const divElement = document.createElement('div');
   divElement.setAttribute('id', 'containerInicio');
   divElement.innerHTML = inicio;
+
+  const btnSalir = divElement.querySelector('#btnSalir');
+  btnSalir.addEventListener('click', () => {
+    firebase.auth().signOut()
+      .then(() => {
+        // Sign-out successful.
+        window.location.hash = '#/';
+        console.log('Se ha cerrado sesión');
+      })
+      .catch((error) => {
+        // An error happened.
+        console.log(error);
+      });
+  });
+
   return divElement;
 };

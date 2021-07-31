@@ -1,5 +1,5 @@
 export default () => {
-  // document.querySelector('nav').style.display = 'none';
+  document.querySelector('nav').style.display = 'none';
   document.querySelector('footer').style.display = 'none';
   const registro = `
     <div id="logoPrincipal">
@@ -11,7 +11,7 @@ export default () => {
       <form id="signIn">
         <input type="email" placeholder="Email" id="emailIngresar" autocomplete="off">
         <input type="password" placeholder="Contraseña" id="contraseñaIngresar" autocomplete="off">
-        <button id = "btnEntrar" type="submit">Ingresar</button>
+        <button id="btnEntrar">Ingresar</button>
       </form>
     </div>
     <div id="signUp">
@@ -27,23 +27,24 @@ export default () => {
   divElement.innerHTML = registro;
 
   const btnIngresar = divElement.querySelector('#btnEntrar');
-  btnIngresar.addEventListener('submit', () => {
-    const email = divElement.querySelector('#emailIngresar').value;
-    const password = divElement.querySelector('#contraseñaIngresar').value;
-    console.log(email);
+  btnIngresar.addEventListener('click', () => {
+    const emailIngresar = divElement.querySelector('#emailIngresar').value;
+    const passwordIngresar = divElement.querySelector('#contraseñaIngresar').value;
 
-    firebase.auth().signInWithEmailAndPassword(email, password)
+    firebase.auth().signInWithEmailAndPassword(emailIngresar, passwordIngresar)
       .then((userCredential) => {
-        // console.log('login', userCredential);
         // Signed in
         const user = userCredential.user;
-        console.log('login', userCredential, user);
-        // ...
+        console.log('se ha iniciado sesión', user.email);
+      })
+      .then(() => {
+        window.location.hash = '#/inicio';
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode, errorMessage);
+        alert(errorMessage);
       });
   });
   return divElement;

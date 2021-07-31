@@ -9,9 +9,9 @@ export default () => {
     <div id="dataLogIn"> 
       <p>¡Bienvenid@ a Social Health!</p>
       <form id="signIn">
-        <input type="email" placeholder="Email" id="emaila" autocomplete="off">
-        <input type="password" placeholder="Contraseña" id="contraseñaa" autocomplete="off">
-        <button type="submit">Ingresar</button>
+        <input type="email" placeholder="Email" id="emailIngresar" autocomplete="off">
+        <input type="password" placeholder="Contraseña" id="contraseñaIngresar" autocomplete="off">
+        <button id = "btnEntrar" type="submit">Ingresar</button>
       </form>
     </div>
     <div id="signUp">
@@ -25,28 +25,26 @@ export default () => {
   const divElement = document.createElement('div');
   divElement.setAttribute('id', 'containerRegistro');
   divElement.innerHTML = registro;
+
+  const btnIngresar = divElement.querySelector('#btnEntrar');
+  btnIngresar.addEventListener('submit', () => {
+    const email = divElement.querySelector('#emailIngresar').value;
+    const password = divElement.querySelector('#contraseñaIngresar').value;
+    console.log(email);
+
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        // console.log('login', userCredential);
+        // Signed in
+        const user = userCredential.user;
+        console.log('login', userCredential, user);
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
+  });
   return divElement;
 };
-
-/* const formSignIn = document.querySelector('#signIn');
-formSignIn.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const email = document.querySelector('#emaila').value;
-  const password = document.querySelector('#contraseñaa').value;
-
-  firebase.auth().signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      containerModal.reset();
-      console.log('sign up', userCredential);
-      // Signed in
-      const user = userCredential.user;
-      console.log(user);
-      // ...
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // ..
-      console.log(errorCode, errorMessage);
-    });
-}); */

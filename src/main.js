@@ -10,7 +10,7 @@ window.addEventListener('load', iniciar);
 
 // console.log(window.location.hash);
 
-const containerModal = document.querySelector('#container-modal');
+/* const containerModal = divElement.querySelector('#container-modal');
 containerModal.addEventListener('submit', (e) => {
   e.preventDefault();
   const email = document.querySelector('#e-mail').value;
@@ -30,4 +30,4 @@ containerModal.addEventListener('submit', (e) => {
       // ..
       console.log(errorCode, errorMessage);
     });
-});
+}); */

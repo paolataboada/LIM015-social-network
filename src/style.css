@@ -124,6 +124,22 @@ body {
     width:85%;
   }
 }
+#modal a{
+  /* position: relative; */
+  font-family: Arial, Helvetica, sans-serif;
+  right:0;
+  font-weight: 520;
+  font-size: 20px;
+  text-decoration: none;
+  color: teal;
+  margin-left: auto;
+  padding:15px 15px 0px 0px;
+  float: right;
+}
+#modal a:hover{
+  cursor: pointer;
+  opacity: 0.7;
+}
 #modal h2{
   color: #5DA6A6;
   margin-top:50px;

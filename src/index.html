@@ -18,21 +18,7 @@
     </ul>
   </nav>
   <section id="container"></section>
-  <!-- Espacio para el modal -->
-  
-  <!-- <section id="fondoModal">
-    <section id="modal">
-      <h2>Registro de Usuario </h2>
-      <form id="container-modal">
-        <input type="text" id="nombre" placeholder="Nombre">
-        <input type="text" id="usuario" placeholder="Nombre de usuario">
-        <input type="email" id="e-mail" placeholder="Email">
-        <input type="password" id="contraseña" placeholder="Contraseña">
-        <input type="password" id="confirmarContraseña" placeholder="Confirmar contraseña">
-        <button type="submit">Enviar</button>
-      </form>
-    </section>
-  </section> -->
+
   <footer>&copy Created by Paola Vitalia y Dafne Aquino</footer>
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-app.js"></script>
@@ -63,7 +49,7 @@
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
         var uid = user.uid;
-        console.log(user.email);
+        console.log('el usuario está en sesión', user.email);
         // ...
       } else {
         // User is signed out

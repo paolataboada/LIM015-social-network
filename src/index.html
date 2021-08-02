@@ -48,10 +48,22 @@
       if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/firebase.User
+        var emailVerified = user.emailVerified;
         var uid = user.uid;
         console.log('el usuario está en sesión', user.email);
+        var textoVerified = "";
+        if (emailVerified===false){
+          textoVerified = "Email no verificado";
+          console.log(textoVerified)
+        }
+        else {
+          textoVerified = "Email verificado";
+          console.log(textoVerified)
+        }
+
         // ...
       } else {
+        console.log('el usuario no está en sesión');
         // User is signed out
         // ...
       }

@@ -17,6 +17,13 @@ export default () => {
   //   divElement.setAttribute('id', 'fondoModal');
   divElement.innerHTML = modal;
 
+  function verificar() {
+    firebase.auth().currentUser.sendEmailVerification()
+      .then(() => {
+        // Email verification sent!
+        // ...
+      });
+  }
   const containerModal = divElement.querySelector('#container-modal');
   containerModal.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -30,6 +37,9 @@ export default () => {
         // Signed in
         // const user = userCredential.user;
         // ...
+      })
+      .then(() => {
+        verificar();
       })
       .catch((error) => {
         const errorCode = error.code;

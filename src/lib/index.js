@@ -11,9 +11,9 @@ export const changeView = (route) => {
   container.innerHTML = '';
   switch (route) {
     case '':
-    case '#/': { return container.appendChild(componentes.Registrar()); }
-    case '#/inicio': { return container.appendChild(componentes.Inicio()); }
-    case '#/modal': { return container.appendChild(componentes.Modal()); }
+    case '#/': { return container.appendChild(componentes.LogIn()); }
+    case '#/inicio': { return container.appendChild(componentes.Home()); }
+    case '#/modal': { return container.appendChild(componentes.Signup()); }
     default:
       break;
   }

@@ -1,7 +1,7 @@
-export default () => {
+function registrar() {
   document.querySelector('nav').style.display = 'none';
   document.querySelector('footer').style.display = 'none';
-  const registro = `
+  let registro = `
     <div id="logoPrincipal">
       <figure><img src ="img/logo-azul.png"></figure>
       <h2>Social Health </h2>
@@ -69,6 +69,7 @@ export default () => {
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
+        console.log(token, user);
         // ...
       })
       .then(() => {
@@ -82,8 +83,11 @@ export default () => {
         const email = error.email;
         // The firebase.auth.AuthCredential type that was used.
         const credential = error.credential;
+        console.log(errorCode, errorMessage, email, credential);
         // ...
       });
   });
   return divElement;
-};
+}
+
+export { registrar };

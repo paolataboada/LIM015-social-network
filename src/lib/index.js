@@ -11,7 +11,7 @@ export const changeView = (route) => {
   container.innerHTML = '';
   switch (route) {
     case '':
-    case '#/': { return container.appendChild(componentes.Registro()); }
+    case '#/': { return container.appendChild(componentes.Registrar()); }
     case '#/inicio': { return container.appendChild(componentes.Inicio()); }
     case '#/modal': { return container.appendChild(componentes.Modal()); }
     default:

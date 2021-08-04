@@ -1,9 +1,9 @@
-import registro from './registro.js';
+import { registrar } from './registro.js';
 import inicio from './inicio.js';
 import modal from './modal.js';
 
 const componentes = {
-  Registro: registro,
+  Registrar: registrar,
   Inicio: inicio,
   Modal: modal,
 };

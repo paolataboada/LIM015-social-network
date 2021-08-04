@@ -4,98 +4,11 @@
   padding: 0;
 }
 body {
-  font-family: Roboto;
-}
-/* Vista Registro */
-#containerRegistro {
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  background: #fdf8f8;
-  padding: 30px 0;
-}
-#logoPrincipal {
-  margin-top: 90px;
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  color: #24baac;
-}
-#dataLogIn {
-  margin: 40px 0;
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-}
-#dataLogIn p {
-  margin-bottom: 35px;
-  align-self: center;
-}
-#dataLogIn form {
-  display: flex;
-  flex-flow: column;
-}
-#dataLogIn form input {
-  width: 270px;
-  margin: 10px 0;
-  padding: 14px 20px;
-  border-radius: 15px;
-  border: 1px solid #5da6a6;
-  background-color: #f4f3f3;
-  outline: none;
-}
-#dataLogIn form input::placeholder {
-  font-size: 17px;
-  background-image: url(img/flecha.png);
-  background-repeat: no-repeat;
-  background-position: right center;
-}
-#dataLogIn form button {
-  color: #ffffff;
-  font-family: Roboto;
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  margin-top: 20px;
-  padding: 10px 40px;
-  background: #184e77;
-  border-radius: 25px;
-  border: 1px;
-  outline: none;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
-}
-#signUp {
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-}
-#signUp p {
-  margin: 16px 0;
-  font-size: 16px;
-}
-#signUp p a {
-  color: #000;
-  font-weight: bold;
-  text-decoration: none;
-}
-#logosRegister {
-  display: flex;
-  width: 100px;
-  flex-flow: row;
-  justify-content: space-between;
-}
-#google{
-  cursor: pointer;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 /* Vista Modal */
-#fondoModal {
-  z-index: 8;
-  background-color: rgba(0, 0, 0, 0.25);
-  top: 0;
-  left: 0;
-  right: 0;
-}
+
 #modal {
   display: flex;
   flex-flow: column;
@@ -137,6 +50,11 @@ body {
   margin-left: auto;
   padding: 15px 15px 0px 0px;
   float: right;
+}
+#signUp p a {
+  color: #000;
+  font-weight: bold;
+  text-decoration: none;
 }
 #modal a:hover {
   cursor: pointer;
@@ -194,10 +112,103 @@ body {
   color: white;
   letter-spacing: 1px;
 }
+#escribirPost div button {
+  padding: 10px 20px;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background: #184e77;
+  cursor: pointer;
+}
+#dataLogIn form button {
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-top: 20px;
+  padding: 10px 40px;
+  background: #184e77;
+  border-radius: 25px;
+  border: 1px;
+  outline: none;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
 #container-modal button:hover {
   background-color: teal;
   cursor: pointer;
 }
+/* Vista Registro */
+#containerRegistro {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  background: #fdf8f8;
+  padding: 30px 0;
+}
+#logoPrincipal {
+  margin-top: 90px;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  color: #24baac;
+}
+#dataLogIn {
+  margin: 40px 0;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+#dataLogIn p {
+  margin-bottom: 35px;
+  align-self: center;
+}
+#dataLogIn form {
+  display: flex;
+  flex-flow: column;
+}
+#dataLogIn form input {
+  width: 270px;
+  margin: 10px 0;
+  padding: 14px 20px;
+  border-radius: 15px;
+  border: 1px solid #5da6a6;
+  background-color: #f4f3f3;
+  outline: none;
+}
+#dataLogIn form input::placeholder {
+  font-size: 17px;
+  background-image: url(img/flecha.png);
+  background-repeat: no-repeat;
+  background-position: right center;
+}
+
+#signUp {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+#signUp p {
+  margin: 16px 0;
+  font-size: 16px;
+}
+
+#logosRegister {
+  display: flex;
+  width: 100px;
+  flex-flow: row;
+  justify-content: space-between;
+}
+#google {
+  cursor: pointer;
+}
+
 /* Vista Inicio */
 #containerInicio {
   display: flex;
@@ -288,18 +299,7 @@ body {
   border-radius: 5px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
-#escribirPost div button {
-  padding: 10px 20px;
-  border-radius: 10px;
-  outline: none;
-  border: none;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  color: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  background: #184e77;
-  cursor: pointer;
-}
+
 #sectionPosts {
   display: flex;
   flex-flow: column;

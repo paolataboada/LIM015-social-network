@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -50,10 +50,14 @@
         // https://firebase.google.com/docs/reference/js/firebase.User
         var emailVerified = user.emailVerified;
         var uid = user.uid;
-        console.log('el usuario está en sesión', user.email);
+        // eslint-disable-next-line no-unused-expressions
+        !user.emailVerified
+          ? window.location.hash = '#/' : console.log('el usuario está en sesión', user.email);
         var textoVerified = "";
-        if (emailVerified===false){
+        if (emailVerified === false){
+          window.location.hash = '#/';
           textoVerified = "Email no verificado";
+          alert(textoVerified)
           console.log(textoVerified)
         }
         else {

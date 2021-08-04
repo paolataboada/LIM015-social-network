@@ -37,8 +37,8 @@ export const viewsDom = {
   templateHome: `
     <div id="barraMenu">
       <img src="img/logo-blanco.png" alt="Logo Social Health Blanco">
-      <h3> Health Social</h3>
-      <img id="btnSalir"src="img/cerrar-sesion.png" alt="Botón cerrar sesión">
+      <h3>Health Social</h3>
+      <img id="btnSalir" src="img/cerrar-sesion.png" alt="Botón cerrar sesión">
     </div>
 
     <div id="infoUsuario">

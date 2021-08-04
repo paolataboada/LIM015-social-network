@@ -7,6 +7,9 @@ export default () => {
   divElement.setAttribute('id', 'containerInicio');
   divElement.innerHTML = viewsDom.templateHome;
 
+  divElement.querySelector('#btnFile').addEventListener('click', () => {
+    divElement.querySelector('#subirFile').click();
+  });
   const btnSalir = divElement.querySelector('#btnSalir');
   btnSalir.addEventListener('click', () => {
     firebase.auth().signOut()

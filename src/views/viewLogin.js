@@ -17,14 +17,16 @@ export default () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log('se ha iniciado sesión', user.email);
+        // eslint-disable-next-line no-unused-expressions
+        !user.emailVerified
+          ? window.location.hash = '#/' : console.log('se ha iniciado sesión', user.email);
       })
       .then(() => {
         window.location.hash = '#/inicio';
       })
       .catch((error) => {
         const errorCode = error.code;
-        const errorMessage = error.message;
+        // const errorMessage = error.message;
         // if (error.code === 'auth/invalid-email') {
         //   console.log('El correo es inválido');
         // } else if (error.code === 'auth/wrong-password') {
@@ -33,8 +35,26 @@ export default () => {
         //   console.log('El correo es válido');
         // }
 
-        console.log(errorCode, errorMessage);
-        alert(errorMessage);
+        switch (errorCode) {
+          case 'auth/user-not-found':
+            // eslint-disable-next-line no-unused-expressions
+            !emailIngresar
+              ? alert('Por favor ingrese su correo elecrtónico') : alert('Usuario no registrado. \nComplete el formulario de registro para ser parte de Social Health');
+            break;
+          case 'auth/invalid-email':
+            // eslint-disable-next-line no-unused-expressions
+            !emailIngresar && !passwordIngresar
+              ? alert('Por favor ingrese sus datos') : alert('La dirección de correo electrónico no tiene el formato correcto');
+            break;
+          case 'auth/wrong-password':
+            // eslint-disable-next-line no-unused-expressions
+            !passwordIngresar
+              ? alert('Por favor ingrese su contraseña') : alert('La contraseña no es válida');
+            break;
+          default:
+            break;
+        }
+        // console.log(errorCode, errorMessage);
       });
   });
   const btnGoogle = divElement.querySelector('#google');

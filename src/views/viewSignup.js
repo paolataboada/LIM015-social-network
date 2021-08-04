@@ -1,21 +1,8 @@
-export default () => {
-  const modal = `
-    <section id="modal">
-      <a href="#/"> x </a>
-      <h2>Registro de Usuario </h2>
-      <form id="container-modal">
-          <input type="text" id="nombre" placeholder="Nombre">
-          <input type="text" id="usuario" placeholder="Nombre de usuario">
-          <input type="email" id="e-mail" placeholder="Email">
-          <input type="password" id="contraseña" placeholder="Contraseña">
-          <input type="password" id="confirmarContraseña" placeholder="Confirmar contraseña">
-          <button>Enviar</button>
-      </form>
-    </section> `;
+import { viewsDom } from './dom.js';
 
+export default () => {
   const divElement = document.createElement('div');
-  //   divElement.setAttribute('id', 'fondoModal');
-  divElement.innerHTML = modal;
+  divElement.innerHTML = viewsDom.templateSignup;
 
   function verificar() {
     firebase.auth().currentUser.sendEmailVerification()

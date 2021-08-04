@@ -1,10 +1,10 @@
-import { registrar } from './registro.js';
-import inicio from './inicio.js';
-import modal from './modal.js';
+import logIn from './viewLogin.js';
+import home from './viewHome.js';
+import signUp from './viewSignup.js';
 
 const componentes = {
-  Registrar: registrar,
-  Inicio: inicio,
-  Modal: modal,
+  LogIn: logIn,
+  Home: home,
+  Signup: signUp,
 };
 export { componentes };

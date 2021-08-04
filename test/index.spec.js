@@ -1,14 +1,21 @@
 // importamos la funcion que vamos a testear
-import { registrar } from '../src/views/registro';
+import logIn from '../src/views/viewLogin';
+import { viewsDom } from '../src/views/dom';
 
-describe('registrar', () => {
+describe('logIn', () => {
   it('debería ser una función', () => {
-    expect(typeof registrar).toBe('function');
+    expect(typeof logIn).toBe('function');
   });
 });
 
-describe('registro', () => {
-  it('debería ser una variable tipo string', () => {
-    expect(typeof registro).toBe('string');
+describe('viewsDom', () => {
+  it('debería ser un objeto', () => {
+    expect(typeof viewsDom).toEqual('object');
+  });
+});
+
+describe('templateLogin', () => {
+  it('debería ser una propiedad con valor tipo string', () => {
+    expect(typeof viewsDom.templateLogin).toBe('string');
   });
 });

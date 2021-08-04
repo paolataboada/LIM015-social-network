@@ -1,7 +1,40 @@
-export default () => {
-  document.querySelector('nav').style.display = 'none';
-  document.querySelector('footer').style.display = 'none';
-  const inicio = `
+export const viewsDom = {
+  templateLogin: `
+    <div id="logoPrincipal">
+      <figure><img src ="img/logo-azul.png"></figure>
+      <h2>Social Health </h2>
+    </div>
+    <div id="dataLogIn"> 
+      <p>¡Bienvenid@ a Social Health!</p>
+      <form id="signIn">
+        <input type="email" placeholder="Email" id="emailIngresar" autocomplete="off">
+        <input type="password" placeholder="Contraseña" id="contraseñaIngresar" autocomplete="off">
+        <button id="btnEntrar">Ingresar</button>
+      </form>
+    </div>
+    <div id="signUp">
+      <p> O bien ingresa con: </p>
+      <div id="logosRegister">
+        <img id="fb" src="img/Facebook.png">
+        <img id="google" src="img/Google.png">
+      </div>
+      <p>No tienes una cuenta? <a id="btnRegistrar" href="#/modal">Regístrate</a></p>
+    </div> `,
+
+  templateSignup: `
+    <section id="modal">
+      <a href="#/"> x </a>
+      <h2>Registro de Usuario </h2>
+      <form id="container-modal">
+          <input type="text" id="nombre" placeholder="Nombre">
+          <input type="text" id="usuario" placeholder="Nombre de usuario">
+          <input type="email" id="e-mail" placeholder="Email">
+          <input type="password" id="contraseña" placeholder="Contraseña">
+          <input type="password" id="confirmarContraseña" placeholder="Confirmar contraseña">
+          <button>Enviar</button>
+      </form>
+    </section> `,
+  templateHome: `
     <div id="barraMenu">
       <img src="img/logo-blanco.png" alt="Logo Social Health Blanco">
       <h3> Health Social</h3>
@@ -58,25 +91,5 @@ export default () => {
           </td>
         </tr>
       </table>
-    </div>
-    `;
-  const divElement = document.createElement('div');
-  divElement.setAttribute('id', 'containerInicio');
-  divElement.innerHTML = inicio;
-
-  const btnSalir = divElement.querySelector('#btnSalir');
-  btnSalir.addEventListener('click', () => {
-    firebase.auth().signOut()
-      .then(() => {
-        // Sign-out successful.
-        window.location.hash = '#/';
-        console.log('Se ha cerrado sesión');
-      })
-      .catch((error) => {
-        // An error happened.
-        console.log(error);
-      });
-  });
-
-  return divElement;
+    </div>`,
 };

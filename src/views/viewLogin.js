@@ -1,30 +1,11 @@
-function registrar() {
+import { viewsDom } from './dom.js';
+
+export default () => {
   document.querySelector('nav').style.display = 'none';
   document.querySelector('footer').style.display = 'none';
-  let registro = `
-    <div id="logoPrincipal">
-      <figure><img src ="img/logo-azul.png"></figure>
-      <h2>Social Health </h2>
-    </div>
-    <div id="dataLogIn"> 
-      <p>¡Bienvenid@ a Social Health!</p>
-      <form id="signIn">
-        <input type="email" placeholder="Email" id="emailIngresar" autocomplete="off">
-        <input type="password" placeholder="Contraseña" id="contraseñaIngresar" autocomplete="off">
-        <button id="btnEntrar">Ingresar</button>
-      </form>
-    </div>
-    <div id="signUp">
-      <p> O bien ingresa con: </p>
-      <div id="logosRegister">
-        <img id="fb" src="img/Facebook.png">
-        <img id="google" src="img/Google.png">
-      </div>
-      <p>No tienes una cuenta? <a id="btnRegistrar" href="#/modal">Regístrate</a></p>
-    </div> `;
   const divElement = document.createElement('div');
   divElement.setAttribute('id', 'containerRegistro');
-  divElement.innerHTML = registro;
+  divElement.innerHTML = viewsDom.templateLogin;
 
   const btnIngresar = divElement.querySelector('#btnEntrar');
   btnIngresar.addEventListener('click', (e) => {
@@ -88,6 +69,4 @@ function registrar() {
       });
   });
   return divElement;
-}
-
-export { registrar };
+};

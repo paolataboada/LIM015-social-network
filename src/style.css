@@ -20,7 +20,6 @@ body {
   bottom: 0;
   width: 400px;
   height: 600px;
-  z-index: 5;
   align-items: center;
   background: white;
   border: 1px solid white;
@@ -61,7 +60,7 @@ body {
   opacity: 0.7;
 }
 #modal h2 {
-  color: #5da6a6;
+  color:#24baac;
   margin-top: 50px;
   margin-bottom: -70px;
   margin-left: 15px;
@@ -77,15 +76,17 @@ body {
   align-items: center;
 }
 #container-modal input {
-  height: 48px;
-  width: 250px;
+  width: 270px;
+  margin: 10px 0;  
+  /* height: 48px; */
+  /* width: 250px; */
   position: center;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
   padding: 14px 20px;
-  background-color: #f2f2f2;
-  border: 1px solid #737373;
+  background-color: #f4f3f3;
+  border: 1px solid #5da6a6;
   border-radius: 15px;
-  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
   outline: none;
 }
 @media (max-width: 768px) {
@@ -97,14 +98,14 @@ body {
   font-size: 17px;
 }
 #container-modal button {
-  height: 55px;
   width: 180px;
+  padding: 10px 40px;
   margin-bottom: 25px;
   margin-top: 20px;
-  border: 1px solid #5da6a6;
+  border: 1px solid #184e77;
   border-radius: 15px;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
-  background-color: #52b69a;
+  background-color: #184e77;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-weight: bolder;
@@ -125,6 +126,10 @@ body {
   cursor: pointer;
 }
 #dataLogIn form button {
+  width: 180px;
+  justify-content: center;
+  position: center;
+  
   color: #ffffff;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -134,14 +139,14 @@ body {
   margin-top: 20px;
   padding: 10px 40px;
   background: #184e77;
-  border-radius: 25px;
+  border-radius: 15px;
   border: 1px;
   outline: none;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   cursor: pointer;
 }
 #container-modal button:hover {
-  background-color: teal;
+  opacity: 0.9;
   cursor: pointer;
 }
 /* Vista Registro */
@@ -149,6 +154,7 @@ body {
   display: flex;
   flex-flow: column;
   justify-content: center;
+  align-items: center;
   background: #fdf8f8;
   padding: 30px 0;
 }
@@ -159,6 +165,9 @@ body {
   align-items: center;
   color: #24baac;
 }
+#logoPrincipal h2{
+  font-size: 28px;
+}
 #dataLogIn {
   margin: 40px 0;
   display: flex;
@@ -168,10 +177,13 @@ body {
 #dataLogIn p {
   margin-bottom: 35px;
   align-self: center;
+  font-size: 17px;
 }
 #dataLogIn form {
   display: flex;
   flex-flow: column;
+  flex-direction: column;
+  align-items: center;
 }
 #dataLogIn form input {
   width: 270px;
@@ -180,6 +192,7 @@ body {
   border-radius: 15px;
   border: 1px solid #5da6a6;
   background-color: #f4f3f3;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
   outline: none;
 }
 #dataLogIn form input::placeholder {

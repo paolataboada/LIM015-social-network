@@ -34,22 +34,18 @@ export default () => {
         // } else {
         //   console.log('El correo es válido');
         // }
+        const errorEmailLogIn = divElement.querySelector('#errorEmailLogIn');
+        const errorPassLogIn = divElement.querySelector('#errorPassLogIn');
 
         switch (errorCode) {
           case 'auth/user-not-found':
-            // eslint-disable-next-line no-unused-expressions
-            !emailIngresar
-              ? alert('Por favor ingrese su correo elecrtónico') : alert('Usuario no registrado. \nComplete el formulario de registro para ser parte de Social Health');
+            errorEmailLogIn.style.visibility = 'visible';
             break;
           case 'auth/invalid-email':
-            // eslint-disable-next-line no-unused-expressions
-            !emailIngresar && !passwordIngresar
-              ? alert('Por favor ingrese sus datos') : alert('La dirección de correo electrónico no tiene el formato correcto');
+            errorEmailLogIn.style.visibility = 'visible';
             break;
           case 'auth/wrong-password':
-            // eslint-disable-next-line no-unused-expressions
-            !passwordIngresar
-              ? alert('Por favor ingrese su contraseña') : alert('La contraseña no es válida');
+            errorPassLogIn.style.visibility = 'visible';
             break;
           default:
             break;

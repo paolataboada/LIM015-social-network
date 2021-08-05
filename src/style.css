@@ -60,34 +60,40 @@ body {
   opacity: 0.7;
 }
 #modal h2 {
-  color:#24baac;
-  margin-top: 50px;
-  margin-bottom: -70px;
-  margin-left: 15px;
+  color: #24baac;
+  margin: 40px 0 50px 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-size: 26px;
   font-weight: bolder;
 }
 #container-modal {
-  margin: 100px 15px;
+  margin: 0px 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 #container-modal input {
   width: 270px;
-  margin: 10px 0;  
-  /* height: 48px; */
-  /* width: 250px; */
+  margin: 0px 0 5px 0;
   position: center;
-  /* margin-bottom: 15px; */
   padding: 14px 20px;
   background-color: #f4f3f3;
   border: 1px solid #5da6a6;
   border-radius: 15px;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
   outline: none;
+}
+#container-modal #errorNameSignUp,
+#container-modal #errorEmailSignUp,
+#container-modal #errorPassSignUp,
+#container-modal #errorPassConfSignUp {
+  font-size: 14px;
+  color: #e00909;
+  align-self: flex-start;
+  padding-left: 5px;
+  margin-bottom: 10px;
+  visibility: hidden;
 }
 @media (max-width: 768px) {
   #container-modal input {
@@ -129,7 +135,6 @@ body {
   width: 180px;
   justify-content: center;
   position: center;
-  
   color: #ffffff;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -165,7 +170,7 @@ body {
   align-items: center;
   color: #24baac;
 }
-#logoPrincipal h2{
+#logoPrincipal h2 {
   font-size: 28px;
 }
 #dataLogIn {
@@ -174,7 +179,7 @@ body {
   flex-flow: column;
   align-items: center;
 }
-#dataLogIn p {
+#dataLogIn #welcome {
   margin-bottom: 35px;
   align-self: center;
   font-size: 17px;
@@ -187,7 +192,7 @@ body {
 }
 #dataLogIn form input {
   width: 270px;
-  margin: 10px 0;
+  margin: 10px 0 5px 0;
   padding: 14px 20px;
   border-radius: 15px;
   border: 1px solid #5da6a6;
@@ -201,7 +206,20 @@ body {
   background-repeat: no-repeat;
   background-position: right center;
 }
-
+#dataLogIn #errorEmailLogIn {
+  font-size: 14px;
+  color: #e00909;
+  align-self: flex-start;
+  padding-left: 15px;
+  visibility: hidden;
+}
+#dataLogIn #errorPassLogIn {
+  font-size: 14px;
+  color: #e00909;
+  padding-left: 15px;
+  align-self: flex-start;
+  visibility: hidden;
+}
 #signUp {
   display: flex;
   flex-flow: column;

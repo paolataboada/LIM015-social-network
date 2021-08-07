@@ -13,29 +13,25 @@ export default () => {
     const emailIngresar = divElement.querySelector('#emailIngresar').value;
     const passwordIngresar = divElement.querySelector('#contraseñaIngresar').value;
 
+    const errorEmailLogIn = divElement.querySelector('#errorEmailLogIn');
+    const errorPassLogIn = divElement.querySelector('#errorPassLogIn');
     firebase.auth().signInWithEmailAndPassword(emailIngresar, passwordIngresar)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        // eslint-disable-next-line no-unused-expressions
-        !user.emailVerified
-          ? window.location.hash = '#/' : console.log('se ha iniciado sesión', user.email);
-      })
-      .then(() => {
-        window.location.hash = '#/inicio';
+        console.log(user.emailVerified);
+        if (user.emailVerified === false) {
+          window.location.hash = '#/';
+          errorEmailLogIn.innerHTML = 'Email no está verificado';
+        } else {
+          window.location.hash = '#/inicio';
+        }
       })
       .catch((error) => {
         const errorCode = error.code;
-        // const errorMessage = error.message;
-        // if (error.code === 'auth/invalid-email') {
-        //   console.log('El correo es inválido');
-        // } else if (error.code === 'auth/wrong-password') {
-        //   console.log('La contraseña es inválida');
-        // } else {
-        //   console.log('El correo es válido');
-        // }
-        const errorEmailLogIn = divElement.querySelector('#errorEmailLogIn');
-        const errorPassLogIn = divElement.querySelector('#errorPassLogIn');
+        window.location.hash = '#/';
+        // const errorEmailLogIn = divElement.querySelector('#errorEmailLogIn');
+        // const errorPassLogIn = divElement.querySelector('#errorPassLogIn');
 
         switch (errorCode) {
           case 'auth/user-not-found':
@@ -48,9 +44,11 @@ export default () => {
             errorPassLogIn.style.visibility = 'visible';
             break;
           default:
+            errorEmailLogIn.style.visibility = 'hidden';
+            // divElement.querySelector('#signIn').reset();
             break;
         }
-        // console.log(errorCode, errorMessage);
+        console.log(errorCode);
       });
   });
   const btnGoogle = divElement.querySelector('#google');

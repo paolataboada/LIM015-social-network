@@ -28,15 +28,15 @@ export const viewsDom = {
       <a href="#/"> x </a>
       <h2>Registro de Usuario </h2>
       <form id="container-modal">
-          <input type="text" id="usuario" placeholder="Nombre de usuario" autocomplete="off">
+          <input type="text" id="usuario" placeholder="Nombre de usuario" autocomplete="off" required>
           <p id="errorNameSignUp">Por favor ingrese su nombre</p>
-          <input type="email" id="e-mail" placeholder="Email" autocomplete="off">
+          <input type="email" id="e-mail" placeholder="Email" autocomplete="off" required>
           <p id="errorEmailSignUp">Correo incorrecto</p>
-          <input type="password" id="contraseña" placeholder="Contraseña" autocomplete="off">
+          <input type="password" id="contraseña" placeholder="Contraseña" autocomplete="off" required>
           <p id="errorPassSignUp">Debe contener más de 6 caracteres</p>
-          <input type="password" id="confirmarContraseña" placeholder="Confirmar contraseña" autocomplete="off">
+          <input type="password" id="confirmarContraseña" placeholder="Confirmar contraseña" autocomplete="off" required>
           <p id="errorPassConfSignUp">Las contraseñas no coinciden</p>
-          <button>Enviar</button>
+          <button type="submit" id="btnEnviar" >Enviar</button>
       </form>
     </section> `,
   templateHome: `

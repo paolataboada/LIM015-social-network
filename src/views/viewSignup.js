@@ -7,8 +7,9 @@ export default () => {
   function verificar() {
     firebase.auth().currentUser.sendEmailVerification()
       .then(() => {
-        // Email verification sent!
-        // ...
+        console.log('se ha enviado un correo de verificación');
+      }).catch((error) => {
+        console.log(error);
       });
   }
   const containerModal = divElement.querySelector('#container-modal');
@@ -18,7 +19,7 @@ export default () => {
     const email = divElement.querySelector('#e-mail').value;
     const password = divElement.querySelector('#contraseña').value;
     const passconfirm = divElement.querySelector('#confirmarContraseña').value;
-
+    const enviar = divElement.querySelector('#btnEntrar');
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         containerModal.reset();
@@ -43,31 +44,40 @@ export default () => {
 
         if (name === '') {
           errorNameSignUp.style.visibility = 'visible';
+          enviar.disable = true;
         } else if (name !== '') {
           errorNameSignUp.style.visibility = 'hidden';
         }
         if (email === '') {
           errorEmailSignUp.style.visibility = 'visible';
+          enviar.disable = true;
         } else if (email !== '') {
           errorEmailSignUp.style.visibility = 'hidden';
         }
         if (errorCode === 'auth/invalid-email') {
           errorEmailSignUp.style.visibility = 'visible';
+          enviar.disable = true;
         } else if (errorCode === 'auth/email-already-in-use') {
           errorEmailSignUp.innerHTML = 'El correo ya ha sido registrado';
           errorEmailSignUp.style.visibility = 'visible';
-        }
-        if (passconfirm === '') {
-          errorPassConfSignUp.style.visibility = 'visible';
-        }
-        if (passconfirm !== password) {
-          errorPassConfSignUp.style.visibility = 'visible';
+          enviar.disable = true;
         }
         if (password === '') {
           errorPassSignUp.style.visibility = 'visible';
+          enviar.disable = true;
         } else if (errorCode === 'auth/weak-password') {
           errorPassSignUp.style.visibility = 'visible';
-        } /* else if (password !== '' && passconfirm !== '') {
+          enviar.disable = true;
+        }
+        if (passconfirm === '') {
+          errorPassConfSignUp.style.visibility = 'visible';
+          enviar.disable = true;
+        }
+        if (passconfirm !== password) {
+          errorPassConfSignUp.style.visibility = 'visible';
+          enviar.disable = true;
+        }
+        /* else if (password !== '' && passconfirm !== '') {
           errorPassSignUp.style.visibility = 'hidden';
           errorPassConfSignUp.style.visibility = 'hidden';
         } */

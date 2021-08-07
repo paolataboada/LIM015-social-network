@@ -44,34 +44,7 @@
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
     firebase.auth();
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
-        var emailVerified = user.emailVerified;
-        var uid = user.uid;
-        // eslint-disable-next-line no-unused-expressions
-        !user.emailVerified
-          ? window.location.hash = '#/' : console.log('el usuario está en sesión', user.email);
-        var textoVerified = "";
-        if (emailVerified === false){
-          window.location.hash = '#/';
-          textoVerified = "Email no verificado";
-          alert(textoVerified)
-          console.log(textoVerified)
-        }
-        else {
-          textoVerified = "Email verificado";
-          console.log(textoVerified)
-        }
-
-        // ...
-      } else {
-        console.log('el usuario no está en sesión');
-        // User is signed out
-        // ...
-      }
-    });
+    
 
   </script>
   <script type="module" src="main.js"></script>

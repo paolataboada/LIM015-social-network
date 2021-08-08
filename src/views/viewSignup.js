@@ -44,34 +44,27 @@ export default () => {
 
         if (name === '') {
           errorNameSignUp.style.visibility = 'visible';
-          enviar.disable = true;
         } else if (name !== '') {
           errorNameSignUp.style.visibility = 'hidden';
         }
         if (email === '') {
           errorEmailSignUp.style.visibility = 'visible';
-          enviar.disable = true;
         } else if (email !== '') {
           errorEmailSignUp.style.visibility = 'hidden';
         }
         if (errorCode === 'auth/invalid-email') {
           errorEmailSignUp.style.visibility = 'visible';
-          enviar.disable = true;
         } else if (errorCode === 'auth/email-already-in-use') {
           errorEmailSignUp.innerHTML = 'El correo ya ha sido registrado';
           errorEmailSignUp.style.visibility = 'visible';
-          enviar.disable = true;
         }
         if (password === '') {
           errorPassSignUp.style.visibility = 'visible';
-          enviar.disable = true;
         } else if (errorCode === 'auth/weak-password') {
           errorPassSignUp.style.visibility = 'visible';
-          enviar.disable = true;
         }
         if (passconfirm === '') {
           errorPassConfSignUp.style.visibility = 'visible';
-          enviar.disable = true;
         }
         if (passconfirm !== password) {
           errorPassConfSignUp.style.visibility = 'visible';

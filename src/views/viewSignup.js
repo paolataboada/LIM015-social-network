@@ -19,7 +19,13 @@ export default () => {
     const email = divElement.querySelector('#e-mail').value;
     const password = divElement.querySelector('#contraseña').value;
     const passconfirm = divElement.querySelector('#confirmarContraseña').value;
-    const enviar = divElement.querySelector('#btnEntrar');
+    const enviar = divElement.querySelector('#btnEnviar').value;
+
+    const errorNameSignUp = divElement.querySelector('#errorNameSignUp');
+    const errorEmailSignUp = divElement.querySelector('#errorEmailSignUp');
+    const errorPassSignUp = divElement.querySelector('#errorPassSignUp');
+    const errorPassConfSignUp = divElement.querySelector('#errorPassConfSignUp');
+
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         containerModal.reset();
@@ -30,57 +36,75 @@ export default () => {
       })
       .then(() => {
         verificar();
+        containerModal.reset();
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         // ..
+
         console.log(errorCode, errorMessage);
-
-        const errorNameSignUp = divElement.querySelector('#errorNameSignUp');
-        const errorEmailSignUp = divElement.querySelector('#errorEmailSignUp');
-        const errorPassSignUp = divElement.querySelector('#errorPassSignUp');
-        const errorPassConfSignUp = divElement.querySelector('#errorPassConfSignUp');
-
+        // const errorNameSignUp = divElement.querySelector('#errorNameSignUp');
+        // const errorEmailSignUp = divElement.querySelector('#errorEmailSignUp');
+        // const errorPassSignUp = divElement.querySelector('#errorPassSignUp');
+        // const errorPassConfSignUp = divElement.querySelector('#errorPassConfSignUp');
         if (name === '') {
           errorNameSignUp.style.visibility = 'visible';
-          enviar.disable = true;
-        } else if (name !== '') {
+        } else {
           errorNameSignUp.style.visibility = 'hidden';
         }
         if (email === '') {
           errorEmailSignUp.style.visibility = 'visible';
-          enviar.disable = true;
-        } else if (email !== '') {
+        } else {
           errorEmailSignUp.style.visibility = 'hidden';
-        }
-        if (errorCode === 'auth/invalid-email') {
-          errorEmailSignUp.style.visibility = 'visible';
-          enviar.disable = true;
-        } else if (errorCode === 'auth/email-already-in-use') {
-          errorEmailSignUp.innerHTML = 'El correo ya ha sido registrado';
-          errorEmailSignUp.style.visibility = 'visible';
-          enviar.disable = true;
         }
         if (password === '') {
           errorPassSignUp.style.visibility = 'visible';
-          enviar.disable = true;
-        } else if (errorCode === 'auth/weak-password') {
-          errorPassSignUp.style.visibility = 'visible';
-          enviar.disable = true;
+        } else {
+          errorPassSignUp.style.visibility = 'hidden';
         }
         if (passconfirm === '') {
           errorPassConfSignUp.style.visibility = 'visible';
-          enviar.disable = true;
+        } else {
+          errorPassConfSignUp.style.visibility = 'visible';
         }
         if (passconfirm !== password) {
           errorPassConfSignUp.style.visibility = 'visible';
-          enviar.disable = true;
-        }
-        /* else if (password !== '' && passconfirm !== '') {
-          errorPassSignUp.style.visibility = 'hidden';
+          console.log('contraseñas desiguales');
+          enviar.disabled = false;
+        } else {
           errorPassConfSignUp.style.visibility = 'hidden';
-        } */
+          console.log('contraseñas iguales');
+        }
+        if (errorCode === 'auth/invalid-email') {
+          errorEmailSignUp.style.visibility = 'visible';
+        } else if (errorCode === 'auth/email-already-in-use') {
+          errorEmailSignUp.innerHTML = 'El correo ya ha sido registrado';
+          errorEmailSignUp.style.visibility = 'visible';
+        } else if (errorCode === 'auth/weak-password') {
+          errorPassSignUp.style.visibility = 'visible';
+        } else {
+          errorEmailSignUp.style.visibility = 'hidden';
+        }
+
+        // switch (errorCode) {
+        //   case 'auth/invalid-email':
+        //     errorEmailSignUp.style.visibility = 'visible';
+        //     break;
+        //   case 'auth/email-already-in-use':
+        //     errorEmailSignUp.innerHTML = 'El correo ya ha sido registrado';
+        //     // errorEmailSignUp.style.visibility = 'visible';
+        //     break;
+        //   case 'auth/weak-password':
+        //     errorPassSignUp.style.visibility = 'visible';
+        //     break;
+        //   default:
+        //     errorEmailSignUp.style.visibility = 'hidden';
+        //     errorPassSignUp.style.visibility = 'hidden';
+        //     // divElement.querySelector('#signIn').reset();
+        //     break;
+        // }
+        console.log(errorCode);
       });
   });
 

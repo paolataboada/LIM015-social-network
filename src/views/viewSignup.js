@@ -71,7 +71,7 @@ export default () => {
         if (passconfirm !== password) {
           errorPassConfSignUp.style.visibility = 'visible';
           console.log('contraseñas desiguales');
-          enviar.disabled = false;
+          enviar.disabled = true;
         } else {
           errorPassConfSignUp.style.visibility = 'hidden';
           console.log('contraseñas iguales');

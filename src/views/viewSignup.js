@@ -4,15 +4,20 @@ export default () => {
   const divElement = document.createElement('div');
   divElement.innerHTML = viewsDom.templateSignup;
 
+  // Funcion para envío de mensaje de verificación
   function verificar() {
     firebase.auth().currentUser.sendEmailVerification()
       .then(() => {
-        console.log('se ha enviado un correo de verificación');
+        // eslint-disable-next-line no-alert
+        alert('se ha enviado un correo de verificación');
+        window.location.hash = '#/';
       }).catch((error) => {
         console.log(error);
       });
   }
   const containerModal = divElement.querySelector('#container-modal');
+  
+  // Función que se va a ejecutar cuando se envíe el formulario
   containerModal.addEventListener('submit', (e) => {
     e.preventDefault();
     const name = divElement.querySelector('#usuario').value;
@@ -26,28 +31,10 @@ export default () => {
     const errorPassSignUp = divElement.querySelector('#errorPassSignUp');
     const errorPassConfSignUp = divElement.querySelector('#errorPassConfSignUp');
 
+    // Inicio de la Promesa para obtener respuestas que envía createUser...
     firebase.auth().createUserWithEmailAndPassword(email, password)
+      // Primero se ejecuta las sgts condiciones
       .then((userCredential) => {
-        containerModal.reset();
-        console.log('sign up', userCredential, name, email, password, passconfirm);
-        // Signed in
-        // const user = userCredential.user;
-        // ...
-      })
-      .then(() => {
-        verificar();
-        containerModal.reset();
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-
-        console.log(errorCode, errorMessage);
-        // const errorNameSignUp = divElement.querySelector('#errorNameSignUp');
-        // const errorEmailSignUp = divElement.querySelector('#errorEmailSignUp');
-        // const errorPassSignUp = divElement.querySelector('#errorPassSignUp');
-        // const errorPassConfSignUp = divElement.querySelector('#errorPassConfSignUp');
         if (name === '') {
           errorNameSignUp.style.visibility = 'visible';
         } else {
@@ -71,11 +58,28 @@ export default () => {
         if (passconfirm !== password) {
           errorPassConfSignUp.style.visibility = 'visible';
           console.log('contraseñas desiguales');
-          enviar.disabled = false;
+          enviar.disabled = true;
         } else {
           errorPassConfSignUp.style.visibility = 'hidden';
           console.log('contraseñas iguales');
         }
+        containerModal.reset();
+        console.log('sign up', userCredential, name, email, password, passconfirm);
+        // Signed in
+        // const user = userCredential.user;
+        // ...
+      })
+      // Para que se ejecute siempre y cuando la promesa anterior haya culminado
+      .then(() => {
+        verificar();
+        containerModal.reset();
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+
+        console.log(errorCode, errorMessage);
         if (errorCode === 'auth/invalid-email') {
           errorEmailSignUp.style.visibility = 'visible';
         } else if (errorCode === 'auth/email-already-in-use') {
@@ -87,23 +91,6 @@ export default () => {
           errorEmailSignUp.style.visibility = 'hidden';
         }
 
-        // switch (errorCode) {
-        //   case 'auth/invalid-email':
-        //     errorEmailSignUp.style.visibility = 'visible';
-        //     break;
-        //   case 'auth/email-already-in-use':
-        //     errorEmailSignUp.innerHTML = 'El correo ya ha sido registrado';
-        //     // errorEmailSignUp.style.visibility = 'visible';
-        //     break;
-        //   case 'auth/weak-password':
-        //     errorPassSignUp.style.visibility = 'visible';
-        //     break;
-        //   default:
-        //     errorEmailSignUp.style.visibility = 'hidden';
-        //     errorPassSignUp.style.visibility = 'hidden';
-        //     // divElement.querySelector('#signIn').reset();
-        //     break;
-        // }
         console.log(errorCode);
       });
   });

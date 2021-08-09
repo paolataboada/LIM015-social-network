@@ -6,7 +6,7 @@ export const viewsDom = {
     </div>
     <div id="dataLogIn"> 
       <p id="welcome">¡Bienvenid@ a Social Health!</p>
-      <form id="signIn">
+      <form id="signIn" method='POST'>
         <input type="email" placeholder="Email" id="emailIngresar">
         <p id="errorEmailLogIn">Cuenta no encontrada o incorrecta</p>
         <input type="password" placeholder="Contraseña" id="contraseñaIngresar">
@@ -36,7 +36,7 @@ export const viewsDom = {
           <p id="errorPassSignUp">Debe contener más de 6 caracteres</p>
           <input type="password" id="confirmarContraseña" placeholder="Confirmar contraseña" autocomplete="off" >
           <p id="errorPassConfSignUp">Las contraseñas no coinciden</p>
-          <button type="submit" id="btnEnviar" >Enviar</button>
+          <button type="submit" id="btnEnviar" value="enviar" >Enviar</button>
       </form>
     </section> `,
   templateHome: `
@@ -51,27 +51,30 @@ export const viewsDom = {
         <img src="img/foto-ejemplo.jpg" alt="Foto del usuario">
       </figure>
       <div>
-        <h4>Alexandra Smith</h4>
+        <h4 id="nombreUsuario"> </h4>
         <p>Cooker keto</p>
       </div>
     </div>
 
     <div id="escribirPost">
-      <textarea placeholder="¿Qué quieres compartir?"></textarea>
+      <textarea id="post" placeholder="¿Qué quieres compartir?"></textarea>
       <div>
         <img id="btnFile" src="img/agregar-img.png" alt="Botón para cargar imagen">
         <input id="subirFile" type="file" accept="image/jpeg" style="display:none">
-        <button>Compartir</button>
+        <button type= "submit" id="btnCompartir" >Compartir</button>
       </div>
     </div>
 
     <div id="sectionPosts">
       <table>
         <tr>
-          <th>Publicado por José Castro</th>
+          <th id="nameUser"> </th>
         </tr>
         <tr>
-          <td>Ahora podemos ver una caja que tenía una anchura de 300 px y que por culpa de una palabra muy larga se deforma la caja o el texto aparece por...</td>
+          <td id="userPost"> </td>
+        </tr>
+        <tr>
+          <td id="userImage"></td>
         </tr>
         <tr>
           <td>

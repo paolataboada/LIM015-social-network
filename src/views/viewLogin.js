@@ -15,7 +15,11 @@ export default () => {
 
     const errorEmailLogIn = divElement.querySelector('#errorEmailLogIn');
     const errorPassLogIn = divElement.querySelector('#errorPassLogIn');
-    firebase.auth().signInWithEmailAndPassword(emailIngresar, passwordIngresar)
+
+    function promesaIngresar() {
+      firebase.auth().signInWithEmailAndPassword(emailIngresar, passwordIngresar);
+    }
+    promesaIngresar()
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;

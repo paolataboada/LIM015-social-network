@@ -1,4 +1,5 @@
 import { viewsDom } from './dom.js';
+import { validar, registroConEmail } from '../lib/firebaseFunctions.js';
 
 export default () => {
   const divElement = document.createElement('div');
@@ -6,7 +7,7 @@ export default () => {
 
   // Funcion para envío de mensaje de verificación
   function verificar() {
-    firebase.auth().currentUser.sendEmailVerification()
+    validar()
       .then(() => {
         // eslint-disable-next-line no-alert
         alert('se ha enviado un correo de verificación');
@@ -35,12 +36,13 @@ export default () => {
     if (passconfirm !== password) {
       errorPassConfSignUp.style.visibility = 'visible';
       console.error('contraseñas desiguales');
-      // enviar.disabled = true;
     } else {
       errorPassConfSignUp.style.visibility = 'hidden';
       console.log('contraseñas iguales');
       // Inicio de la Promesa para obtener respuestas que envía createUser...
-      firebase.auth().createUserWithEmailAndPassword(email, password)
+      // firebase.auth().createUserWithEmailAndPassword(email, password)
+
+      registroConEmail(email, password)
         // Primero se ejecuta las sgts condiciones
         .then((userCredential) => {
           if (name === '') {

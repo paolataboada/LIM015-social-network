@@ -4,6 +4,7 @@ export default () => {
   const divElement = document.createElement('div');
   divElement.innerHTML = viewsDom.templateSignup;
 
+
   // Funcion para envío de mensaje de verificación
   function verificar() {
     firebase.auth().currentUser.sendEmailVerification()
@@ -11,6 +12,7 @@ export default () => {
         // eslint-disable-next-line no-alert
         alert('se ha enviado un correo de verificación');
         window.location.hash = '#/';
+        console.log(firebase.auth().currentUser.displayName);
       }).catch((error) => {
         console.log(error);
       });

@@ -1,5 +1,4 @@
 import { viewsDom } from './dom.js';
-import { cerrarSesion } from '../lib/firebaseFunctions.js';
 
 export default () => {
   document.querySelector('nav').style.display = 'none';
@@ -45,9 +44,7 @@ export default () => {
   // Funcion para cerar sesión
   const btnSalir = divElement.querySelector('#btnSalir');
   btnSalir.addEventListener('click', () => {
-    // firebase.auth().signOut()
-
-    cerrarSesion()
+    firebase.auth().signOut()
       .then(() => {
         // Sign-out successful.
         window.location.hash = '#/';

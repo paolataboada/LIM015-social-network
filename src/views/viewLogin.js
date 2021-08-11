@@ -1,5 +1,4 @@
 import { viewsDom } from './dom.js';
-import { promesaIngresar, iniciarSesionGoogle } from '../lib/firebaseFunctions.js';
 
 export default () => {
   document.querySelector('nav').style.display = 'none';
@@ -17,11 +16,7 @@ export default () => {
     const errorEmailLogIn = divElement.querySelector('#errorEmailLogIn');
     const errorPassLogIn = divElement.querySelector('#errorPassLogIn');
 
-    // function promesaIngresar() {
-    //   firebase.auth().signInWithEmailAndPassword(emailIngresar, passwordIngresar);
-    // }
-    promesaIngresar(emailIngresar, passwordIngresar)
-    // promesaIngresar()
+    firebase.auth().signInWithEmailAndPassword(emailIngresar, passwordIngresar)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
@@ -59,12 +54,9 @@ export default () => {
   });
   const btnGoogle = divElement.querySelector('#google');
   btnGoogle.addEventListener('click', () => {
-    // function iniciarSesionGoogle(provider) {
-    //   firebase.auth()
-    //     .signInWithPopup(provider);
-    // }
     const provider = new firebase.auth.GoogleAuthProvider();
-    iniciarSesionGoogle(provider)
+    firebase.auth()
+      .signInWithPopup(provider)
       .then((result) => {
         /** @type {firebase.auth.OAuthCredential} */
         const credential = result.credential;

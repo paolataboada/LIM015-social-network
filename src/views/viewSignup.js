@@ -1,5 +1,4 @@
 import { viewsDom } from './dom.js';
-import { validar, registroConEmail } from '../lib/firebaseFunctions.js';
 
 export default () => {
   const divElement = document.createElement('div');
@@ -7,7 +6,7 @@ export default () => {
 
   // Funcion para envío de mensaje de verificación
   function verificar() {
-    validar()
+    firebase.auth().currentUser.sendEmailVerification()
       .then(() => {
         // eslint-disable-next-line no-alert
         alert('se ha enviado un correo de verificación');
@@ -34,15 +33,14 @@ export default () => {
     const errorPassConfSignUp = divElement.querySelector('#errorPassConfSignUp');
 
     if (passconfirm !== password) {
-      errorPassConfSignUp.style.visibility = 'visible';
+      errorPassConfSignUp.style.visibility = 'hidden';
       console.error('contraseñas desiguales');
+      // enviar.disabled = true;
     } else {
       errorPassConfSignUp.style.visibility = 'hidden';
       console.log('contraseñas iguales');
       // Inicio de la Promesa para obtener respuestas que envía createUser...
-      // firebase.auth().createUserWithEmailAndPassword(email, password)
-
-      registroConEmail(email, password)
+      firebase.auth().createUserWithEmailAndPassword(email, password)
         // Primero se ejecuta las sgts condiciones
         .then((userCredential) => {
           if (name === '') {
@@ -61,14 +59,12 @@ export default () => {
             errorPassSignUp.style.visibility = 'hidden';
           }
           if (passconfirm === '') {
-            errorPassConfSignUp.style.visibility = 'visible';
-          } else {
-            errorPassConfSignUp.style.visibility = 'visible';
+            errorPassConfSignUp.textContent = 'Por favor confirma tu contraseña';
           }
           containerModal.reset();
           console.log('sign up', userCredential, name, email, password, passconfirm);
           console.log(name);
-          divElement.querySelector('#nombreUsuario').textContent = name;
+          // divElement.querySelector('#nombreUsuario').textContent = name;
           // Signed in
           // const user = userCredential.user;
           // ...

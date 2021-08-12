@@ -1,21 +1,10 @@
 import { viewsDom } from './dom.js';
+import { createUser, sendEmail } from './firebaseFunctions.js';
 
 export default () => {
   const divElement = document.createElement('div');
   divElement.innerHTML = viewsDom.templateSignup;
 
-  // Funcion para envío de mensaje de verificación
-  function verificar() {
-    firebase.auth().currentUser.sendEmailVerification()
-      .then(() => {
-        // eslint-disable-next-line no-alert
-        alert('se ha enviado un correo de verificación');
-        window.location.hash = '#/';
-        console.log(firebase.auth().currentUser.user.displayName);
-      }).catch((error) => {
-        console.log(error);
-      });
-  }
   const containerModal = divElement.querySelector('#container-modal');
 
   // Función que se va a ejecutar cuando se envíe el formulario
@@ -34,14 +23,13 @@ export default () => {
     const errorPassConfSignUp = divElement.querySelector('#errorPassConfSignUp');
 
     if (passconfirm !== password) {
-      errorPassConfSignUp.style.visibility = 'hidden';
+      errorPassConfSignUp.style.visibility = 'visible';
       console.error('contraseñas desiguales');
-      // enviar.disabled = true;
     } else {
       errorPassConfSignUp.style.visibility = 'hidden';
       console.log('contraseñas iguales');
       // Inicio de la Promesa para obtener respuestas que envía createUser...
-      firebase.auth().createUserWithEmailAndPassword(email, password)
+      createUser(email, password)
         // Primero se ejecuta las sgts condiciones
         .then((userCredential) => {
           if (name === '') {
@@ -60,27 +48,31 @@ export default () => {
             errorPassSignUp.style.visibility = 'hidden';
           }
           if (passconfirm === '') {
-            errorPassConfSignUp.textContent = 'Por favor confirma tu contraseña';
+            errorPassConfSignUp.style.visibility = 'visible';
+          } else {
+            errorPassConfSignUp.style.visibility = 'hidden';
           }
           containerModal.reset();
           console.log('sign up', userCredential, name, email, password, passconfirm);
-          console.log(userCredential.user);
-          // console.log(name);
-          // divElement.querySelector('#nombreUsuario').textContent = name;
-          // Signed in
-          // const user = userCredential.user;
-          // ...
+          console.log(name);
         })
 
         // Para que se ejecute siempre y cuando la promesa anterior haya culminado
         .then(() => {
-          verificar();
+          // Funcion para envío de mensaje de verificación
+          sendEmail()
+            .then(() => {
+              // eslint-disable-next-line no-alert
+              alert('se ha enviado un correo de verificación');
+              window.location.hash = '#/';
+            }).catch((error) => {
+              console.log(error);
+            });
           containerModal.reset();
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          // ..
           console.log(errorCode, errorMessage);
           if (errorCode === 'auth/invalid-email') {
             errorEmailSignUp.style.visibility = 'visible';

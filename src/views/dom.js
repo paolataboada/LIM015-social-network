@@ -51,7 +51,7 @@ export const viewsDom = {
         <img src="img/foto-ejemplo.jpg" alt="Foto del usuario">
       </figure>
       <div>
-        <h4 id="nombreUsuario">${firebase.auth().currentUser}</h4>
+        <h4 id="nombreUsuario"></h4>
         <p>Cooker keto</p>
       </div>
     </div>

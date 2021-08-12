@@ -174,10 +174,6 @@ body {
   background-size: cover;
   opacity: .5;
 }
-/* #containerRegistro:after{
-  opacity: 0.75;
-  z-index:-1;
-} */
 #logoPrincipal {
   margin-top: 90px;
   display: flex;
@@ -221,18 +217,12 @@ body {
   background-repeat: no-repeat;
   background-position: right center;
 }
-#dataLogIn #errorEmailLogIn {
-  font-size: 14px;
-  color: #e00909;
-  align-self: flex-start;
-  padding-left: 15px;
-  visibility: hidden;
-}
+#dataLogIn #errorEmailLogIn,
 #dataLogIn #errorPassLogIn {
   font-size: 14px;
   color: #e00909;
-  padding-left: 15px;
   align-self: flex-start;
+  padding-left: 15px;
   visibility: hidden;
 }
 #signUp {

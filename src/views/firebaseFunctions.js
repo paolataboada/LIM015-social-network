@@ -6,5 +6,3 @@ export function sendEmail() {
   const auth = firebase.auth();
   return auth.currentUser.sendEmailVerification();
 }
-
-export const user = () => firebase.auth().currentUser;

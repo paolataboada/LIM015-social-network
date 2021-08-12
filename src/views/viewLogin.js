@@ -1,86 +1,104 @@
-import { viewsDom } from './dom.js';
-
 export default () => {
   document.querySelector('nav').style.display = 'none';
   document.querySelector('footer').style.display = 'none';
   const divElement = document.createElement('div');
   divElement.setAttribute('id', 'containerRegistro');
-  divElement.innerHTML = viewsDom.templateLogin;
+  divElement.innerHTML = `
+    <div id="logoPrincipal">
+      <figure><img src="img/logo-azul.png"></figure>
+      <h2>Social Health</h2>
+    </div>
+    <div id="dataLogIn"> 
+      <p id="welcome">¡Bienvenid@ a Social Health!</p>
+      <form id="signIn" method='POST'>
+        <input type="email" placeholder="Email" id="emailLogIn" minlength="5" required>
+        <p id="errorEmailLogIn">Cuenta no encontrada o incorrecta</p>
+        <input type="password" placeholder="Contraseña" id="contraseñaLogIn" minlength="5" required>
+        <p id="errorPassLogIn">Contraseña de logueo incorrecta</p>
+        <button id="btnEntrar">Ingresar</button>
+      </form>
+    </div>
+    <div id="signUp">
+      <p>O bien ingresa con:</p>
+      <div id="logosRegister">
+        <img id="fb" src="img/Facebook.png">
+        <img id="google" src="img/Google.png">
+      </div>
+      <p>¿No tienes una cuenta?<a id="btnRegistrar" href="#/registro"> Regístrate</a></p>
+    </div> `;
 
   const btnIngresar = divElement.querySelector('#btnEntrar');
   btnIngresar.addEventListener('click', (e) => {
     e.preventDefault();
-    const emailIngresar = divElement.querySelector('#emailIngresar').value;
-    const passwordIngresar = divElement.querySelector('#contraseñaIngresar').value;
-
+    const email = divElement.querySelector('#emailLogIn').value;
+    const pass = divElement.querySelector('#contraseñaLogIn').value;
     const errorEmailLogIn = divElement.querySelector('#errorEmailLogIn');
     const errorPassLogIn = divElement.querySelector('#errorPassLogIn');
 
-    firebase.auth().signInWithEmailAndPassword(emailIngresar, passwordIngresar)
+    // Verificación de inputs vacíos
+    if (email === '') {
+      errorEmailLogIn.textContent = 'Este campo es obligatorio';
+      errorEmailLogIn.style.visibility = 'visible';
+    } else {
+      errorEmailLogIn.style.visibility = 'hidden';
+    }
+    if (pass === '') {
+      errorPassLogIn.textContent = 'Este campo es obligatorio';
+      errorPassLogIn.style.visibility = 'visible';
+    } else {
+      errorPassLogIn.style.visibility = 'hidden';
+    }
+
+    firebase.auth().signInWithEmailAndPassword(email, pass)
       .then((userCredential) => {
-        // Signed in
         const user = userCredential.user;
-        console.log(user.emailVerified);
+        // console.log('user:', user, 'user.emailVerified:', user.emailVerified);
         if (user.emailVerified === false) {
           window.location.hash = '#/';
-          errorEmailLogIn.innerHTML = 'Email no está verificado';
+          errorEmailLogIn.textContent = 'Esta cuenta aún no está verificada';
+          errorEmailLogIn.style.visibility = 'visible';
         } else {
           window.location.hash = '#/inicio';
         }
       })
       .catch((error) => {
         const errorCode = error.code;
-        window.location.hash = '#/';
-        // const errorEmailLogIn = divElement.querySelector('#errorEmailLogIn');
-        // const errorPassLogIn = divElement.querySelector('#errorPassLogIn');
-
-        switch (errorCode) {
-          case 'auth/user-not-found':
-            errorEmailLogIn.style.visibility = 'visible';
-            break;
-          case 'auth/invalid-email':
-            errorEmailLogIn.style.visibility = 'visible';
-            break;
-          case 'auth/wrong-password':
-            errorPassLogIn.style.visibility = 'visible';
-            break;
-          default:
-            errorEmailLogIn.style.visibility = 'hidden';
-            // divElement.querySelector('#signIn').reset();
-            break;
+        // console.log(errorCode, error.message);
+        // Verificación de errores de campo
+        if (errorCode === 'auth/user-not-found') {
+          errorEmailLogIn.textContent = 'Cuenta no encontrada';
+          errorEmailLogIn.style.visibility = 'visible';
+        } else if (email !== '' && errorCode === 'auth/invalid-email') {
+          errorEmailLogIn.textContent = 'Formato incorrecto';
+          errorEmailLogIn.style.visibility = 'visible';
+        } else if (email !== '') {
+          errorEmailLogIn.style.visibility = 'hidden';
         }
-        console.log(errorCode);
+        if (pass !== '' && errorCode === 'auth/wrong-password') {
+          errorPassLogIn.textContent = 'Contraseña de logueo incorrecta';
+          errorPassLogIn.style.visibility = 'visible';
+        } else if (pass !== '') {
+          errorPassLogIn.style.visibility = 'hidden';
+        }
       });
   });
   const btnGoogle = divElement.querySelector('#google');
   btnGoogle.addEventListener('click', () => {
     const provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth()
-      .signInWithPopup(provider)
-      .then((result) => {
-        /** @type {firebase.auth.OAuthCredential} */
-        const credential = result.credential;
-
-        // This gives you a Google Access Token. You can use it to access the Google API.
+    firebase.auth().signInWithPopup(provider)
+      .then((/* result */) => {
+        /* const credential = result.credential;
         const token = credential.accessToken;
-        // The signed-in user info.
         const user = result.user;
-        console.log(token, user);
-        // ...
-      })
-      .then(() => {
+        console.log(token, user); */
         window.location.hash = '#/inicio';
       })
       .catch((error) => {
-        // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
-        // The email of the user's account used.
         const email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
         const credential = error.credential;
-        console.log(errorCode, errorMessage, email, credential);
-        // ...
+        document.write('Para abrir los pop up utiliza npm start: ¡error!=> ', errorCode, errorMessage, email, credential);
       });
   });
   return divElement;

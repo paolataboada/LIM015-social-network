@@ -1,9 +1,23 @@
-import { viewsDom } from './dom.js';
 import { createUser, sendEmail } from './firebaseFunctions.js';
 
 export default () => {
   const divElement = document.createElement('div');
-  divElement.innerHTML = viewsDom.templateSignup;
+  divElement.innerHTML = `
+    <section id="modal">
+      <a href="#/">x</a>
+      <h2>Registro de Usuario </h2>
+      <form id="container-modal">
+          <input type="text" id="usuario" placeholder="Nombre de usuario" autocomplete="off">
+          <p id="errorNameSignUp" >Por favor ingrese su nombre</p>
+          <input type="email" id="e-mail" placeholder="Email" autocomplete="off">
+          <p id="errorEmailSignUp">Ingrese un correo electrónico</p>
+          <input type="password" id="contraseña" placeholder="Contraseña" autocomplete="off">
+          <p id="errorPassSignUp">Debe contener más de 6 caracteres</p>
+          <input type="password" id="confirmarContraseña" placeholder="Confirmar contraseña" autocomplete="off">
+          <p id="errorPassConfSignUp">Las contraseñas no coinciden</p>
+          <button type="submit" id="btnEnviar">Enviar</button>
+      </form>
+    </section> `;
 
   const containerModal = divElement.querySelector('#container-modal');
 
@@ -15,80 +29,71 @@ export default () => {
     const email = divElement.querySelector('#e-mail').value;
     const password = divElement.querySelector('#contraseña').value;
     const passconfirm = divElement.querySelector('#confirmarContraseña').value;
-
     // Constantes para activar o desactivar los string de errores
     const errorNameSignUp = divElement.querySelector('#errorNameSignUp');
     const errorEmailSignUp = divElement.querySelector('#errorEmailSignUp');
     const errorPassSignUp = divElement.querySelector('#errorPassSignUp');
     const errorPassConfSignUp = divElement.querySelector('#errorPassConfSignUp');
-
-    if (passconfirm !== password) {
+    // Verificación de inputs vacíos
+    if (name === '') {
+      errorNameSignUp.style.visibility = 'visible';
+    } else if (name !== '') {
+      errorNameSignUp.style.visibility = 'hidden';
+    }
+    if (email === '') {
+      errorEmailSignUp.style.visibility = 'visible';
+    } else if (email !== '') {
+      errorEmailSignUp.style.visibility = 'hidden';
+    }
+    if (password === '') {
+      errorPassSignUp.style.visibility = 'visible';
+    } else if (password !== '') {
+      errorPassSignUp.style.visibility = 'hidden';
+    }
+    if (passconfirm === '') {
       errorPassConfSignUp.style.visibility = 'visible';
-      console.error('contraseñas desiguales');
-    } else {
+    } else if (passconfirm !== '') {
       errorPassConfSignUp.style.visibility = 'hidden';
-      console.log('contraseñas iguales');
-      // Inicio de la Promesa para obtener respuestas que envía createUser...
+    }
+    // Verificación de contraseñas iguales
+    if (passconfirm !== password) {
+      errorPassSignUp.textContent = 'Las contraseñas no coinciden';
+      errorPassConfSignUp.textContent = 'Las contraseñas no coinciden';
+      errorPassSignUp.style.visibility = 'visible';
+      errorPassConfSignUp.style.visibility = 'visible';
+    } else if (name !== '' && password !== '' && passconfirm !== '' && passconfirm === password) {
+      errorPassSignUp.style.visibility = 'hidden';
+      errorPassConfSignUp.style.visibility = 'hidden';
       createUser(email, password)
-        // Primero se ejecuta las sgts condiciones
         .then((userCredential) => {
-          if (name === '') {
-            errorNameSignUp.style.visibility = 'visible';
-          } else {
-            errorNameSignUp.style.visibility = 'hidden';
-          }
-          if (email === '') {
-            errorEmailSignUp.style.visibility = 'visible';
-          } else {
-            errorEmailSignUp.style.visibility = 'hidden';
-          }
-          if (password === '') {
-            errorPassSignUp.style.visibility = 'visible';
-          } else {
-            errorPassSignUp.style.visibility = 'hidden';
-          }
-          if (passconfirm === '') {
-            errorPassConfSignUp.style.visibility = 'visible';
-          } else {
-            errorPassConfSignUp.style.visibility = 'hidden';
-          }
           containerModal.reset();
-          console.log('sign up', userCredential, name, email, password, passconfirm);
-          console.log(name);
-        })
-
-        // Para que se ejecute siempre y cuando la promesa anterior haya culminado
-        .then(() => {
-          // Funcion para envío de mensaje de verificación
+          console.log('Registro exitoso', userCredential, name, email, password);
+          // Enviar mensaje de verificación firebase
           sendEmail()
             .then(() => {
-              // eslint-disable-next-line no-alert
-              alert('se ha enviado un correo de verificación');
+              alert('Se ha enviado un correo de verificación');
               window.location.hash = '#/';
             }).catch((error) => {
               console.log(error);
             });
-          containerModal.reset();
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
           console.log(errorCode, errorMessage);
+          // Verificación de campos de registro
           if (errorCode === 'auth/invalid-email') {
             errorEmailSignUp.style.visibility = 'visible';
           } else if (errorCode === 'auth/email-already-in-use') {
-            errorEmailSignUp.innerHTML = 'El correo ya ha sido registrado';
+            errorEmailSignUp.textContent = 'El correo ya ha sido registrado';
             errorEmailSignUp.style.visibility = 'visible';
           } else if (errorCode === 'auth/weak-password') {
             errorPassSignUp.style.visibility = 'visible';
-          } else {
+          } else if (errorCode === '') {
             errorEmailSignUp.style.visibility = 'hidden';
           }
-
-          console.log(errorCode);
         });
     }
   });
-
   return divElement;
 };

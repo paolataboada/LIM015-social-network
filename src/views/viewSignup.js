@@ -71,6 +71,7 @@ export default () => {
           // Enviar mensaje de verificación firebase
           sendEmail()
             .then(() => {
+              // eslint-disable-next-line no-alert
               alert('Se ha enviado un correo de verificación');
               window.location.hash = '#/';
             }).catch((error) => {

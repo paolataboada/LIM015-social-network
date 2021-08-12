@@ -69,32 +69,23 @@ export default () => {
 
   // Función para publicar post
   divElement.querySelector('#btnCompartir').addEventListener('click', () => {
+    const postTxt = divElement.querySelector('#post').value;
+    const postImg = divElement.querySelector('#subirFile').value;
+    const userPost = divElement.querySelector('#userPost');
+    const userImage = divElement.querySelector('#userImage');
     firebase.firestore().collection('users').add({
-      publicacion: divElement.querySelector('#post').value,
-      imagen: divElement.querySelector('#subirFile').value,
+      publicacion: postTxt,
+      imagen: postImg,
     })
       .then((docRef) => {
         console.log('Document written with ID: ', docRef.id);
-        divElement.querySelector('#userPost').textContent = divElement.querySelector('#post').value;
-        divElement.querySelector('#userImage').textContent = divElement.querySelector('#subirFile').value;
-        console.log(divElement.querySelector('#post').value);
+        userPost.textContent = postTxt;
+        userImage.textContent = postImg;
+        console.log(postTxt);
       })
       .catch((error) => {
         console.error('Error adding document: ', error);
       });
-    // Add a second document with a generated ID.
-    // firebase.firestore().collection('users').add({
-    //   first: 'Alan',
-    //   middle: 'Mathison',
-    //   last: 'Turing',
-    //   born: 1912,
-    // })
-    //   .then((docRef) => {
-    //     console.log('Document written with ID: ', docRef.id);
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error adding document: ', error);
-    //   });
   });
 
   // Funcion para cerar sesión

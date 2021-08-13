@@ -327,6 +327,7 @@ body {
   background: #fdf8f8;
   height: 120px;
   overflow-wrap: break-word;
+  resize: none;
 }
 #escribirPost div {
   display: flex;

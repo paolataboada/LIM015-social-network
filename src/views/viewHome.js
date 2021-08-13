@@ -34,7 +34,7 @@ export default () => {
       </div>
     </div>
     <div id="escribirPost">
-      <textarea id="post" placeholder="¿Qué quieres compartir?"></textarea>
+      <textarea id="postTxt" placeholder="¿Qué quieres compartir?"></textarea>
       <div>
         <img id="btnFile" src="img/agregar-img.png" alt="Botón para cargar imagen">
         <input id="subirFile" type="file" accept="image/jpeg" style="display:none">
@@ -48,8 +48,9 @@ export default () => {
         </tr>
         <tr>
           <td>The user-select property specifies whether the text of an element can be selected.
-
-          In web browsers, if you double-click on some text it will be selected/highlighted. This property can be used to prevent this.</td>
+              In web browsers, if you double-click on some text it will be selected/highlighted. 
+              This property can be used to prevent this
+          </td>
         </tr>
         <tr>
           <td id="userImage"></td>
@@ -63,13 +64,26 @@ export default () => {
       </table>
     </div>`;
 
-  divElement.querySelector('#btnFile').addEventListener('click', () => {
-    divElement.querySelector('#subirFile').click();
+  // Abre input file al seleccionar el botón Subir Imagen
+  const btnUploadImage = divElement.querySelector('#btnFile');
+  const btnInputFile = divElement.querySelector('#subirFile');
+  btnUploadImage.addEventListener('click', () => {
+    btnInputFile.click();
+    btnInputFile.addEventListener('change', (e) => {
+      const imgFile = e.target.files[0];
+      console.log(imgFile);
+      // Create a storage reference from our storage service
+      const storageRef = firebase.storage().ref(`post_image/${imgFile.name}`);
+      storageRef.put(imgFile)
+        .then((snapshot) => {
+          console.log('Uploaded a blob or file!', snapshot);
+        });
+    });
   });
 
   // Función para publicar post
   divElement.querySelector('#btnCompartir').addEventListener('click', () => {
-    const postTxt = divElement.querySelector('#post').value;
+    const postTxt = divElement.querySelector('#postTxt').value;
     const postImg = divElement.querySelector('#subirFile').value;
     const userPost = divElement.querySelector('#userPost');
     const userImage = divElement.querySelector('#userImage');

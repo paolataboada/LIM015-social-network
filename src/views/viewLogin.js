@@ -1,3 +1,5 @@
+import { ingresarConEmail, ingresarConGoogle, sendDataUser,getData } from './firebaseFunctions.js';
+
 export default () => {
   document.querySelector('nav').style.display = 'none';
   document.querySelector('footer').style.display = 'none';
@@ -49,7 +51,8 @@ export default () => {
       errorPassLogIn.style.visibility = 'hidden';
     }
 
-    firebase.auth().signInWithEmailAndPassword(email, pass)
+    // Ingresar con email y contraseña
+    ingresarConEmail(email, pass)
       .then((userCredential) => {
         const user = userCredential.user;
         // console.log('user:', user, 'user.emailVerified:', user.emailVerified);
@@ -84,13 +87,13 @@ export default () => {
   });
   const btnGoogle = divElement.querySelector('#google');
   btnGoogle.addEventListener('click', () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider)
-      .then((/* result */) => {
-        /* const credential = result.credential;
+    ingresarConGoogle()
+      .then((result) => {
+        const credential = result.credential;
         const token = credential.accessToken;
         const user = result.user;
-        console.log(token, user); */
+        console.log(credential, token, user);
+        sendDataUser();
         window.location.hash = '#/inicio';
       })
       .catch((error) => {

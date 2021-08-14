@@ -67,7 +67,7 @@ export default () => {
       createUser(email, password)
         .then((userCredential) => {
           containerModal.reset();
-          console.log('Registro exitoso', userCredential, name, email, password);
+          console.log('Registro exitoso', firebase.auth().currentUser.uid, userCredential, name, email, password);
           // Enviar mensaje de verificación firebase
           sendEmail()
             .then(() => {

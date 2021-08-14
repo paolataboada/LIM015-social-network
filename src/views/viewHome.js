@@ -1,18 +1,19 @@
+import { getData } from './firebaseFunctions.js';
+
 export default () => {
   // Obtén el perfil de un usuario
-  const user = firebase.auth().currentUser;
-  if (user !== null) {
-    // The user object has basic properties such as display name, email, etc.
-    const displayName = user.displayName;
-    const email = user.email;
-    const photoURL = user.photoURL;
-    const emailVerified = user.emailVerified;
-    const uid = user.uid;
-    console.log(displayName, email, photoURL, emailVerified, uid);
-    // Aparece null porque los datos no han sido guardados,
-    // debemos guardar los datos en una colección de Cloud Firestore
-    // Agregar funcionalidades de Firebase Storage (controller/controller-firestore.js)
-  }
+  getData()
+    .then((doc) => {
+      if (doc.exists) {
+        console.log('Document data:', doc.data());
+      } else {
+        // doc.data() will be undefined in this case
+        console.log('No such document!');
+      }
+    })
+    .catch((error) => {
+      console.log('Error getting document:', error);
+    });
 
   document.querySelector('nav').style.display = 'none';
   document.querySelector('footer').style.display = 'none';

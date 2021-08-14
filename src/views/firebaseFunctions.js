@@ -19,6 +19,18 @@ firebase.firestore();
 firebase.analytics();
 
 /* --------- COMANDOS PARA AUTENTICACIÓN DE FIREBASE --------  */
+// -------------------- LOGIN O INGRESAR -----------------------
+// Iniciar sesión con correo
+export function ingresarConEmail(email, pass) {
+  const auth = firebase.auth();
+  return auth.signInWithEmailAndPassword(email, pass);
+}
+
+// Iniciar sesión con Google
+export function ingresarConGoogle() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  return firebase.auth().signInWithPopup(provider);
+}
 
 /* ----REGISTRO O SIGN UP ----- */
 // Crear nuevo usuario
@@ -33,19 +45,37 @@ export function sendEmail() {
 }
 
 // Datos que ingresó el usuario
-export const user = () => firebase.auth().currentUser;
+export function user() {
+  const auth = firebase.auth();
+  return auth.currentUser;
+}
 
 /* ---------------- COMANDOS PARA CLOUD FIRESTORE -----------------  */
 
-// const sendDataCurrentUser = (user) => {
-//   const db = firebase.firestore();
-//   let Photo;
-//   let Name;
-//   if (user.photoURL != null && user.displayName != null) {
-//       Photo = user.photoURL;
-//       Name = user.displayName;
-//   } else {
-//       Photo = 'img/default-avatar.png';
-//       Name = 'User';
-//   }
-//   return db.collections
+export const sendDataUser = () => {
+  console.log(user());
+  const db = firebase.firestore();
+  let photo;
+  let name;
+  if (photo == null && name == null) {
+    photo = 'img/userPhoto-default.png';
+    name = 'User';
+  } else {
+    photo = user().photoURL;
+    name = user().displayName;
+  }
+  return db.collection('users').doc(user().ui).set({
+    name: user().displayName,
+    email: user().email,
+    photo: user().photoURL,
+    country: 'Country',
+    birthday: 'dd-mm-yyyy',
+    description: 'Description',
+  });
+};
+
+// Obteniendo la data
+export function getData(userId) {
+  const db = firebase.firestore();
+  return db.collection('users').doc(userId).get();
+}

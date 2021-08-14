@@ -95,8 +95,13 @@ export default () => {
     firebase.auth().signOut()
       .then(() => {
         // Sign-out successful.
-        window.location.hash = '#/';
-        console.log('Se ha cerrado sesión');
+        const confirmar = window.confirm('¿Estás seguro de que deseas salir?');
+        if (confirmar) {
+          window.location.hash = '#/';
+          console.log('Se ha cerrado sesión');
+        } else {
+          window.location.hash = '#/inicio';
+        }
       })
       .catch((error) => {
         // An error happened.

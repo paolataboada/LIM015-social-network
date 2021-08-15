@@ -19,26 +19,26 @@ export default () => {
       </div>
     </div>
     <div id="escribirPost">
-      <textarea id="postTxt" placeholder="¿Qué quieres compartir?"></textarea>
+      <textarea id="textToPost" placeholder="¿Qué quieres compartir?"></textarea>
       <div>
-        <img id="btnFile" src="img/agregar-img.png" alt="Botón para cargar imagen">
-        <input id="subirFile" type="file" accept="image/jpeg" style="display:none">
+        <img id="uploadImageButton" src="img/agregar-img.png" alt="Botón para cargar imagen">
+        <input id="imageToPost" type="file" accept="image/jpeg" style="display:none">
         <button type="submit" id="shareButton">Compartir</button>
       </div>
     </div>
     <div id="sectionPosts">
       <table>
         <tr>
-          <th>Publicado por Mariana López</th>
+          <th id="userPost">Publicado por Mariana López</th>
         </tr>
         <tr>
-          <td id="userPost">The user-select property specifies whether the text of an element can be selected.
+          <td id="textPost">The user-select property specifies whether the text of an element can be selected.
               In web browsers, if you double-click on some text it will be selected/highlighted. 
               This property can be used to prevent this
           </td>
         </tr>
         <tr>
-          <td id="userImage" style="display: none;"></td>
+          <td id="picturePost" style="display: none;"></td>
         </tr>
         <tr>
           <td>
@@ -58,27 +58,27 @@ export default () => {
     const displayName = user.displayName;
     const email = user.email;
     const photoURL = user.photoURL;
-    // const emailVerified = user.emailVerified;
-    // const uid = user.uid;
-    // console.log(displayName, email, photoURL, emailVerified, uid);
     userPhoto.src = `${photoURL}`;
     userName.textContent = `${displayName}`;
     userDescription.textContent = `${email}`;
   }
 
   // Abre input file al seleccionar el botón Subir Imagen
-  const btnUploadImage = divElement.querySelector('#btnFile');
-  const btnInputFile = divElement.querySelector('#subirFile');
-  btnUploadImage.addEventListener('click', () => {
-    btnInputFile.click();
-    btnInputFile.addEventListener('change', (e) => {
-      const imgFile = e.target.files[0];
-      console.log(imgFile);
+  const uploadImageButton = divElement.querySelector('#uploadImageButton');
+  const imageToPost = divElement.querySelector('#imageToPost');
+  const picturePost = divElement.querySelector('#picturePost');
+  uploadImageButton.addEventListener('click', () => {
+    imageToPost.click();
+    imageToPost.addEventListener('change', (e) => {
+      const targetFile = e.target.files[0];
+      console.log(targetFile);
       // Create a storage reference from our storage service
-      const storageRef = firebase.storage().ref(`post_image/${imgFile.name}`);
-      storageRef.put(imgFile)
+      const storageRef = firebase.storage().ref(`post_image/${targetFile.name}`);
+      storageRef.put(targetFile)
         .then((snapshot) => {
-          console.log('Uploaded a blob or file!', snapshot);
+          console.log('Se subió un blob o un file!', snapshot);
+          picturePost.textContent = `${targetFile.name}`;
+          picturePost.style.display = 'block';
         });
     });
   });
@@ -86,30 +86,35 @@ export default () => {
   // Función para publicar post
   const shareButton = divElement.querySelector('#shareButton');
   shareButton.addEventListener('click', () => {
-    const postTxt = divElement.querySelector('#postTxt').value;
-    const postImg = divElement.querySelector('#subirFile').value;
+    const textToPost = divElement.querySelector('#textToPost').value;
     const userPost = divElement.querySelector('#userPost');
-    const userImage = divElement.querySelector('#userImage');
-    firebase.firestore().collection('posts').add({
-      publishedText: postTxt,
-      publishedImage: postImg,
-    })
-      .then((docRef) => {
-        console.log('Document written with ID: ', docRef.id);
+    const textPost = divElement.querySelector('#textPost');
+    if (textToPost !== '') {
+      firebase.firestore().collection('posts').add({
+        userWhoPublishes: `Publicado por ${firebase.auth().currentUser.displayName}`,
+        publishedText: textToPost,
       })
-      .catch((error) => {
-        console.error('Error adding document: ', error);
-      });
-    // Obtener los datos de la colección
-    firebase.firestore().collection('users').get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          console.log(`${doc.id} => ${doc.data()}`);
-          // console.log(`${doc.data()} =>`, doc.data().country, doc.data().name);
-          userPost.textContent = doc.data().publishedText;
-          userImage.textContent = doc.data();
+        .then((docRef) => {
+          console.log('Document written with ID: ', docRef.id);
+          // Obtener los datos de la colección
+          firebase.firestore().collection('posts').get(docRef.id)
+            .then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                console.log(`${doc.id} => ${doc.data()}`);
+                if (doc.id === `${docRef.id}`) {
+                  userPost.textContent = doc.data().userWhoPublishes;
+                  textPost.textContent = doc.data().publishedText;
+                } else {
+                  console.log('No existe referencia al documento');
+                }
+                textToPost.value = ''; // TODO: Vaciar el contenido de textarea id='textToPost'
+              });
+            });
+        })
+        .catch((error) => {
+          console.error('Error adding document: ', error);
         });
-      });
+    }
   });
 
   // Funcion para cerar sesión

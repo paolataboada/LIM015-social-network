@@ -62,6 +62,7 @@ export default () => {
         } else {
           window.location.hash = '#/inicio';
         }
+        console.log('El usuario es:', user, 'linea 65 viewLogin.js');
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -93,15 +94,16 @@ export default () => {
         const credential = result.credential;
         const token = credential.accessToken;
         const user = result.user;
-        console.log(token, user);
+        console.log('El token del usuario es:', token);
         window.location.hash = '#/inicio';
+        console.log('El usuario es:', user.displayName, 'linea 99 viewLogin.js');
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         const email = error.email;
         const credential = error.credential;
-        document.write('Para abrir los pop up utiliza npm start: ¡error!=> ', errorCode, errorMessage, email, credential);
+        document.write('¡error!=> ', errorCode, errorMessage, email, credential);
       });
   });
   return divElement;

@@ -1,20 +1,6 @@
-import { getData } from './firebaseFunctions.js';
+import { sendDataUser, getData, user } from './firebaseFunctions.js';
 
 export default () => {
-  // Obtén el perfil de un usuario
-  getData()
-    .then((doc) => {
-      if (doc.exists) {
-        console.log('Document data:', doc.data());
-      } else {
-        // doc.data() will be undefined in this case
-        console.log('No such document!');
-      }
-    })
-    .catch((error) => {
-      console.log('Error getting document:', error);
-    });
-
   document.querySelector('nav').style.display = 'none';
   document.querySelector('footer').style.display = 'none';
   const divElement = document.createElement('div');
@@ -27,11 +13,11 @@ export default () => {
     </div>
     <div id="infoUsuario">
       <figure>
-        <img src="img/foto-ejemplo.jpg" alt="Foto del usuario">
+        <img id="photoUser" src="img/foto-ejemplo.jpg" alt="Foto del usuario">
       </figure>
       <div>
-        <h4 id="nombreUsuario"></h4>
-        <p>Cooker keto</p>
+        <h4 id="nameUser">${user.displayName}</h4>
+        <p id="descriptionUser">${user.description}</p>
       </div>
     </div>
     <div id="escribirPost">
@@ -64,9 +50,39 @@ export default () => {
       </table>
     </div>`;
 
+  // Obtén el perfil de un usuario
+  /* getData()
+    .then((doc) => {
+      console.log(doc);
+      if (doc.exists) {
+        console.log('Document data:', doc.data());
+      } else {
+      // doc.data() will be undefined in this case
+        console.log('No such document!');
+      }
+    })
+    .catch((error) => {
+      console.log('Error getting document:', error, user());
+    }); */
+
   divElement.querySelector('#btnFile').addEventListener('click', () => {
     divElement.querySelector('#subirFile').click();
   });
+
+  // Obtener el perfil del usuario
+  const photoUser = divElement.querySelector('#photoUser');
+  const nameUser = divElement.querySelector('#nameUser');
+  const descriptionUser = divElement.querySelector('#descriptionUser');
+  if (user !== null) {
+    // The user object has basic properties such as display name, email, etc.
+    const displayName = user.displayName;
+    const email = user.email;
+    const photoURL = user.photoURL;
+    const emailVerified = user.emailVerified;
+    photoUser.src = `${photoURL}`;
+    nameUser.textContent = `${displayName}`;
+    descriptionUser.textContent = `${email + emailVerified}`;
+  }
 
   // Función para publicar post
   divElement.querySelector('#btnCompartir').addEventListener('click', () => {

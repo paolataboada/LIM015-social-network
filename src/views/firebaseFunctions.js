@@ -45,10 +45,7 @@ export function sendEmail() {
 }
 
 // Datos que ingresó el usuario
-export function user() {
-  const auth = firebase.auth();
-  return auth.currentUser;
-}
+export const user = firebase.auth().currentUser;
 
 /* ---------------- COMANDOS PARA CLOUD FIRESTORE -----------------  */
 
@@ -60,15 +57,15 @@ export const sendDataUser = () => {
     photo = 'img/userPhoto-default.png';
     name = 'User';
   } else {
-    photo = user().photoURL;
+    photo = user.photoURL;
     console.log(photo);
-    name = user().displayName;
+    name = user.displayName;
     console.log(name);
   }
-  return db.collection('users').doc(user().ui).set({
-    name: user().displayName,
-    email: user().email,
-    photo: user().photoURL,
+  return db.collection('users').doc(`${user.uid}`).set({
+    name: user.displayName,
+    email: user.email,
+    photo: user.photoURL,
     country: 'Country',
     birthday: 'dd-mm-yyyy',
     description: 'Description',
@@ -77,6 +74,7 @@ export const sendDataUser = () => {
 
 // Obteniendo la data
 export function getData(userId) {
+  console.log(userId);
   const db = firebase.firestore();
   return db.collection('users').doc(userId).get();
 }

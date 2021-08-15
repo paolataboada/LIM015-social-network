@@ -1,6 +1,4 @@
-import {
-  ingresarConEmail, ingresarConGoogle, sendDataUser, /* getData, */
-} from './firebaseFunctions.js';
+import { ingresarConEmail, ingresarConGoogle, sendDataUser } from './firebaseFunctions.js';
 
 export default () => {
   document.querySelector('nav').style.display = 'none';
@@ -96,6 +94,7 @@ export default () => {
         const user = result.user;
         console.log(credential, token, user);
         sendDataUser();
+        console.log(sendDataUser().name);
         window.location.hash = '#/inicio';
       })
       .catch((error) => {

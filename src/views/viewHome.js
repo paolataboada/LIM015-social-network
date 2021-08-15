@@ -1,20 +1,6 @@
-import { getData } from './firebaseFunctions.js';
+import { getData, user } from './firebaseFunctions.js';
 
 export default () => {
-  // Obtén el perfil de un usuario
-  getData()
-    .then((doc) => {
-      if (doc.exists) {
-        console.log('Document data:', doc.data());
-      } else {
-        // doc.data() will be undefined in this case
-        console.log('No such document!');
-      }
-    })
-    .catch((error) => {
-      console.log('Error getting document:', error);
-    });
-
   document.querySelector('nav').style.display = 'none';
   document.querySelector('footer').style.display = 'none';
   const divElement = document.createElement('div');
@@ -30,8 +16,8 @@ export default () => {
         <img src="img/foto-ejemplo.jpg" alt="Foto del usuario">
       </figure>
       <div>
-        <h4 id="nombreUsuario"></h4>
-        <p>Cooker keto</p>
+        <h4 id="nombreUsuario">${user().displayName}</h4>
+        <p>${user().description}</p>
       </div>
     </div>
     <div id="escribirPost">
@@ -63,6 +49,21 @@ export default () => {
         </tr>
       </table>
     </div>`;
+
+  // Obtén el perfil de un usuario
+  getData()
+    .then((doc) => {
+      console.log(doc);
+      if (doc.exists) {
+        console.log('Document data:', doc.data());
+      } else {
+      // doc.data() will be undefined in this case
+        console.log('No such document!');
+      }
+    })
+    .catch((error) => {
+      console.log('Error getting document:', error, user());
+    });
 
   divElement.querySelector('#btnFile').addEventListener('click', () => {
     divElement.querySelector('#subirFile').click();

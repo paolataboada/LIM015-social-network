@@ -2,7 +2,13 @@
 import { changeView } from './lib/index.js';
 
 const init = () => {
-  changeView(window.location.hash);
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      changeView(window.location.hash);
+    } else {
+      window.location.hash = '#/';
+    }
+  });
   window.addEventListener('hashchange', () => changeView(window.location.hash));
 };
 window.addEventListener('load', init);

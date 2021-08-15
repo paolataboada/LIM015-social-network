@@ -76,6 +76,7 @@ export const sendDataUser = () => {
 
 // Obteniendo la data
 export function getData(userId) {
+  console.log(userId);
   const db = firebase.firestore();
   return db.collection('users').doc(userId).get();
 }

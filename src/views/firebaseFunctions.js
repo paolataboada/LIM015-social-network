@@ -53,7 +53,6 @@ export function user() {
 /* ---------------- COMANDOS PARA CLOUD FIRESTORE -----------------  */
 
 export const sendDataUser = () => {
-  console.log(user());
   const db = firebase.firestore();
   let photo;
   let name;
@@ -62,7 +61,9 @@ export const sendDataUser = () => {
     name = 'User';
   } else {
     photo = user().photoURL;
+    console.log(photo);
     name = user().displayName;
+    console.log(name);
   }
   return db.collection('users').doc(user().ui).set({
     name: user().displayName,

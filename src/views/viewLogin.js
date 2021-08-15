@@ -1,4 +1,6 @@
-import { ingresarConEmail, ingresarConGoogle, sendDataUser,getData } from './firebaseFunctions.js';
+import {
+  ingresarConEmail, ingresarConGoogle, sendDataUser, /* getData, */
+} from './firebaseFunctions.js';
 
 export default () => {
   document.querySelector('nav').style.display = 'none';
@@ -101,7 +103,7 @@ export default () => {
         const errorMessage = error.message;
         const email = error.email;
         const credential = error.credential;
-        document.write('Para abrir los pop up utiliza npm start: ¡error!=> ', errorCode, errorMessage, email, credential);
+        document.write('¡error!=> ', errorCode, errorMessage, email, credential);
       });
   });
   return divElement;

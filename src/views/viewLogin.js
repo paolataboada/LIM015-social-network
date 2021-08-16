@@ -62,7 +62,7 @@ export default () => {
         } else {
           window.location.hash = '#/inicio';
         }
-        console.log('El usuario es:', user, 'linea 65 viewLogin.js');
+        console.log('El usuario es:', user, 'ingresó con correo');
       })
       .catch((error) => {
         const errorCode = error.code;

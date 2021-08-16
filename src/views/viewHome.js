@@ -14,8 +14,8 @@ export default () => {
         <img id="userPhoto" src="img/foto-ejemplo.jpg" alt="Foto del usuario">
       </figure>
       <div>
-        <h4 id="userName">A</h4>
-        <p id="userDescription">Cooker keto</p>
+        <h4 id="userName">Name User</h4>
+        <p id="userDescription">Description User</p>
       </div>
     </div>
     <div id="escribirPost">
@@ -49,7 +49,7 @@ export default () => {
       </table>
     </div>`;
 
-  // Obtener el perfil de un usuario
+  // Obtener el perfil de un usuario (CON DATOS DE GOOGLE)
   const user = firebase.auth().currentUser;
   const userPhoto = divElement.querySelector('#userPhoto');
   const userName = divElement.querySelector('#userName');
@@ -61,7 +61,27 @@ export default () => {
     userPhoto.src = `${photoURL}`;
     userName.textContent = `${displayName}`;
     userDescription.textContent = `${email}`;
+    // No hay datos de usuario (Ingreso con correo)
+    if (displayName === null) {
+      userPhoto.src = 'img/profile-default.png';
+      userDescription.textContent = 'Descripción';
+    }
   }
+
+  // Obtener los datos de un usuario (CON DATOS DE REGISTRO CORREO)
+  firebase.firestore().collection('users').get()
+    .then((querySnapshot) => { // TODO: Mostrar 'User' en ingreso con correo al publicar
+      querySnapshot.forEach((doc) => {
+        console.log(`${doc.id} => name de registro: ${doc.data().nameRegister} ID: ${doc.data().idUserActive}`);
+        console.log(`Id del usuario: ${user.uid}`);
+        if (user.uid === `${doc.data().idUserActive}`) { // quitar backdigs ``
+          userName.textContent = doc.data().nameRegister;
+          userDescription.textContent = doc.data().emailRegister;
+        } else {
+          console.log('Ese dato no existe en este documento');
+        }
+      });
+    });
 
   // Abre input file al seleccionar el botón Subir Imagen
   const uploadImageButton = divElement.querySelector('#uploadImageButton');
@@ -86,28 +106,39 @@ export default () => {
   // Función para publicar post
   const shareButton = divElement.querySelector('#shareButton');
   shareButton.addEventListener('click', () => {
-    const textToPost = divElement.querySelector('#textToPost').value;
+    const textToPost = divElement.querySelector('#textToPost');
     const userPost = divElement.querySelector('#userPost');
     const textPost = divElement.querySelector('#textPost');
-    if (textToPost !== '') {
+    if (textToPost.value !== '') {
       firebase.firestore().collection('posts').add({
-        userWhoPublishes: `Publicado por ${firebase.auth().currentUser.displayName}`,
-        publishedText: textToPost,
+        userWhoPublishes: `Publicado por ${user.displayName}`,
+        publishedText: textToPost.value,
       })
         .then((docRef) => {
           console.log('Document written with ID: ', docRef.id);
           // Obtener los datos de la colección
           firebase.firestore().collection('posts').get(docRef.id)
-            .then((querySnapshot) => {
+            .then((querySnapshot) => { // TODO: Mostrar 'User' en ingreso con correo al publicar
               querySnapshot.forEach((doc) => {
                 console.log(`${doc.id} => ${doc.data()}`);
                 if (doc.id === `${docRef.id}`) {
                   userPost.textContent = doc.data().userWhoPublishes;
                   textPost.textContent = doc.data().publishedText;
+                } else if (user.displayName === null) {
+                  // Obtiene el nombre de registro del usuario en sesión
+                  firebase.firestore().collection('users').get()
+                    .then((querySnapshotUno) => {
+                      querySnapshotUno.forEach((document) => {
+                        if (user.uid === `${document.data().idUserActive}`) {
+                          userPost.textContent = `Publicado por ${document.data().nameRegister}`;
+                        } else {
+                          console.log('No hay aquí, pasa al sgte documento');
+                        }
+                      });
+                    });
                 } else {
                   console.log('No existe referencia al documento');
                 }
-                textToPost.value = ''; // TODO: Vaciar el contenido de textarea id='textToPost'
               });
             });
         })
@@ -115,9 +146,10 @@ export default () => {
           console.error('Error adding document: ', error);
         });
     }
+    textToPost.value = '';
   });
 
-  // Funcion para cerar sesión
+  // Funcion para cerrar sesión
   const btnSalir = divElement.querySelector('#btnSalir');
   btnSalir.addEventListener('click', () => {
     firebase.auth().signOut()

@@ -59,10 +59,10 @@ export default () => {
     .then((querySnapshot) => { // TODO: Mostrar 'User' en ingreso con correo al publicar
       querySnapshot.forEach((doc) => {
         console.log(`${doc.id} => name de registro: ${doc.data().NameRegister} ID: ${doc.data().IdUserActive}`);
-        console.log(`Id del usuario: ${user.uid}`);
-        if (user.uid === `${doc.data().IdUserActive}`) { // quitar backdigs ``
+        // console.log(`Id del usuario: ${user.uid}`);
+        if (user.uid === `${doc.data().IdUserActive}`) {
           userName.textContent = doc.data().NameRegister;
-          userPhoto.textContent = doc.data().PhotoRegister;
+          userPhoto.src = `${doc.data().PhotoRegister}`;
           userDescription.textContent = doc.data().EmailRegister;
         } else {
           console.log('Ese dato no existe en este documento');
@@ -73,21 +73,6 @@ export default () => {
   divElement.querySelector('#btnFile').addEventListener('click', () => {
     divElement.querySelector('#subirFile').click();
   });
-
-  // Obtener el perfil del usuario
-  const photoUser = divElement.querySelector('#photoUser');
-  const nameUser = divElement.querySelector('#nameUser');
-  const descriptionUser = divElement.querySelector('#descriptionUser');
-  if (user !== null) {
-    // The user object has basic properties such as display name, email, etc.
-    const displayName = user.displayName;
-    const email = user.email;
-    const photoURL = user.photoURL;
-    const emailVerified = user.emailVerified;
-    photoUser.src = `${photoURL}`;
-    nameUser.textContent = `${displayName}`;
-    descriptionUser.textContent = `${email + emailVerified}`;
-  }
 
   // Función para publicar post
   // divElement.querySelector('#btnCompartir').addEventListener('click', () => {
@@ -109,7 +94,7 @@ export default () => {
   //       console.error('Error adding document: ', error);
   //     });
   // });
-
+  console.log(userName.textContent);
   // Función para publicar post
   const shareButton = divElement.querySelector('#shareButton');
   shareButton.addEventListener('click', () => {
@@ -117,6 +102,7 @@ export default () => {
     // const userPost = divElement.querySelector('#userPost');
     // const textPost = divElement.querySelector('#textPost');
     if (textToPost.value !== '') {
+      // addPosts(name, postText);
       addPosts(user.display ? user.display : firebase.firestore()
         .userss.NameRegister, textToPost.value)
         .then((docRef) => {

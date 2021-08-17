@@ -44,15 +44,12 @@ export function sendEmail() {
   return auth.currentUser.sendEmailVerification();
 }
 
-// Datos que ingresó el usuario
-export function user() {
-  const auth = firebase.auth();
-  return auth.currentUser;
-}
+// objeto usuario Activo cuando se registra con correo y contraseña
+export const userActive = firebase.auth().currentUser;
 
 /* ---------------- COMANDOS PARA CLOUD FIRESTORE -----------------  */
 
-export const sendDataUser = () => {
+/* export const sendDataUser = () => {
   console.log(user());
   const db = firebase.firestore();
   let photo;
@@ -64,19 +61,49 @@ export const sendDataUser = () => {
     photo = user().photoURL;
     name = user().displayName;
   }
-  return db.collection('users').doc(user().ui).set({
-    name: user().displayName,
-    email: user().email,
-    photo: user().photoURL,
-    country: 'Country',
-    birthday: 'dd-mm-yyyy',
-    description: 'Description',
+  return db.collection('users').doc(user.ui).set({
+    Name: name,
+    Email: userActive.email,
+    Photo: photo,
+    Country: 'Country',
+    Birthday: 'dd-mm-yyyy',
+    Description: 'Description',
   });
-};
+}; */
 
-// Obteniendo la data
-export function getData(userId) {
-  console.log(userId);
+// Agregando a la coleccion "users" data que el usuario ingrese al momento de registrarse con GMail
+export function addDataUser(usuario) {
   const db = firebase.firestore();
-  return db.collection('users').doc(userId).get();
+  let nameRegister;
+  let photoRegister;
+  if (usuario.displayName !== null && usuario.photoURL !== null) {
+    nameRegister = usuario.displayName;
+    photoRegister = usuario.photoURL;
+  } else {
+    nameRegister = 'User';
+    photoRegister = 'img/userPhoto-default.png';
+  }
+  return db.collection('userss').add({
+    NameRegister: nameRegister,
+    EmailRegister: usuario.email,
+    IdUserActive: usuario.uid,
+    PhotoRegister: photoRegister,
+  });
+}
+
+// Agregando a la coleccion "users" data que el usuario ingrese al momento de registrarse con correo
+export function addDataUserC(name, email, user) {
+  const db = firebase.firestore();
+  return db.collection('userss').add({
+    NameRegister: name,
+    EmailRegister: email,
+    IdUserActive: user.uid,
+    PhotoRegister: 'img/userPhoto-default.png',
+  });
+}
+
+// Obteniendo la data de la colleccion "users"
+export function getDataUser() {
+  const db = firebase.firestore();
+  return db.collection('userss').get();
 }

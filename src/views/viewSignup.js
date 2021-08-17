@@ -1,4 +1,4 @@
-import { createUser, sendEmail } from './firebaseFunctions.js';
+import { createUser, sendEmail, addDataUserC } from './firebaseFunctions.js';
 
 export default () => {
   const divElement = document.createElement('div');
@@ -68,7 +68,15 @@ export default () => {
         .then((userCredential) => {
           containerModal.reset();
           console.log('Registro exitoso', firebase.auth().currentUser.uid, userCredential, name, email, password);
-          // Enviar mensaje de verificación firebase
+          // -----* Agregar documento de datos del usuario a la coleccion "USERS"
+          addDataUserC(name, email, firebase.auth().currentUser)
+            .then((docRef) => {
+              console.log('ID de Documento de la Colección Users: ', docRef.id);
+            })
+            .catch((error) => {
+              console.error('Error al añadir el documento: ', error);
+            });
+          // ----- * Enviar mensaje de verificación firebase
           sendEmail()
             .then(() => {
               // eslint-disable-next-line no-alert

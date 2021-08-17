@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { sendDataUser, getData, user } from './firebaseFunctions.js';
-=======
 import { getDataUser, addPosts } from './firebaseFunctions.js';
->>>>>>> upstream/principal
 
 export default () => {
   document.querySelector('nav').style.display = 'none';
@@ -17,19 +13,11 @@ export default () => {
     </div>
     <div id="infoUsuario">
       <figure>
-<<<<<<< HEAD
-        <img id="photoUser" src="img/foto-ejemplo.jpg" alt="Foto del usuario">
-      </figure>
-      <div>
-        <h4 id="nameUser">${user.displayName}</h4>
-        <p id="descriptionUser">${user.description}</p>
-=======
         <img id="userPhoto" src="img/foto-ejemplo.jpg" alt="Foto del usuario">
       </figure>
       <div>
-        <h4 id="userName">Name </h4>
+        <h4 id="userName">Name</h4>
         <p id="userDescription">Description User</p>
->>>>>>> upstream/principal
       </div>
     </div>
     <div id="escribirPost">

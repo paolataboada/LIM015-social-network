@@ -251,7 +251,7 @@ body {
   flex-flow: column;
   justify-content: center;
   background: #fdf8f8;
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
 }
 #barraMenu {
   display: flex;
@@ -353,6 +353,9 @@ body {
   border-spacing: 0;
   margin-top: 30px;
 }
+#sectionPosts table tbody{
+  margin-bottom: 30px;
+}
 #sectionPosts table tr th {
   display: flex;
   border: 1px solid #5da6a6;
@@ -377,7 +380,7 @@ body {
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
-#logoLike {
+.logoLike {
   padding: 5px;
   border-radius: 50%;
   border: 1px solid #5da6a6;
@@ -386,7 +389,7 @@ body {
   width: 35px;
   height: 35px;
 }
-#logoComent {
+.logoComent {
   padding: 7px;
   border-radius: 50%;
   border: 1px solid #5da6a6;
@@ -394,12 +397,12 @@ body {
   width: 35px;
   height: 35px;
 }
-#logoLike:active {
+.logoLike:active {
   background: #c74c4c;
   border: none;
   transform: scale(1.2);
 }
-#logoComent:active {
+.logoComent:active {
   background: #c9c9c9;
   border: none;
   transform: scale(1.2);

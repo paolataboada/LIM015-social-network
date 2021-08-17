@@ -50,11 +50,12 @@ export default () => {
     } else {
       errorPassLogIn.style.visibility = 'hidden';
     }
-
+    // Ingresar con cuenta registrada en el form
     signInEmail(email, pass)
       .then((userCredential) => {
         const user = userCredential.user;
-        // console.log('user:', user, 'user.emailVerified:', user.emailVerified);
+        console.log('Usuario en sesión con correo:', user.displayName);
+        // No cambiar view si el email no ha sido verificado
         if (user.emailVerified === false) {
           window.location.hash = '#/';
           errorEmailLogIn.textContent = 'Esta cuenta aún no está verificada';
@@ -62,7 +63,6 @@ export default () => {
         } else {
           window.location.hash = '#/inicio';
         }
-        console.log('El usuario es:', user, 'ingresó con correo');
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -91,19 +91,15 @@ export default () => {
   btnGoogle.addEventListener('click', () => {
     signInGoogle()
       .then((result) => {
-        const credential = result.credential;
-        const token = credential.accessToken;
         const user = result.user;
-        console.log('El token del usuario es:', token);
         window.location.hash = '#/inicio';
-        console.log('El usuario es:', user.displayName, 'linea 99 viewLogin.js');
+        console.log('Usuario en sesión con Google:', user.displayName);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        const email = error.email;
-        const credential = error.credential;
-        document.write('¡error!=> ', errorCode, errorMessage, email, credential);
+        console.log('¡error!=> ', errorCode, errorMessage);
+        // window.location.hash = '#/'; // No es necesario
       });
   });
   return divElement;

@@ -27,29 +27,31 @@ export default () => {
       </div>
     </div>
     <div id="sectionPosts">
-      <table>
-        <tr>
-          <th id="userPost">Publicado por Mariana López</th>
-        </tr>
-        <tr>
-          <td id="textPost">The user-select property specifies whether the text of an element can be selected.
-              In web browsers, if you double-click on some text it will be selected/highlighted. 
-              This property can be used to prevent this
-          </td>
-        </tr>
-        <tr>
-          <td id="picturePost" style="display: none;"></td>
-        </tr>
-        <tr>
-          <td>
-            <img id="logoLike" src="img/megusta.png" alt="Botón me gusta">
-            <img id="logoComent" src="img/comentario.png" alt="Botón comentar">
-          </td>
-        </tr>
+      <table id="tablePost">
+        <tbody>
+          <tr>
+            <th class="userPost">Publicado por Mariana López</th>
+          </tr>
+          <tr>
+            <td class="textPost">The user-select property specifies whether the text of an element can be selected.
+                In web browsers, if you double-click on some text it will be selected/highlighted. 
+                This property can be used to prevent this
+            </td>
+          </tr>
+          <tr>
+            <td class="picturePost" style="display: none;"></td>
+          </tr>
+          <tr>
+            <td>
+              <img class="logoLike" src="img/megusta.png" alt="Botón me gusta">
+              <img class="logoComent" src="img/comentario.png" alt="Botón comentar">
+            </td>
+          </tr>
+        </tbody>
       </table>
-    </div>`;
+    </div> `;
 
-  // Obtener el perfil de un usuario (CON DATOS DE GOOGLE)
+  // Obtener el perfil de un usuario
   const user = firebase.auth().currentUser;
   const userPhoto = divElement.querySelector('#userPhoto');
   const userName = divElement.querySelector('#userName');
@@ -58,30 +60,30 @@ export default () => {
     const displayName = user.displayName;
     const email = user.email;
     const photoURL = user.photoURL;
+    const userId = user.uid;
+    // console.log('Usuario en sesión: ', displayName, ', con ID: ', userId);
     userPhoto.src = `${photoURL}`;
     userName.textContent = `${displayName}`;
     userDescription.textContent = `${email}`;
-    // No hay datos de usuario (Ingreso con correo)
+    // Si no hay datos de usuario (Ingreso con correo)
     if (displayName === null) {
-      userPhoto.src = 'img/profile-default.png';
-      userDescription.textContent = 'Descripción';
+      // Obtener los datos de un usuario (CON DATOS DE REGISTRO FORM)
+      firebase.firestore().collection('Registered_Users').get() // TODO: Cambiar por Consulta Directa
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            // eslint-disable-next-line max-len
+            // console.log(`${doc.id} => Nombre: ${doc.data().nameRegister}, Correo: ${doc.data().emailRegister}`);
+            if (userId === `${doc.data().idUserRegister}`) {
+              userPhoto.src = 'img/profile-default.png';
+              userName.textContent = doc.data().nameRegister;
+              userDescription.textContent = doc.data().emailRegister;
+            } else {
+              console.log('No existe el Doc');
+            }
+          });
+        });
     }
   }
-
-  // Obtener los datos de un usuario (CON DATOS DE REGISTRO CORREO)
-  firebase.firestore().collection('users').get()
-    .then((querySnapshot) => { // TODO: Mostrar 'User' en ingreso con correo al publicar
-      querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => name de registro: ${doc.data().nameRegister} ID: ${doc.data().idUserActive}`);
-        console.log(`Id del usuario: ${user.uid}`);
-        if (user.uid === `${doc.data().idUserActive}`) { // quitar backdigs ``
-          userName.textContent = doc.data().nameRegister;
-          userDescription.textContent = doc.data().emailRegister;
-        } else {
-          console.log('Ese dato no existe en este documento');
-        }
-      });
-    });
 
   // Abre input file al seleccionar el botón Subir Imagen
   const uploadImageButton = divElement.querySelector('#uploadImageButton');
@@ -103,41 +105,67 @@ export default () => {
     });
   });
 
+  // Mostrar los datos de la colección "Post Guardados"
+  firebase.firestore().collection('Saved_Posts').get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        const tablePost = divElement.querySelector('#tablePost');
+        // console.log(`${doc.id} => ${doc.data().userWhoPublishes}`);
+        tablePost.innerHTML += `
+          <tbody>
+            <tr>
+              <th class="userPost">Publicado por ${doc.data().userWhoPublishes}</th>
+            </tr>
+            <tr>
+              <td class="textPost">${doc.data().publishedText}</td>
+            </tr>
+            <tr>
+              <td>
+                <img class="logoLike" src="img/megusta.png" alt="Botón me gusta">
+                <img class="logoComent" src="img/comentario.png" alt="Botón comentar">
+              </td>
+            </tr>
+          </tbody> `;
+      });
+    });
+
   // Función para publicar post
   const shareButton = divElement.querySelector('#shareButton');
   shareButton.addEventListener('click', () => {
     const textToPost = divElement.querySelector('#textToPost');
-    const userPost = divElement.querySelector('#userPost');
-    const textPost = divElement.querySelector('#textPost');
     if (textToPost.value !== '') {
-      firebase.firestore().collection('posts').add({
-        userWhoPublishes: `Publicado por ${user.displayName}`,
+      firebase.firestore().collection('Saved_Posts').add({
+        userWhoPublishes: userName.textContent,
         publishedText: textToPost.value,
+        publicationDate: new Date(),
       })
         .then((docRef) => {
-          console.log('Document written with ID: ', docRef.id);
+          // console.log('ID del Doc SP: ', docRef.id);
           // Obtener los datos de la colección
-          firebase.firestore().collection('posts').get(docRef.id)
-            .then((querySnapshot) => { // TODO: Mostrar 'User' en ingreso con correo al publicar
+          firebase.firestore().collection('Saved_Posts').get(docRef.id)
+            .then((querySnapshot) => {
               querySnapshot.forEach((doc) => {
-                console.log(`${doc.id} => ${doc.data()}`);
+                const tablePost = divElement.querySelector('#tablePost');
+                // console.log(`${doc.id} => ${doc.data().userWhoPublishes}`);
                 if (doc.id === `${docRef.id}`) {
-                  userPost.textContent = doc.data().userWhoPublishes;
-                  textPost.textContent = doc.data().publishedText;
-                } else if (user.displayName === null) {
-                  // Obtiene el nombre de registro del usuario en sesión
-                  firebase.firestore().collection('users').get()
-                    .then((querySnapshotUno) => {
-                      querySnapshotUno.forEach((document) => {
-                        if (user.uid === `${document.data().idUserActive}`) {
-                          userPost.textContent = `Publicado por ${document.data().nameRegister}`;
-                        } else {
-                          console.log('No hay aquí, pasa al sgte documento');
-                        }
-                      });
-                    });
+                  textToPost.value = '';
+                  tablePost.innerHTML += `
+                    <tbody>
+                      <tr>
+                        <th class="userPost">Publicado por ${doc.data().userWhoPublishes}</th>
+                      </tr>
+                      <tr>
+                        <td class="textPost">${doc.data().publishedText}</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <img class="logoLike" src="img/megusta.png" alt="Botón me gusta">
+                          <img class="logoComent" src="img/comentario.png" alt="Botón comentar">
+                        </td>
+                      </tr>
+                    </tbody> `;
                 } else {
-                  console.log('No existe referencia al documento');
+                  console.log('No existe Ref del Doc');
                 }
               });
             });
@@ -146,7 +174,6 @@ export default () => {
           console.error('Error adding document: ', error);
         });
     }
-    textToPost.value = '';
   });
 
   // Funcion para cerrar sesión

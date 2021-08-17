@@ -1,4 +1,4 @@
-import { getDataUser, addPosts } from './firebaseFunctions.js';
+import { getDataUser, addPosts, getPosts } from './firebaseFunctions.js';
 
 export default () => {
   document.querySelector('nav').style.display = 'none';
@@ -30,23 +30,25 @@ export default () => {
     </div>
     <div id="sectionPosts">
       <table id= "tablaPosts">
-        <tr>
-          <th id="userPost" >Publicado por Mariana López</th>
-        </tr>
-        <tr>
-          <td id="textPost">The user-select property specifies whether the text of an element can be selected.
+        <tbody>
+          <tr>
+            <th id="userPost" >Publicado por Mariana López</th>
+          </tr>
+          <tr>
+            <td id="textPost">The user-select property specifies whether the text of an element can be selected.
 
-          In web browsers, if you double-click on some text it will be selected/highlighted. This property can be used to prevent this.</td>
-        </tr>
-        <tr>
-          <td id="userImage"></td>
-        </tr>
-        <tr>
-          <td>
-            <img id="logoLike" src="img/megusta.png" alt="Botón me gusta">
-            <img id="logoComent" src="img/comentario.png" alt="Botón comentar">
-          </td>
-        </tr>
+            In web browsers, if you double-click on some text it will be selected/highlighted. This property can be used to prevent this.</td>
+          </tr>
+          <tr>
+            <td id="userImage"></td>
+          </tr>
+          <tr>
+            <td>
+              <img id="logoLike" src="img/megusta.png" alt="Botón me gusta">
+              <img id="logoComent" src="img/comentario.png" alt="Botón comentar">
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>`;
 
@@ -61,7 +63,8 @@ export default () => {
         console.log(`${doc.id} => name de registro: ${doc.data().NameRegister} ID: ${doc.data().IdUserActive}`);
         // console.log(`Id del usuario: ${user.uid}`);
         if (user.uid === `${doc.data().IdUserActive}`) {
-          userName.textContent = doc.data().NameRegister;
+          const nombreUsuarioCorreo = doc.data().NameRegister;
+          userName.textContent = nombreUsuarioCorreo;
           userPhoto.src = `${doc.data().PhotoRegister}`;
           userDescription.textContent = doc.data().EmailRegister;
         } else {
@@ -94,76 +97,50 @@ export default () => {
   //       console.error('Error adding document: ', error);
   //     });
   // });
-  console.log(userName.textContent);
+
   // Función para publicar post
   const shareButton = divElement.querySelector('#shareButton');
   shareButton.addEventListener('click', () => {
     const textToPost = divElement.querySelector('#textToPost');
     // const userPost = divElement.querySelector('#userPost');
     // const textPost = divElement.querySelector('#textPost');
+    /* const callingNameUser = getDataUser()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => { console.log(doc.data().NameRegister); });
+      }); */
     if (textToPost.value !== '') {
       // addPosts(name, postText);
-      addPosts(user.display ? user.display : firebase.firestore()
-        .userss.NameRegister, textToPost.value)
+      addPosts(user.displayName ? user.displayName : userName.textContent, textToPost)
         .then((docRef) => {
           console.log('Document written with ID: ', docRef.id);
           // Obtener los datos de la colección
           const tabla = divElement.querySelector('#tablaPosts');
-          firebase.firestore().collection('posts').get(docRef.id)
+          // firebase.firestore().collection('posts').get(docRef.id)
+          getPosts(docRef.id)
             .then((querySnapshot) => { // TODO: Mostrar 'User' en ingreso con correo al publicar
-              tabla.innerHTML = '';
+              // tabla.innerHTML = '';
               querySnapshot.forEach((doc) => {
-                console.log(`${doc.id} => ${doc.data()}`);
+                console.log(`${doc.id} => ${doc.data().userWhoPublishes}`);
                 if (doc.id === `${docRef.id}`) {
                   tabla.innerHTML += `
-                  <tr>
-                    <th id="userPost">Publicado por ${doc.data().userWhoPublishes}</th>
-                  </tr>
-                  <tr>
-                    <td id="textPost"> ${doc.data().publishedText} </td>
-                  </tr>
-                  <tr>
-                    <td id="picturePost" style="display: none;"></td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <img id="logoLike" src="img/megusta.png" alt="Botón me gusta">
-                      <img id="logoComent" src="img/comentario.png" alt="Botón comentar">
-                    </td>
-                  </tr>
+                  <tbody>
+                    <tr>
+                      <th id="userPost">Publicado por ${doc.data().userWhoPublishes}</th>
+                    </tr>
+                    <tr>
+                      <td id="textPost"> ${doc.data().publishedText} </td>
+                    </tr>
+                    <tr>
+                      <td id="picturePost" style="display: none;"></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <img id="logoLike" src="img/megusta.png" alt="Botón me gusta">
+                        <img id="logoComent" src="img/comentario.png" alt="Botón comentar">
+                      </td>
+                    </tr>
+                  </tbody>
                 `;
-                  // userPost.textContent = doc.data().userWhoPublishes;
-                  // textPost.textContent = doc.data().publishedText;
-                } else if (user.uid === `${doc.data().idUserActive}`) {
-                  // Obtiene el nombre de registro del usuario en sesión
-                  tabla.innerHTML = '';
-                  getDataUser()
-                    .then((querySnapshotUno) => {
-                      querySnapshotUno.forEach((document) => {
-                        // if (user.uid === `${document.data().idUserActive}`) {
-                        tabla.innerHTML += `
-                          <tr>
-                            <th id="userPost">Publicado por ${document.data().nameRegister}</th>
-                          </tr>
-                          <tr>
-                            <td id="textPost"> ${doc.data().publishedText} </td>
-                          </tr>
-                          <tr>
-                            <td id="picturePost" style="display: none;"></td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <img id="logoLike" src="img/megusta.png" alt="Botón me gusta">
-                              <img id="logoComent" src="img/comentario.png" alt="Botón comentar">
-                            </td>
-                          </tr>
-                        `;
-                        // userPost.textContent = `Publicado por ${document.data().nameRegister}`;
-                        // /* } */ else {
-                        //   console.log('No hay aquí, pasa al sgte documento');
-                        // }
-                      });
-                    });
                 } else {
                   console.log('No existe referencia al documento');
                 }
@@ -176,6 +153,33 @@ export default () => {
     }
     textToPost.value = '';
   });
+
+  // Mostrar todos los posts de la colección
+  getPosts()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        const tabla = divElement.querySelector('#tablaPosts');
+        tabla.innerHTML += `
+          <tbody>
+            <tr>
+              <th id="userPost">Publicado por ${doc.data().userWhoPublishes}</th>
+            </tr>
+            <tr>
+              <td id="textPost"> ${doc.data().publishedText} </td>
+            </tr>
+            <tr>
+              <td id="picturePost" style="display: none;"></td>
+            </tr>
+            <tr>
+              <td>
+                <img id="logoLike" src="img/megusta.png" alt="Botón me gusta">
+                <img id="logoComent" src="img/comentario.png" alt="Botón comentar">
+              </td>
+            </tr>
+          </tbody>
+        `;
+      });
+    });
 
   // Funcion para cerar sesión
   const btnSalir = divElement.querySelector('#btnSalir');

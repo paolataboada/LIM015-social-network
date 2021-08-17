@@ -67,9 +67,9 @@ export default () => {
       createUser(email, password)
         .then((userCredential) => {
           containerModal.reset();
-          console.log('Registro exitoso', firebase.auth().currentUser.uid, userCredential, name, email, password);
+          console.log('Registro exitoso:', firebase.auth().currentUser.user.uid, userCredential.user.uid, name, email, password);
           // -----* Agregar documento de datos del usuario a la coleccion "USERS"
-          addDataUserCorreo(name, email, firebase.auth().currentUser)
+          addDataUserCorreo(name, email, userCredential.user)
             .then((docRef) => {
               console.log('ID de Documento de la Colección Users: ', docRef.id);
             })

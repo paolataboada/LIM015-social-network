@@ -33,9 +33,10 @@ export default () => {
             <th class="userPost">Publicado por Mariana López</th>
           </tr>
           <tr>
-            <td class="textPost">The user-select property specifies whether the text of an element can be selected.
-                In web browsers, if you double-click on some text it will be selected/highlighted. 
-                This property can be used to prevent this
+            <td class="textPost"><pre class="datePost">${new Date()}</pre>
+              The user-select property specifies whether the text of an element can be selected.
+              In web browsers, if you double-click on some text it will be selected/highlighted. 
+              This property can be used to prevent this
             </td>
           </tr>
           <tr>
@@ -67,7 +68,7 @@ export default () => {
     userDescription.textContent = `${email}`;
     // Si no hay datos de usuario (Ingreso con correo)
     if (displayName === null) {
-      // Obtener los datos de un usuario (CON DATOS DE REGISTRO FORM)
+      // Obtener los datos del usuario (CON DATOS DE REGISTRO FORM)
       firebase.firestore().collection('Registered_Users').get() // TODO: Cambiar por Consulta Directa
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
@@ -105,30 +106,6 @@ export default () => {
     });
   });
 
-  // Mostrar los datos de la colección "Post Guardados"
-  firebase.firestore().collection('Saved_Posts').get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        const tablePost = divElement.querySelector('#tablePost');
-        // console.log(`${doc.id} => ${doc.data().userWhoPublishes}`);
-        tablePost.innerHTML += `
-          <tbody>
-            <tr>
-              <th class="userPost">Publicado por ${doc.data().userWhoPublishes}</th>
-            </tr>
-            <tr>
-              <td class="textPost">${doc.data().publishedText}</td>
-            </tr>
-            <tr>
-              <td>
-                <img class="logoLike" src="img/megusta.png" alt="Botón me gusta">
-                <img class="logoComent" src="img/comentario.png" alt="Botón comentar">
-              </td>
-            </tr>
-          </tbody> `;
-      });
-    });
-
   // Función para publicar post
   const shareButton = divElement.querySelector('#shareButton');
   shareButton.addEventListener('click', () => {
@@ -137,7 +114,7 @@ export default () => {
       firebase.firestore().collection('Saved_Posts').add({
         userWhoPublishes: userName.textContent,
         publishedText: textToPost.value,
-        publicationDate: new Date(),
+        publicationDate: new Date().toLocaleString('en-ES'),
       })
         .then((docRef) => {
           // console.log('ID del Doc SP: ', docRef.id);
@@ -155,7 +132,7 @@ export default () => {
                         <th class="userPost">Publicado por ${doc.data().userWhoPublishes}</th>
                       </tr>
                       <tr>
-                        <td class="textPost">${doc.data().publishedText}</td>
+                        <td class="textPost"><pre class="datePost">${doc.data().publicationDate}</pre>${doc.data().publishedText}</td>
                       </tr>
                       <tr>
                         <td>
@@ -174,6 +151,41 @@ export default () => {
           console.error('Error adding document: ', error);
         });
     }
+  });
+
+  // Mostrar los datos de la colección "Post Guardados"
+  firebase.firestore().collection('Saved_Posts').get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        const tablePost = divElement.querySelector('#tablePost');
+        // console.log(`${doc.id} => ${doc.data().userWhoPublishes}`);
+        tablePost.innerHTML += `
+          <tbody>
+            <tr>
+              <th class="userPost">Publicado por ${doc.data().userWhoPublishes}</th>
+            </tr>
+            <tr>
+              <td class="textPost"><pre class="datePost">${doc.data().publicationDate}</pre>${doc.data().publishedText}</td>
+            </tr>
+            <tr>
+              <td>
+                <img class="logoLike" src="img/megusta.png" alt="Botón me gusta">
+                <img class="logoComent" src="img/comentario.png" alt="Botón comentar">
+              </td>
+            </tr>
+          </tbody> `;
+      });
+    });
+
+  // Dar like a los posts
+  const likeButton = divElement.querySelector('.logoLike');
+  likeButton.addEventListener('click', (e) => {
+    /* let likesCounter = 0;
+    if (e.target) {
+      likesCounter += 1;
+      console.log(likesCounter);
+    } */
+    console.log(e.target);
   });
 
   // Funcion para cerrar sesión

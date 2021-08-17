@@ -5,10 +5,10 @@ export default () => {
   divElement.innerHTML = `
     <section id="modal">
       <a href="#/">x</a>
-      <h2>Registro de Usuario </h2>
+      <h2>Registro de Usuario</h2>
       <form id="container-modal">
           <input type="text" id="usuario" placeholder="Nombre de usuario" autocomplete="off">
-          <p id="errorNameSignUp" >Por favor ingrese su nombre</p>
+          <p id="errorNameSignUp">Por favor ingrese su nombre</p>
           <input type="email" id="e-mail" placeholder="Email" autocomplete="off">
           <p id="errorEmailSignUp">Ingrese un correo electrónico</p>
           <input type="password" id="contraseña" placeholder="Contraseña" autocomplete="off">
@@ -19,9 +19,8 @@ export default () => {
       </form>
     </section> `;
 
-  const containerModal = divElement.querySelector('#container-modal');
-
   // Función que se va a ejecutar cuando se envíe el formulario
+  const containerModal = divElement.querySelector('#container-modal');
   containerModal.addEventListener('submit', (e) => {
     e.preventDefault();
     // Constantes para llamar a valores del dom

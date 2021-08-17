@@ -1,4 +1,4 @@
-import { ingresarConEmail, ingresarConGoogle, sendDataUser } from './firebaseFunctions.js';
+import { ingresarConEmail, ingresarConGoogle, addDataUser } from './firebaseFunctions.js';
 
 export default () => {
   document.querySelector('nav').style.display = 'none';
@@ -92,9 +92,15 @@ export default () => {
         const credential = result.credential;
         const token = credential.accessToken;
         const user = result.user;
-        console.log(credential, token, user);
-        sendDataUser();
-        console.log(sendDataUser().name);
+        console.log('El token del usuario es:', token, 'Credencial: ', credential);
+        console.log('El ID del usuario es:', user);
+        addDataUser(result.user)
+          .then((docRef) => {
+            console.log('ID de Documento de la Colección Users: ', docRef.id);
+          })
+          .catch((error) => {
+            console.error('Error al añadir el documento: ', error);
+          });
         window.location.hash = '#/inicio';
       })
       .catch((error) => {
@@ -102,7 +108,7 @@ export default () => {
         const errorMessage = error.message;
         const email = error.email;
         const credential = error.credential;
-        document.write('¡error!=> ', errorCode, errorMessage, email, credential);
+        document.write('error!=> ', errorCode, errorMessage, email, credential);
       });
   });
   return divElement;

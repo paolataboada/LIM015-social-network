@@ -58,8 +58,10 @@ export const userActive = firebase.auth().currentUser;
     photo = 'img/userPhoto-default.png';
     name = 'User';
   } else {
-    photo = user().photoURL;
-    name = user().displayName;
+    photo = user.photoURL;
+    console.log(photo);
+    name = user.displayName;
+    console.log(name);
   }
   return db.collection('users').doc(user.ui).set({
     Name: name,
@@ -112,7 +114,14 @@ export function getDataUser() {
 export function addPosts(name, postText) {
   const db = firebase.firestore();
   return db.collection('postss').add({
-    userWhoPublishes: `Publicado por ${name}`,
+    userWhoPublishes: name,
     publishedText: postText.value,
+    publicationDate: new Date().toLocaleString('en-ES'),
   });
+}
+
+// Obteniendo la data de la colleccion "postss"
+export function getPosts(docId) {
+  const db = firebase.firestore();
+  return db.collection('postss').get(docId);
 }

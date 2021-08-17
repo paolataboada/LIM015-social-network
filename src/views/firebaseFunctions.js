@@ -92,7 +92,7 @@ export function addDataUser(usuario) {
 }
 
 // Agregando a la coleccion "users" data que el usuario ingrese al momento de registrarse con correo
-export function addDataUserC(name, email, user) {
+export function addDataUserCorreo(name, email, user) {
   const db = firebase.firestore();
   return db.collection('userss').add({
     NameRegister: name,
@@ -106,4 +106,13 @@ export function addDataUserC(name, email, user) {
 export function getDataUser() {
   const db = firebase.firestore();
   return db.collection('userss').get();
+}
+
+// Agregando a la coleccion "postss" data que el usuario publico
+export function addPosts(name, postText) {
+  const db = firebase.firestore();
+  return db.collection('postss').add({
+    userWhoPublishes: `Publicado por ${name}`,
+    publishedText: postText.value,
+  });
 }

@@ -1,4 +1,4 @@
-import { getDataUser } from './firebaseFunctions.js';
+import { getDataUser, addPosts } from './firebaseFunctions.js';
 
 export default () => {
   document.querySelector('nav').style.display = 'none';
@@ -29,7 +29,7 @@ export default () => {
       </div>
     </div>
     <div id="sectionPosts">
-      <table>
+      <table id= "tablaPosts">
         <tr>
           <th id="userPost" >Publicado por Mariana López</th>
         </tr>
@@ -102,30 +102,65 @@ export default () => {
     const userPost = divElement.querySelector('#userPost');
     const textPost = divElement.querySelector('#textPost');
     if (textToPost.value !== '') {
-      firebase.firestore().collection('posts').add({
-        userWhoPublishes: `Publicado por ${user.displayName}`,
-        publishedText: textToPost.value,
-      })
+      addPosts(user.display ? user.display : firebase.firestore()
+        .userss.NameRegister, textToPost.value)
         .then((docRef) => {
           console.log('Document written with ID: ', docRef.id);
           // Obtener los datos de la colección
+          const tabla = divElement.querySelector('#tablaPosts');
           firebase.firestore().collection('posts').get(docRef.id)
             .then((querySnapshot) => { // TODO: Mostrar 'User' en ingreso con correo al publicar
+              tabla.innerHTML = '';
               querySnapshot.forEach((doc) => {
                 console.log(`${doc.id} => ${doc.data()}`);
                 if (doc.id === `${docRef.id}`) {
-                  userPost.textContent = doc.data().userWhoPublishes;
-                  textPost.textContent = doc.data().publishedText;
-                } else if (user.displayName === null) {
+                  tabla.innerHTML += `
+                  <tr>
+                    <th id="userPost">Publicado por ${doc.data().userWhoPublishes}</th>
+                  </tr>
+                  <tr>
+                    <td id="textPost"> ${doc.data().publishedText} </td>
+                  </tr>
+                  <tr>
+                    <td id="picturePost" style="display: none;"></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <img id="logoLike" src="img/megusta.png" alt="Botón me gusta">
+                      <img id="logoComent" src="img/comentario.png" alt="Botón comentar">
+                    </td>
+                  </tr>
+                `;
+                  // userPost.textContent = doc.data().userWhoPublishes;
+                  // textPost.textContent = doc.data().publishedText;
+                } else if (user.uid === `${doc.data().idUserActive}`) {
                   // Obtiene el nombre de registro del usuario en sesión
-                  firebase.firestore().collection('users').get()
+                  tabla.innerHTML = '';
+                  getDataUser()
                     .then((querySnapshotUno) => {
                       querySnapshotUno.forEach((document) => {
-                        if (user.uid === `${document.data().idUserActive}`) {
-                          userPost.textContent = `Publicado por ${document.data().nameRegister}`;
-                        } else {
-                          console.log('No hay aquí, pasa al sgte documento');
-                        }
+                        // if (user.uid === `${document.data().idUserActive}`) {
+                        tabla.innerHTML += `
+                          <tr>
+                            <th id="userPost">Publicado por ${document.data().nameRegister}</th>
+                          </tr>
+                          <tr>
+                            <td id="textPost"> ${doc.data().publishedText} </td>
+                          </tr>
+                          <tr>
+                            <td id="picturePost" style="display: none;"></td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <img id="logoLike" src="img/megusta.png" alt="Botón me gusta">
+                              <img id="logoComent" src="img/comentario.png" alt="Botón comentar">
+                            </td>
+                          </tr>
+                        `;
+                        // userPost.textContent = `Publicado por ${document.data().nameRegister}`;
+                        // /* } */ else {
+                        //   console.log('No hay aquí, pasa al sgte documento');
+                        // }
                       });
                     });
                 } else {

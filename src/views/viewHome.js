@@ -99,8 +99,8 @@ export default () => {
   const shareButton = divElement.querySelector('#shareButton');
   shareButton.addEventListener('click', () => {
     const textToPost = divElement.querySelector('#textToPost');
-    const userPost = divElement.querySelector('#userPost');
-    const textPost = divElement.querySelector('#textPost');
+    // const userPost = divElement.querySelector('#userPost');
+    // const textPost = divElement.querySelector('#textPost');
     if (textToPost.value !== '') {
       addPosts(user.display ? user.display : firebase.firestore()
         .userss.NameRegister, textToPost.value)

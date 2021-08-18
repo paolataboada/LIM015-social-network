@@ -251,7 +251,6 @@ body {
   flex-flow: column;
   justify-content: center;
   background: #fdf8f8;
-  margin-bottom: 30px;
 }
 #barraMenu {
   display: flex;
@@ -273,7 +272,7 @@ body {
 #infoUsuario figure {
   width: 120px;
   height: 120px;
-  margin: 30px;
+  margin: 20px 15px 20px 20px;
   border-radius: 50%;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
   cursor: pointer;
@@ -281,7 +280,7 @@ body {
 }
 #infoUsuario figure img {
   height: 120px;
-  margin-left: -15px;
+  width: 120px;
 }
 #infoUsuario div h4 {
   color: #24baac;
@@ -301,7 +300,7 @@ body {
   }
   #infoUsuario figure img {
     height: 200px;
-    margin-left: -15px;
+    width: 200px;
   }
   #infoUsuario div h4 {
     font-size: 26px;
@@ -327,6 +326,7 @@ body {
   background: #fdf8f8;
   height: 120px;
   overflow-wrap: break-word;
+  resize: none;
 }
 #escribirPost div {
   display: flex;
@@ -338,7 +338,6 @@ body {
   border-radius: 5px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
-
 #sectionPosts {
   display: flex;
   flex-flow: column;
@@ -352,10 +351,19 @@ body {
   border-spacing: 0;
   margin-top: 30px;
 }
-#sectionPosts table tbody {
+#sectionPosts table tbody{
   margin-bottom: 30px;
+  align-self: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
-#sectionPosts table tr th {
+#sectionPosts table tbody tr td pre{
+  color: #184e77;
+  font-size: 12px;
+  align-self: flex-end;
+}
+#sectionPosts table tbody tr th {
   display: flex;
   border: 1px solid #5da6a6;
   border-radius: 10px 10px 0 0;
@@ -365,7 +373,7 @@ body {
   font-weight: 400;
   font-size: 18px;
 }
-#sectionPosts table tr td {
+#sectionPosts table tbody tr td {
   display: flex;
   border: 1px solid #5da6a6;
   border-top: none;
@@ -375,7 +383,10 @@ body {
   font-size: 16px;
   line-height: 25px;
 }
-#sectionPosts table tr:last-child td:first-child {
+#sectionPosts table tbody tr .textPost {
+  flex-flow: column nowrap;
+}
+#sectionPosts table tbody tr:last-child td:first-child {
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }

@@ -16,7 +16,7 @@ export default () => {
         <img id="userPhoto" src="img/foto-ejemplo.jpg" alt="Foto del usuario">
       </figure>
       <div>
-        <h4 id="userName">Name</h4>
+        <h4 id="userName">Name User</h4>
         <p id="userDescription">Description User</p>
       </div>
     </div>
@@ -29,18 +29,20 @@ export default () => {
       </div>
     </div>
     <div id="sectionPosts">
-      <table id= "tablaPosts">
+      <table id="tablaPosts">
         <tbody>
           <tr>
-            <th id="userPost" >Publicado por Mariana López</th>
+            <th id="userPost">Publicado por Mariana López</th>
           </tr>
           <tr>
-            <td id="textPost">The user-select property specifies whether the text of an element can be selected.
-
-            In web browsers, if you double-click on some text it will be selected/highlighted. This property can be used to prevent this.</td>
+            <td id="textPost" class="textPost">
+              <pre class="datePost">${new Date().toLocaleString('en-ES')}</pre>
+              The user-select property specifies whether the text of an element can be selected.
+              In web browsers, if you double-click on some text it will be selected/highlighted. This property can be used to prevent this.
+            </td>
           </tr>
           <tr>
-            <td id="userImage"></td>
+            <td id="userImage" style="display: none;"></td>
           </tr>
           <tr>
             <td>
@@ -62,7 +64,7 @@ export default () => {
       querySnapshot.forEach((doc) => {
         console.log(`${doc.id} => name de registro: ${doc.data().NameRegister} ID: ${doc.data().IdUserActive}`);
         // console.log(`Id del usuario: ${user.uid}`);
-        if (user.uid === `${doc.data().IdUserActive}`) {
+        if (user.uid === doc.data().IdUserActive) {
           const nombreUsuarioCorreo = doc.data().NameRegister;
           userName.textContent = nombreUsuarioCorreo;
           userPhoto.src = `${doc.data().PhotoRegister}`;
@@ -128,7 +130,10 @@ export default () => {
                       <th id="userPost">Publicado por ${doc.data().userWhoPublishes}</th>
                     </tr>
                     <tr>
-                      <td id="textPost"> ${doc.data().publishedText} </td>
+                      <td id="textPost" class="textPost">
+                        <pre class="datePost">${doc.data().publicationDate}</pre>
+                        ${doc.data().publishedText}
+                      </td>
                     </tr>
                     <tr>
                       <td id="picturePost" style="display: none;"></td>
@@ -165,7 +170,10 @@ export default () => {
               <th id="userPost">Publicado por ${doc.data().userWhoPublishes}</th>
             </tr>
             <tr>
-              <td id="textPost"> ${doc.data().publishedText} </td>
+              <td id="textPost" class="textPost">
+                <pre class="datePost">${doc.data().publicationDate}</pre>
+                ${doc.data().publishedText}
+              </td>
             </tr>
             <tr>
               <td id="picturePost" style="display: none;"></td>
@@ -200,6 +208,5 @@ export default () => {
         console.log(error);
       });
   });
-
   return divElement;
 };

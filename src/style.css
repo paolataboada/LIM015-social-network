@@ -358,6 +358,14 @@ body {
   display: flex;
   flex-direction: column;
 }
+#sectionPosts div{
+  justify-content: flex-end;
+  align-content: flex-end;
+}
+#sectionPosts div :hover{
+  cursor: pointer;
+  opacity: 0.5;
+}
 #sectionPosts table tbody tr td pre{
   color: #184e77;
   font-size: 12px;
@@ -365,6 +373,7 @@ body {
 }
 #sectionPosts table tbody tr th {
   display: flex;
+  justify-content: space-between;
   border: 1px solid #5da6a6;
   border-radius: 10px 10px 0 0;
   padding: 10px;

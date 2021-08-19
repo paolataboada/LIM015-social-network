@@ -125,3 +125,9 @@ export function getPosts(docId) {
   const db = firebase.firestore();
   return db.collection('postss').get(docId);
 }
+
+// Eliminando documentos de la coleccion posts
+export function deletePosts(docId) {
+  const db = firebase.firestore();
+  return db.collection('postss').doc(docId).delete();
+}

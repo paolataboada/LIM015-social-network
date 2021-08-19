@@ -1,4 +1,6 @@
-import { getDataUser, addPosts, getPosts } from './firebaseFunctions.js';
+import {
+  getDataUser, addPosts, getPosts, deletePosts,
+} from './firebaseFunctions.js';
 
 export default () => {
   document.querySelector('nav').style.display = 'none';
@@ -32,10 +34,16 @@ export default () => {
       <table id="tablaPosts">
         <tbody>
           <tr>
-            <th id="userPost">Publicado por Mariana López</th>
+            <th>
+            <div id="userPost">Publicado por Mariana López</div> 
+             <div>
+              <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
+              <img id="#iconoDelete" class="icono-conf" src="img/btn-delete.png" alt="icono delete">
+             </div>
+            </th> 
           </tr>
           <tr>
-            <td id="textPost" class="textPost">
+            <td id="textPost" class="textPost" >
               <pre class="datePost">${new Date().toLocaleString('en-ES')}</pre>
               The user-select property specifies whether the text of an element can be selected.
               In web browsers, if you double-click on some text it will be selected/highlighted. This property can be used to prevent this.
@@ -127,7 +135,12 @@ export default () => {
                   tabla.innerHTML += `
                   <tbody>
                     <tr>
-                      <th id="userPost">Publicado por ${doc.data().userWhoPublishes}</th>
+                      <th id="userPost"> ${doc.data().userWhoPublishes}
+                      <div>  
+                        <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
+                        <img id="#iconoDelete" class="icono-conf" src="img/btn-delete.png" alt="icono delete">
+                      </div>
+                      </th>
                     </tr>
                     <tr>
                       <td id="textPost" class="textPost">
@@ -167,7 +180,12 @@ export default () => {
         tabla.innerHTML += `
           <tbody>
             <tr>
-              <th id="userPost">Publicado por ${doc.data().userWhoPublishes}</th>
+              <th id="userPost"> ${doc.data().userWhoPublishes}
+               <div>
+                <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
+                <img id="#iconoDelete" class="icono-conf" src="img/btn-delete.png" alt="icono delete">
+               </div>
+              </th>
             </tr>
             <tr>
               <td id="textPost" class="textPost">
@@ -188,6 +206,29 @@ export default () => {
         `;
       });
     });
+
+  // Funcionalidad para editar
+
+  // Funcionalidad para eliminar
+  const btnDelete = divElement.querySelector('#iconoDelete');
+  btnDelete.addEventListener('click', (e) => {
+    // console.log(target);
+    deletePosts(e.currentTarget.dataset.id)
+      .then(() => {
+        console.log('Document successfully deleted!');
+      })
+      .catch((error) => {
+        console.error('Error removing document: ', error);
+      });
+  });
+  // const docID = 'L182MLsWXtS8guvucdVz';
+  // deletePosts(docID)
+  //   .then(() => {
+  //     console.log('Document successfully deleted!');
+  //   })
+  //   .catch((error) => {
+  //     console.error('Error removing document: ', error);
+  //   });
 
   // Funcion para cerar sesión
   const btnSalir = divElement.querySelector('#btnSalir');

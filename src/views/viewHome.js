@@ -5,7 +5,7 @@ export default () => {
   divElement.setAttribute('id', 'containerInicio');
   divElement.innerHTML = `
     <div id="barraMenu">
-      <img src="img/logo-blanco.png" alt="Logo Social Health Blanco">
+      <img id="botoncito" src="img/logo-blanco.png" alt="Logo Social Health Blanco">
       <h3>Health Social</h3>
       <img id="btnSalir" src="img/cerrar-sesion.png" alt="Botón cerrar sesión">
     </div>
@@ -30,10 +30,19 @@ export default () => {
       <table id="tablePost">
         <tbody>
           <tr>
-            <th class="userPost">Publicado por Mariana López</th>
+            <th class="userPost">
+              <div>
+                <img class="photoUserPost" src="img/foto-ejemplo.jpg" alt="Foto de ejemplo">
+                <span>Mariana López</span>
+              </div>
+              <figure>
+                <img class="modifyPost" src="img/btn-edit.png" alt="Botón Editar Post">
+                <img class="modifyPost" src="img/btn-delete.png" alt="Botón Borrar Post">
+              </figure>
+            </th>
           </tr>
           <tr>
-            <td class="textPost"><pre class="datePost">${new Date()}</pre>
+            <td class="textPost"><pre class="datePost">${new Date().toLocaleString('es')}</pre>
               The user-select property specifies whether the text of an element can be selected.
               In web browsers, if you double-click on some text it will be selected/highlighted. 
               This property can be used to prevent this
@@ -112,6 +121,7 @@ export default () => {
     const textToPost = divElement.querySelector('#textToPost');
     if (textToPost.value !== '') {
       firebase.firestore().collection('Saved_Posts').add({
+        userPhoto: !user.displayName ? 'img/profile-default.png' : user.photoURL,
         userWhoPublishes: userName.textContent,
         publishedText: textToPost.value,
         publicationDate: new Date().toLocaleString('en-ES'),
@@ -129,7 +139,16 @@ export default () => {
                   tablePost.innerHTML += `
                     <tbody>
                       <tr>
-                        <th class="userPost">Publicado por ${doc.data().userWhoPublishes}</th>
+                        <th class="userPost">
+                          <div>
+                            <img class="photoUserPost" src="${doc.data().userPhoto}"alt="Foto del Usuario">
+                            <span>${doc.data().userWhoPublishes}</span>
+                          </div>
+                          <figure>
+                            <img class="modifyPost" src="img/btn-edit.png" alt="Botón Editar Post">
+                            <img class="modifyPost" src="img/btn-delete.png" alt="Botón Borrar Post">
+                          </figure>
+                        </th>
                       </tr>
                       <tr>
                         <td class="textPost"><pre class="datePost">${doc.data().publicationDate}</pre>${doc.data().publishedText}</td>
@@ -162,7 +181,16 @@ export default () => {
         tablePost.innerHTML += `
           <tbody>
             <tr>
-              <th class="userPost">Publicado por ${doc.data().userWhoPublishes}</th>
+              <th class="userPost">
+                <div>
+                  <img class="photoUserPost" src="${doc.data().userPhoto}"alt="Foto del Usuario">
+                  <span>${doc.data().userWhoPublishes}</span>
+                </div>
+                <figure>
+                  <img class="modifyPost" src="img/btn-edit.png" alt="Botón Editar Post">
+                  <img class="modifyPost" src="img/btn-delete.png" alt="Botón Borrar Post">
+                </figure>
+              </th>
             </tr>
             <tr>
               <td class="textPost"><pre class="datePost">${doc.data().publicationDate}</pre>${doc.data().publishedText}</td>
@@ -178,14 +206,10 @@ export default () => {
     });
 
   // Dar like a los posts
-  const likeButton = divElement.querySelector('.logoLike');
-  likeButton.addEventListener('click', (e) => {
-    /* let likesCounter = 0;
-    if (e.target) {
-      likesCounter += 1;
-      console.log(likesCounter);
-    } */
-    console.log(e.target);
+  // const likeButton = divElement.querySelector('#tablePost');
+  window.addEventListener('click', (e) => {
+    console.log(e.target.className);
+    console.log(e.currentTarget);
   });
 
   // Funcion para cerrar sesión

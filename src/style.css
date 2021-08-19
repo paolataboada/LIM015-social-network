@@ -38,7 +38,6 @@ body {
   }
 }
 #modal a {
-  /* position: relative; */
   font-family: Arial, Helvetica, sans-serif;
   right: 0;
   font-weight: 520;
@@ -155,15 +154,10 @@ body {
 }
 /* Vista Registro */
 #containerRegistro {
-  /* background-image: url(img/img-fondo.jpg); */
-  /* background-color: rgba(5, 28, 39, 0.4); */
-  /* background-repeat: no-repeat; */
-  /* background-size: cover; */
   display: flex;
   flex-flow: column;
   justify-content: center;
   align-items: center;
-  /* background: #fdf8f8; */
   padding: 30px 0;
 }
 #containerRegistro .background{
@@ -233,7 +227,6 @@ body {
   margin: 16px 0;
   font-size: 16px;
 }
-
 #logosRegister {
   display: flex;
   width: 100px;
@@ -243,14 +236,12 @@ body {
 #google {
   cursor: pointer;
 }
-
 /* Vista Inicio */
 #containerInicio {
   display: flex;
   flex-flow: column;
   justify-content: center;
   background: #fdf8f8;
-  /* margin-bottom: 30px; */
 }
 #barraMenu {
   display: flex;
@@ -315,7 +306,7 @@ body {
   border-radius: 10px;
   display: flex;
   flex-flow: column;
-  margin: 10px 30px;
+  margin: 10px 55px;
   padding: 20px;
 }
 #escribirPost textarea {
@@ -338,7 +329,6 @@ body {
   border-radius: 5px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
-
 #sectionPosts {
   display: flex;
   flex-flow: column;
@@ -354,9 +344,14 @@ body {
 }
 #sectionPosts table tbody{
   margin-bottom: 30px;
+  align-self: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 #sectionPosts table tbody tr th {
   display: flex;
+  justify-content: space-between;
   border: 1px solid #5da6a6;
   border-radius: 10px 10px 0 0;
   padding: 10px;
@@ -364,6 +359,26 @@ body {
   color: #ffffff;
   font-weight: 400;
   font-size: 18px;
+}
+#sectionPosts table tbody tr th div,
+#sectionPosts table tbody tr th figure {
+  display: flex;
+  align-items: center;
+}
+#sectionPosts table tbody tr th .photoUserPost {
+  width: 30px;
+  height: 30px;
+  border-radius:50%;
+  margin-right: 10px;
+}
+#sectionPosts table tbody tr th .modifyPost {
+  padding: 5px;
+}
+#sectionPosts table tbody tr th .modifyPost:hover {
+  cursor: pointer;
+  transition: 0.4s;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 15px;
 }
 #sectionPosts table tbody tr td {
   display: flex;

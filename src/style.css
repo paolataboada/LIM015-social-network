@@ -358,11 +358,16 @@ body {
   display: flex;
   flex-direction: column;
 }
-#sectionPosts div{
+#sectionPosts div {
+  display: flex;
+}
+#sectionPosts div .icono-conf {
   justify-content: flex-end;
   align-content: flex-end;
+  height: 20px;
+  margin-top: 4px;
 }
-#sectionPosts div :hover{
+#sectionPosts div .icono-conf:hover {
   cursor: pointer;
   opacity: 0.5;
 }
@@ -381,6 +386,12 @@ body {
   color: #ffffff;
   font-weight: 400;
   font-size: 18px;
+}
+.userPhotoPost {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 5px;
 }
 #sectionPosts table tbody tr td {
   display: flex;

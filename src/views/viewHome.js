@@ -1,5 +1,5 @@
 import {
-  getDataUser, addPosts, getPosts, deletePosts,
+  getDataUser, addPosts, getPosts, /* deletePosts, */
 } from './firebaseFunctions.js';
 
 export default () => {
@@ -35,11 +35,14 @@ export default () => {
         <tbody>
           <tr>
             <th>
-            <div id="userPost">Publicado por Mariana López</div> 
-             <div>
-              <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
-              <img id="#iconoDelete" class="icono-conf" src="img/btn-delete.png" alt="icono delete">
-             </div>
+              <div id="userPost">
+                <img class="userPhotoPost" src="img/foto-ejemplo.jpg" alt="Foto del usuario">
+                <p>Publicado por Mariana López</p>
+              </div> 
+              <div id="icon">
+                <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
+                <img id="#iconoDelete" class="icono-conf" src="img/btn-delete.png" alt="icono delete">
+              </div>
             </th> 
           </tr>
           <tr>
@@ -120,7 +123,7 @@ export default () => {
       }); */
     if (textToPost.value !== '') {
       // addPosts(name, postText);
-      addPosts(user.displayName ? user.displayName : userName.textContent, textToPost)
+      addPosts(user.displayName ? user.displayName : userName.textContent, textToPost, user)
         .then((docRef) => {
           console.log('Document written with ID: ', docRef.id);
           // Obtener los datos de la colección
@@ -135,7 +138,11 @@ export default () => {
                   tabla.innerHTML += `
                   <tbody>
                     <tr>
-                      <th id="userPost"> ${doc.data().userWhoPublishes}
+                      <th>
+                        <div id="userPost">
+                          <img class="userPhotoPost" src="${doc.data().userPhotoPost}" alt="Foto del usuario">
+                          <p>${doc.data().userWhoPublishes}</p>
+                        </div> 
                       <div>  
                         <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
                         <img id="#iconoDelete" class="icono-conf" src="img/btn-delete.png" alt="icono delete">
@@ -180,7 +187,11 @@ export default () => {
         tabla.innerHTML += `
           <tbody>
             <tr>
-              <th id="userPost"> ${doc.data().userWhoPublishes}
+              <th>
+                <div id="userPost">
+                  <img class="userPhotoPost" src="${doc.data().userPhotoPost}" alt="Foto del usuario">
+                  <p>${doc.data().userWhoPublishes}</p>
+                </div>
                <div>
                 <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
                 <img id="#iconoDelete" class="icono-conf" src="img/btn-delete.png" alt="icono delete">
@@ -210,7 +221,7 @@ export default () => {
   // Funcionalidad para editar
 
   // Funcionalidad para eliminar
-  const btnDelete = divElement.querySelector('#iconoDelete');
+  /* const btnDelete = divElement.querySelector('#iconoDelete');
   btnDelete.addEventListener('click', (e) => {
     // console.log(target);
     deletePosts(e.currentTarget.dataset.id)
@@ -220,7 +231,7 @@ export default () => {
       .catch((error) => {
         console.error('Error removing document: ', error);
       });
-  });
+  }); */
   // const docID = 'L182MLsWXtS8guvucdVz';
   // deletePosts(docID)
   //   .then(() => {

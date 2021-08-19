@@ -111,9 +111,10 @@ export function getDataUser() {
 }
 
 // Agregando a la coleccion "postss" data que el usuario publico
-export function addPosts(name, postText) {
+export function addPosts(name, postText, userPost) {
   const db = firebase.firestore();
   return db.collection('postss').add({
+    userPhotoPost: !userPost.displayName ? 'img/userPhoto-default.png' : userPost.photoURL,
     userWhoPublishes: name,
     publishedText: postText.value,
     publicationDate: new Date().toLocaleString('en-ES'),

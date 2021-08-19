@@ -121,14 +121,20 @@ export function addPosts(name, postText, userPost) {
   });
 }
 
-// Obteniendo la data de la colleccion "postss"
-export function getPosts(docId) {
+// Obteniendo la data de la colleccion "postss" en tiempo real
+export function onSnapshotPosts() {
   const db = firebase.firestore();
-  return db.collection('postss').get(docId);
+  return db.collection('postss');
 }
 
 // Eliminando documentos de la coleccion posts
 export function deletePosts(docId) {
   const db = firebase.firestore();
   return db.collection('postss').doc(docId).delete();
+}
+
+// Ordenando por fecha
+export function orderPosts() {
+  const db = firebase.firestore();
+  return db.collection('postss').orderBy('publicationDate', 'desc');
 }

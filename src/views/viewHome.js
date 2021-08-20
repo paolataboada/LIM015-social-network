@@ -1,5 +1,5 @@
 import {
-  getDataUser, addPosts, getPosts, deletePosts,
+  getDataUser, addPosts, onSnapshotPosts, deletePosts, /* orderPosts */
 } from './firebaseFunctions.js';
 
 export default () => {
@@ -35,12 +35,15 @@ export default () => {
         <tbody>
           <tr>
             <th>
-            <div id="userPost">Publicado por Mariana López</div> 
-             <div>
-              <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
-              <img id="#iconoDelete" class="icono-conf" src="img/btn-delete.png" alt="icono delete">
-             </div>
-            </th> 
+              <div id="userPost">
+                <img class="userPhotoPost" src="img/foto-ejemplo.jpg" alt="Foto del usuario">
+                <p>Publicado por Mariana López</p>
+              </div> 
+              <div id="icon">
+                <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
+                <img id="#iconoDelete" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
+              </div>
+            </th>
           </tr>
           <tr>
             <td id="textPost" class="textPost" >
@@ -88,57 +91,32 @@ export default () => {
   });
 
   // Función para publicar post
-  // divElement.querySelector('#btnCompartir').addEventListener('click', () => {
-  //   const postTxt = divElement.querySelector('#post').value;
-  //   const postImg = divElement.querySelector('#subirFile').value;
-  //   const userPost = divElement.querySelector('#userPost');
-  //   const userImage = divElement.querySelector('#userImage');
-  //   firebase.firestore().collection('users').add({
-  //     publicacion: postTxt,
-  //     imagen: postImg,
-  //   })
-  //     .then((docRef) => {
-  //       console.log('Document written with ID: ', docRef.id);
-  //       userPost.textContent = postTxt;
-  //       userImage.textContent = postImg;
-  //       console.log(postTxt);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Error adding document: ', error);
-  //     });
-  // });
-
-  // Función para publicar post
   const shareButton = divElement.querySelector('#shareButton');
   shareButton.addEventListener('click', () => {
     const textToPost = divElement.querySelector('#textToPost');
-    // const userPost = divElement.querySelector('#userPost');
-    // const textPost = divElement.querySelector('#textPost');
-    /* const callingNameUser = getDataUser()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => { console.log(doc.data().NameRegister); });
-      }); */
     if (textToPost.value !== '') {
       // addPosts(name, postText);
-      addPosts(user.displayName ? user.displayName : userName.textContent, textToPost)
+      addPosts(user.displayName ? user.displayName : userName.textContent, textToPost, user)
         .then((docRef) => {
           console.log('Document written with ID: ', docRef.id);
           // Obtener los datos de la colección
           const tabla = divElement.querySelector('#tablaPosts');
           // firebase.firestore().collection('posts').get(docRef.id)
-          getPosts(docRef.id)
-            .then((querySnapshot) => { // TODO: Mostrar 'User' en ingreso con correo al publicar
-              // tabla.innerHTML = '';
-              querySnapshot.forEach((doc) => {
-                console.log(`${doc.id} => ${doc.data().userWhoPublishes}`);
-                if (doc.id === `${docRef.id}`) {
-                  tabla.innerHTML += `
+          onSnapshotPosts().doc(docRef.id)
+            .onSnapshot((doc) => {
+              console.log('Current data: ', doc.data().id);
+              if (doc.id === `${docRef.id}`) {
+                tabla.innerHTML += `
                   <tbody>
                     <tr>
-                      <th id="userPost"> ${doc.data().userWhoPublishes}
+                      <th>
+                        <div id="userPost">
+                          <img class="userPhotoPost" src="${doc.data().userPhotoPost}" alt="Foto del usuario">
+                          <p>${doc.data().userWhoPublishes}</p>
+                        </div> 
                       <div>  
                         <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
-                        <img id="#iconoDelete" class="icono-conf" src="img/btn-delete.png" alt="icono delete">
+                        <img id="#iconoDelete" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
                       </div>
                       </th>
                     </tr>
@@ -159,32 +137,31 @@ export default () => {
                     </tr>
                   </tbody>
                 `;
-                } else {
-                  console.log('No existe referencia al documento');
-                }
-              });
+              } else {
+                console.log('No existe referencia al documento');
+              }
             });
-        })
-        .catch((error) => {
-          console.error('Error adding document: ', error);
         });
     }
-    textToPost.value = '';
   });
-
+  /* orderPosts(); */
   // Mostrar todos los posts de la colección
-  getPosts()
-    .then((querySnapshot) => {
+  const tabla = divElement.querySelector('#tablaPosts');
+  onSnapshotPosts()
+    .onSnapshot((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        const tabla = divElement.querySelector('#tablaPosts');
         tabla.innerHTML += `
           <tbody>
             <tr>
-              <th id="userPost"> ${doc.data().userWhoPublishes}
-               <div>
-                <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
-                <img id="#iconoDelete" class="icono-conf" src="img/btn-delete.png" alt="icono delete">
-               </div>
+              <th>
+                <div id="userPost">
+                  <img class="userPhotoPost" src="${doc.data().userPhotoPost}" alt="Foto del usuario">
+                  <p>${doc.data().userWhoPublishes}</p>
+                </div>
+                <div>
+                  <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
+                  <img id="#iconoDelete" data-post="${doc.id}" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
+                </div>
               </th>
             </tr>
             <tr>
@@ -205,30 +182,21 @@ export default () => {
           </tbody>
         `;
       });
-    });
-
-  // Funcionalidad para editar
-
-  // Funcionalidad para eliminar
-  const btnDelete = divElement.querySelector('#iconoDelete');
-  btnDelete.addEventListener('click', (e) => {
-    // console.log(target);
-    deletePosts(e.currentTarget.dataset.id)
-      .then(() => {
-        console.log('Document successfully deleted!');
-      })
-      .catch((error) => {
-        console.error('Error removing document: ', error);
+      // Funcionalidad para eliminar
+      const btnDelete = divElement.querySelectorAll('.iconoDelete');
+      btnDelete.forEach((boton) => {
+        boton.addEventListener('click', (e) => {
+          console.log(e.target.dataset.post);
+          deletePosts(e.target.dataset.post)
+            .then(() => {
+              console.log('Document successfully deleted!');
+            })
+            .catch((error) => {
+              console.error('Error removing document: ', error);
+            });
+        });
       });
-  });
-  // const docID = 'L182MLsWXtS8guvucdVz';
-  // deletePosts(docID)
-  //   .then(() => {
-  //     console.log('Document successfully deleted!');
-  //   })
-  //   .catch((error) => {
-  //     console.error('Error removing document: ', error);
-  //   });
+    });
 
   // Funcion para cerar sesión
   const btnSalir = divElement.querySelector('#btnSalir');

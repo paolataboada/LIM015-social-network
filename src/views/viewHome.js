@@ -142,21 +142,21 @@ export default () => {
               } else {
                 console.log('No existe referencia al documento');
               }
-            });
-          // Borrar posts
-          const btnDelete = divElement.querySelectorAll('.iconoDelete');
-          btnDelete.forEach((boton) => {
-            boton.addEventListener('click', (e) => {
-              console.log(e.target.dataset.post);
-              deletePosts(e.target.dataset.post)
-                .then(() => {
-                  console.log('Document successfully deleted!');
-                })
-                .catch((error) => {
-                  console.error('Error removing document: ', error);
+              // Borrar posts
+              const btnDelete = divElement.querySelectorAll('.iconoDelete');
+              btnDelete.forEach((boton) => {
+                boton.addEventListener('click', (e) => {
+                  console.log(e.target.dataset.post);
+                  deletePosts(e.target.dataset.post)
+                    .then(() => {
+                      console.log('Document successfully deleted!');
+                    })
+                    .catch((error) => {
+                      console.error('Error removing document: ', error);
+                    });
                 });
+              });
             });
-          });
         });
     }
   });
@@ -199,19 +199,19 @@ export default () => {
             </tr>
           </tbody>
         `;
-      });
-      // Funcionalidad para eliminar
-      const btnDelete = divElement.querySelectorAll('.iconoDelete');
-      btnDelete.forEach((boton) => {
-        boton.addEventListener('click', (e) => {
-          console.log(e.target.dataset.post);
-          deletePosts(e.target.dataset.post)
-            .then(() => {
-              console.log('Document successfully deleted!');
-            })
-            .catch((error) => {
-              console.error('Error removing document: ', error);
-            });
+        // Funcionalidad para eliminar
+        const btnDelete = divElement.querySelectorAll('.iconoDelete');
+        btnDelete.forEach((boton) => {
+          boton.addEventListener('click', (e) => {
+            console.log(e.target.dataset.post);
+            deletePosts(e.target.dataset.post)
+              .then(() => {
+                console.log('Document successfully deleted!');
+              })
+              .catch((error) => {
+                console.error('Error removing document: ', error);
+              });
+          });
         });
       });
     });

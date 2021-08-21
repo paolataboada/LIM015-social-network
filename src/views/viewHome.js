@@ -1,5 +1,8 @@
 import {
-  getDataUser, addPosts, onSnapshotPosts, deletePosts,
+  getDataUser,
+  addPosts,
+  onSnapshotPosts,
+  deletePosts,
 } from './firebaseFunctions.js';
 
 export default () => {
@@ -65,6 +68,43 @@ export default () => {
       </table>
     </div>`;
 
+  // Templates de publicaciones
+  function postTemplate(photoUser, nameUser, datePublication, postUser) {
+    const tabla = divElement.querySelector('#tablaPosts');
+    tabla.innerHTML += `
+                  <tbody>
+                    <tr>
+                      <th>
+                        <div id="userPost">
+                          <img class="userPhotoPost" src="${photoUser}" alt="Foto del usuario">
+                          <p>${nameUser}</p>
+                        </div> 
+                      <div>  
+                        <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
+                        <img id="#iconoDelete" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
+                      </div>
+                      </th>
+                    </tr>
+                    <tr>
+                      <td id="textPost" class="textPost">
+                        <pre class="datePost">${datePublication}</pre>
+                        ${postUser}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td id="picturePost" style="display: none;"></td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <img id="logoLike" src="img/megusta.png" alt="Botón me gusta">
+                        <img id="logoComent" src="img/comentario.png" alt="Botón comentar">
+                      </td>
+                    </tr>
+                  </tbody>
+                `;
+    return tabla;
+  }
+
   // Obtener los datos de un usuario (CON DATOS DE REGISTRO CORREO y GMAIL)
   const user = firebase.auth().currentUser;
   const userPhoto = divElement.querySelector('#userPhoto');
@@ -99,50 +139,20 @@ export default () => {
       addPosts(user.displayName ? user.displayName : userName.textContent, textToPost, user)
         .then((docRef) => {
           console.log('Document written with ID: ', docRef.id);
-          // Obtener los datos de la colección
-          const tabla = divElement.querySelector('#tablaPosts');
-          // firebase.firestore().collection('posts').get(docRef.id)
+          // Obtener los datos de la colección y mostrarlos en tiempo real
           onSnapshotPosts().doc(docRef.id)
-          /* firebase.firestore().collection('postss').doc(docRef.id)
-          .orderBy('publicationDate', 'desc') */
             .onSnapshot((doc) => {
+              const fotoUsuario = doc.data().userPhotoPost;
+              const nombreUsuario = doc.data().userWhoPublishes;
+              const fechaPost = doc.data().publicationDate;
+              const textoPost = doc.data().publishedText;
               console.log('Current data: ', doc.data().id);
               if (doc.id === `${docRef.id}`) {
-                tabla.innerHTML += `
-                  <tbody>
-                    <tr>
-                      <th>
-                        <div id="userPost">
-                          <img class="userPhotoPost" src="${doc.data().userPhotoPost}" alt="Foto del usuario">
-                          <p>${doc.data().userWhoPublishes}</p>
-                        </div> 
-                      <div>  
-                        <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
-                        <img id="#iconoDelete" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
-                      </div>
-                      </th>
-                    </tr>
-                    <tr>
-                      <td id="textPost" class="textPost">
-                        <pre class="datePost">${doc.data().publicationDate}</pre>
-                        ${doc.data().publishedText}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td id="picturePost" style="display: none;"></td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <img id="logoLike" src="img/megusta.png" alt="Botón me gusta">
-                        <img id="logoComent" src="img/comentario.png" alt="Botón comentar">
-                      </td>
-                    </tr>
-                  </tbody>
-                `;
+                postTemplate(fotoUsuario, nombreUsuario, fechaPost, textoPost);
               } else {
                 console.log('No existe referencia al documento');
               }
-              // Borrar posts
+              // Borrar posts en tiempo real
               const btnDelete = divElement.querySelectorAll('.iconoDelete');
               btnDelete.forEach((boton) => {
                 boton.addEventListener('click', (e) => {
@@ -159,6 +169,7 @@ export default () => {
             });
         });
     }
+    textToPost.value = '';
   });
 
   // Mostrar todos los posts de la colección
@@ -219,21 +230,29 @@ export default () => {
   // Funcion para cerar sesión
   const btnSalir = divElement.querySelector('#btnSalir');
   btnSalir.addEventListener('click', () => {
-    firebase.auth().signOut()
-      .then(() => {
+    const confirmar = window.confirm('¿Estás seguro de que deseas salir?');
+    if (confirmar === true) {
+      firebase.auth().signOut()
+        .then(() => {
         // Sign-out successful.
-        const confirmar = window.confirm('¿Estás seguro de que deseas salir?');
-        if (confirmar) {
-          window.location.hash = '#/';
-          console.log('Se ha cerrado sesión');
-        } else {
-          window.location.hash = '#/inicio';
-        }
-      })
-      .catch((error) => {
+        // eslint-disable-next-line no-alert
+        // const confirmar = window.confirm('¿Estás seguro de que deseas salir?');
+        // if (confirmar === true) {
+        //   window.location.hash = '#/';
+        //   console.log('Se ha cerrado sesión');
+        // }  else {
+        // window.location.hash = '#/inicio';
+        // }
+        })
+        .catch((error) => {
         // An error happened.
-        console.log(error);
-      });
+          console.log(error);
+        });
+      window.location.hash = '#/';
+      console.log('Se ha cerrado sesión');
+    } else {
+      window.location.hash = '#/inicio';
+    }
   });
   return divElement;
 };

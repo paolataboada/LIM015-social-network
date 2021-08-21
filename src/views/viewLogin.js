@@ -1,4 +1,8 @@
-import { ingresarConEmail, ingresarConGoogle, addDataUser } from './firebaseFunctions.js';
+import {
+  ingresarConEmail,
+  ingresarConGoogle,
+  addDataUser,
+} from './firebaseFunctions.js';
 
 export default () => {
   document.querySelector('nav').style.display = 'none';

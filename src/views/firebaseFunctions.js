@@ -49,30 +49,6 @@ export const userActive = firebase.auth().currentUser;
 
 /* ---------------- COMANDOS PARA CLOUD FIRESTORE -----------------  */
 
-/* export const sendDataUser = () => {
-  console.log(user());
-  const db = firebase.firestore();
-  let photo;
-  let name;
-  if (photo == null && name == null) {
-    photo = 'img/userPhoto-default.png';
-    name = 'User';
-  } else {
-    photo = user.photoURL;
-    console.log(photo);
-    name = user.displayName;
-    console.log(name);
-  }
-  return db.collection('users').doc(user.ui).set({
-    Name: name,
-    Email: userActive.email,
-    Photo: photo,
-    Country: 'Country',
-    Birthday: 'dd-mm-yyyy',
-    Description: 'Description',
-  });
-}; */
-
 // Agregando a la coleccion "users" data que el usuario ingrese al momento de registrarse con GMail
 export function addDataUser(usuario) {
   const db = firebase.firestore();
@@ -85,7 +61,7 @@ export function addDataUser(usuario) {
     nameRegister = 'User';
     photoRegister = 'img/userPhoto-default.png';
   }
-  return db.collection('userss').add({
+  return db.collection('users').add({
     NameRegister: nameRegister,
     EmailRegister: usuario.email,
     IdUserActive: usuario.uid,
@@ -96,7 +72,7 @@ export function addDataUser(usuario) {
 // Agregando a la coleccion "users" data que el usuario ingrese al momento de registrarse con correo
 export function addDataUserCorreo(name, email, user) {
   const db = firebase.firestore();
-  return db.collection('userss').add({
+  return db.collection('users').add({
     NameRegister: name,
     EmailRegister: email,
     IdUserActive: user.uid,
@@ -107,13 +83,13 @@ export function addDataUserCorreo(name, email, user) {
 // Obteniendo la data de la colleccion "users"
 export function getDataUser() {
   const db = firebase.firestore();
-  return db.collection('userss').get();
+  return db.collection('users').get();
 }
 
 // Agregando a la coleccion "postss" data que el usuario publico
 export function addPosts(name, postText, userPost) {
   const db = firebase.firestore();
-  return db.collection('postss').add({
+  return db.collection('posts').add({
     userPhotoPost: !userPost.displayName ? 'img/userPhoto-default.png' : userPost.photoURL,
     userWhoPublishes: name,
     publishedText: postText.value,
@@ -124,17 +100,11 @@ export function addPosts(name, postText, userPost) {
 // Obteniendo la data de la colleccion "postss" en tiempo real
 export function onSnapshotPosts() {
   const db = firebase.firestore();
-  return db.collection('postss');
+  return db.collection('posts');
 }
 
 // Eliminando documentos de la coleccion posts
 export function deletePosts(docId) {
   const db = firebase.firestore();
-  return db.collection('postss').doc(docId).delete();
-}
-
-// Ordenando por fecha
-export function orderPosts() {
-  const db = firebase.firestore();
-  return db.collection('postss').orderBy('publicationDate', 'desc');
+  return db.collection('posts').doc(docId).delete();
 }

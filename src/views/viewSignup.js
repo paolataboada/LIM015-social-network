@@ -1,4 +1,8 @@
-import { createUser, sendEmail, addDataUserCorreo } from './firebaseFunctions.js';
+import {
+  createUser,
+  sendEmail,
+  addDataUserCorreo,
+} from './firebaseFunctions.js';
 
 export default () => {
   const divElement = document.createElement('div');

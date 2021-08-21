@@ -69,39 +69,39 @@ export default () => {
     </div>`;
 
   // Templates de publicaciones
-  function postTemplate(photoUser, nameUser, datePublication, postUser) {
+  function postTemplate(photoUser, nameUser, datePublication, postUser, IDdocumento) {
     const tabla = divElement.querySelector('#tablaPosts');
     tabla.innerHTML += `
-                  <tbody>
-                    <tr>
-                      <th>
-                        <div id="userPost">
-                          <img class="userPhotoPost" src="${photoUser}" alt="Foto del usuario">
-                          <p>${nameUser}</p>
-                        </div> 
-                      <div>  
-                        <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
-                        <img id="#iconoDelete" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
-                      </div>
-                      </th>
-                    </tr>
-                    <tr>
-                      <td id="textPost" class="textPost">
-                        <pre class="datePost">${datePublication}</pre>
-                        ${postUser}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td id="picturePost" style="display: none;"></td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <img id="logoLike" src="img/megusta.png" alt="Botón me gusta">
-                        <img id="logoComent" src="img/comentario.png" alt="Botón comentar">
-                      </td>
-                    </tr>
-                  </tbody>
-                `;
+        <tbody>
+          <tr>
+            <th>
+              <div id="userPost">
+                <img class="userPhotoPost" src="${photoUser}" alt="Foto del usuario">
+                <p>${nameUser}</p>
+              </div> 
+            <div>  
+                <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
+                <img id="#iconoDelete" data-post="${IDdocumento}" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
+            </div>
+            </th>
+          </tr>
+          <tr>
+            <td id="textPost" class="textPost">
+              <pre class="datePost">${datePublication}</pre>
+              ${postUser}
+            </td>
+          </tr>
+          <tr>
+            <td id="picturePost" style="display: none;"></td>
+          </tr>
+          <tr>
+            <td>
+              <img id="logoLike" src="img/megusta.png" alt="Botón me gusta">
+              <img id="logoComent" src="img/comentario.png" alt="Botón comentar">
+            </td>
+          </tr>
+        </tbody>
+      `;
     return tabla;
   }
 
@@ -120,8 +120,6 @@ export default () => {
           userName.textContent = nombreUsuarioCorreo;
           userPhoto.src = `${doc.data().PhotoRegister}`;
           userDescription.textContent = doc.data().EmailRegister;
-        } else {
-          console.log('Ese dato no existe en este documento');
         }
       });
     });
@@ -139,34 +137,6 @@ export default () => {
       addPosts(user.displayName ? user.displayName : userName.textContent, textToPost, user)
         .then((docRef) => {
           console.log('Document written with ID: ', docRef.id);
-          // Obtener los datos de la colección y mostrarlos en tiempo real
-          onSnapshotPosts().doc(docRef.id)
-            .onSnapshot((doc) => {
-              const fotoUsuario = doc.data().userPhotoPost;
-              const nombreUsuario = doc.data().userWhoPublishes;
-              const fechaPost = doc.data().publicationDate;
-              const textoPost = doc.data().publishedText;
-              console.log('Current data: ', doc.data().id);
-              if (doc.id === `${docRef.id}`) {
-                postTemplate(fotoUsuario, nombreUsuario, fechaPost, textoPost);
-              } else {
-                console.log('No existe referencia al documento');
-              }
-              // Borrar posts en tiempo real
-              const btnDelete = divElement.querySelectorAll('.iconoDelete');
-              btnDelete.forEach((boton) => {
-                boton.addEventListener('click', (e) => {
-                  console.log(e.target.dataset.post);
-                  deletePosts(e.target.dataset.post)
-                    .then(() => {
-                      console.log('Document successfully deleted!');
-                    })
-                    .catch((error) => {
-                      console.error('Error removing document: ', error);
-                    });
-                });
-              });
-            });
         });
     }
     textToPost.value = '';
@@ -179,37 +149,13 @@ export default () => {
     .onSnapshot((querySnapshot) => {
       tabla.innerHTML = '';
       querySnapshot.forEach((doc) => {
-        tabla.innerHTML += `
-          <tbody>
-            <tr>
-              <th>
-                <div id="userPost">
-                  <img class="userPhotoPost" src="${doc.data().userPhotoPost}" alt="Foto del usuario">
-                  <p>${doc.data().userWhoPublishes}</p>
-                </div>
-                <div>
-                  <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
-                  <img id="#iconoDelete" data-post="${doc.id}" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
-                </div>
-              </th>
-            </tr>
-            <tr>
-              <td id="textPost" class="textPost">
-                <pre class="datePost">${doc.data().publicationDate}</pre>
-                ${doc.data().publishedText}
-              </td>
-            </tr>
-            <tr>
-              <td id="picturePost" style="display: none;"></td>
-            </tr>
-            <tr>
-              <td>
-                <img id="logoLike" src="img/megusta.png" alt="Botón me gusta">
-                <img id="logoComent" src="img/comentario.png" alt="Botón comentar">
-              </td>
-            </tr>
-          </tbody>
-        `;
+        const fotoUsuario = doc.data().userPhotoPost;
+        const nombreUsuario = doc.data().userWhoPublishes;
+        const fechaPost = doc.data().publicationDate;
+        const textoPost = doc.data().publishedText;
+        const idDocumento = doc.id;
+        postTemplate(fotoUsuario, nombreUsuario, fechaPost, textoPost, idDocumento);
+
         // Funcionalidad para eliminar
         const btnDelete = divElement.querySelectorAll('.iconoDelete');
         btnDelete.forEach((boton) => {
@@ -232,26 +178,9 @@ export default () => {
   btnSalir.addEventListener('click', () => {
     const confirmar = window.confirm('¿Estás seguro de que deseas salir?');
     if (confirmar === true) {
-      firebase.auth().signOut()
-        .then(() => {
-        // Sign-out successful.
-        // eslint-disable-next-line no-alert
-        // const confirmar = window.confirm('¿Estás seguro de que deseas salir?');
-        // if (confirmar === true) {
-        //   window.location.hash = '#/';
-        //   console.log('Se ha cerrado sesión');
-        // }  else {
-        // window.location.hash = '#/inicio';
-        // }
-        })
-        .catch((error) => {
-        // An error happened.
-          console.log(error);
-        });
+      firebase.auth().signOut();
       window.location.hash = '#/';
       console.log('Se ha cerrado sesión');
-    } else {
-      window.location.hash = '#/inicio';
     }
   });
   return divElement;

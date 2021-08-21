@@ -110,9 +110,7 @@ export default () => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        const email = error.email;
-        const credential = error.credential;
-        document.write('error!=> ', errorCode, errorMessage, email, credential);
+        console.log('error!=> ', errorCode, errorMessage);
       });
   });
   return divElement;

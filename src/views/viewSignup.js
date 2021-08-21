@@ -41,22 +41,22 @@ export default () => {
     // Verificación de inputs vacíos
     if (name === '') {
       errorNameSignUp.style.visibility = 'visible';
-    } else if (name !== '') {
+    } else {
       errorNameSignUp.style.visibility = 'hidden';
     }
     if (email === '') {
       errorEmailSignUp.style.visibility = 'visible';
-    } else if (email !== '') {
+    } else {
       errorEmailSignUp.style.visibility = 'hidden';
     }
     if (password === '') {
       errorPassSignUp.style.visibility = 'visible';
-    } else if (password !== '') {
+    } else {
       errorPassSignUp.style.visibility = 'hidden';
     }
     if (passconfirm === '') {
       errorPassConfSignUp.style.visibility = 'visible';
-    } else if (passconfirm !== '') {
+    } else {
       errorPassConfSignUp.style.visibility = 'hidden';
     }
     // Verificación de contraseñas iguales

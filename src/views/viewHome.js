@@ -1,5 +1,5 @@
 import {
-  getDataUser, addPosts, onSnapshotPosts, deletePosts, /* orderPosts */
+  getDataUser, addPosts, onSnapshotPosts, deletePosts,
 } from './firebaseFunctions.js';
 
 export default () => {
@@ -103,6 +103,8 @@ export default () => {
           const tabla = divElement.querySelector('#tablaPosts');
           // firebase.firestore().collection('posts').get(docRef.id)
           onSnapshotPosts().doc(docRef.id)
+          /* firebase.firestore().collection('postss').doc(docRef.id)
+          .orderBy('publicationDate', 'desc') */
             .onSnapshot((doc) => {
               console.log('Current data: ', doc.data().id);
               if (doc.id === `${docRef.id}`) {
@@ -141,14 +143,30 @@ export default () => {
                 console.log('No existe referencia al documento');
               }
             });
+          // Borrar posts
+          const btnDelete = divElement.querySelectorAll('.iconoDelete');
+          btnDelete.forEach((boton) => {
+            boton.addEventListener('click', (e) => {
+              console.log(e.target.dataset.post);
+              deletePosts(e.target.dataset.post)
+                .then(() => {
+                  console.log('Document successfully deleted!');
+                })
+                .catch((error) => {
+                  console.error('Error removing document: ', error);
+                });
+            });
+          });
         });
     }
   });
-  /* orderPosts(); */
+
   // Mostrar todos los posts de la colección
   const tabla = divElement.querySelector('#tablaPosts');
-  onSnapshotPosts()
+  onSnapshotPosts().orderBy('publicationDate', 'desc')
+  // firebase.firestore().collection('postss').orderBy('publicationDate', 'desc')
     .onSnapshot((querySnapshot) => {
+      tabla.innerHTML = '';
       querySnapshot.forEach((doc) => {
         tabla.innerHTML += `
           <tbody>

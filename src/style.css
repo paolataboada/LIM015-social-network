@@ -261,13 +261,18 @@ body {
   color: #ffffff;
   justify-content: space-between;
 }
-#barraMenu #btnSalir:hover {
+.btnSalir:hover {
   cursor: pointer;
 }
 #infoUsuario {
   display: flex;
   flex-flow: row;
   align-items: center;
+}
+.portada{
+  display:none;
+  width: 100px;
+  height: 200px;
 }
 #infoUsuario figure {
   width: 120px;
@@ -278,16 +283,16 @@ body {
   cursor: pointer;
   overflow: hidden;
 }
-#infoUsuario figure img {
+/* #infoUsuario figure img {
   height: 120px;
   width: 120px;
-}
-#infoUsuario div h4 {
+} */
+.userName {
   color: #24baac;
   font-size: 20px;
   padding-bottom: 7px;
 }
-#infoUsuario div p {
+.userDescription {
   font-size: 18px;
   color: #837777;
 }
@@ -298,15 +303,15 @@ body {
     margin-left: 60px;
     margin-right: 50px;
   }
-  #infoUsuario figure img {
+  .userPhoto {
     height: 200px;
     width: 200px;
   }
-  #infoUsuario div h4 {
+  .userName{
     font-size: 26px;
     padding-bottom: 10px;
   }
-  #infoUsuario div p {
+  .userDescription{
     font-size: 24px;
   }
 }
@@ -317,8 +322,11 @@ body {
   flex-flow: column;
   margin: 10px 30px;
   padding: 20px;
+  margin-left: 5%;
+  width: 90%;
 }
-#escribirPost textarea {
+.textToPost {
+  resize: none;
   font-size: 16px;
   border: 0.5px solid #184e77;
   border-radius: 5px;
@@ -333,7 +341,7 @@ body {
   justify-content: space-between;
   margin: 15px 10px 0 10px;
 }
-#escribirPost div img {
+.btnFile {
   cursor: pointer;
   border-radius: 5px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -344,7 +352,7 @@ body {
   justify-content: center;
   align-items: center;
 }
-#sectionPosts table {
+#tablaPosts {
   display: flex;
   flex-flow: column;
   width: 90%;

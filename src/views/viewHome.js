@@ -11,62 +11,67 @@ export default () => {
   const divElement = document.createElement('div');
   divElement.setAttribute('id', 'containerInicio');
   divElement.innerHTML = `
-    <div id="barraMenu">
+    <section id="barraMenu">
       <img src="img/logo-blanco.png" alt="Logo Social Health Blanco">
       <h3>Health Social</h3>
       <img id="btnSalir" src="img/cerrar-sesion.png" alt="Botón cerrar sesión">
-    </div>
-    <div id="infoUsuario">
-      <figure>
-        <img id="userPhoto" src="img/foto-ejemplo.jpg" alt="Foto del usuario">
-      </figure>
-      <div>
-        <h4 id="userName">Name User</h4>
-        <p id="userDescription">Description User</p>
-      </div>
-    </div>
-    <div id="escribirPost">
-      <textarea id="textToPost" placeholder="¿Qué quieres compartir?"></textarea>
-      <div>
-        <img id="btnFile" src="img/agregar-img.png" alt="Botón para cargar imagen">
-        <input id="subirFile" type="file" accept="image/jpeg" style="display:none">
-        <button type= "submit" id="shareButton" >Compartir</button>
-      </div>
-    </div>
-    <div id="sectionPosts">
-      <table id="tablaPosts">
-        <tbody>
-          <tr>
-            <th>
-              <div id="userPost">
-                <img class="userPhotoPost" src="img/foto-ejemplo.jpg" alt="Foto del usuario">
-                <p>Publicado por Mariana López</p>
-              </div> 
-              <div id="icon">
-                <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
-                <img id="#iconoDelete" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
-              </div>
-            </th>
-          </tr>
-          <tr>
-            <td id="textPost" class="textPost" >
-              <pre class="datePost">${new Date().toLocaleString('en-ES')}</pre>
-              The user-select property specifies whether the text of an element can be selected.
-              In web browsers, if you double-click on some text it will be selected/highlighted. This property can be used to prevent this.
-            </td>
-          </tr>
-          <tr>
-            <td id="userImage" style="display: none;"></td>
-          </tr>
-          <tr>
-            <td>
-              <img id="logoLike" src="img/megusta.png" alt="Botón me gusta">
-              <img id="logoComent" src="img/comentario.png" alt="Botón comentar">
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>`;
+    </section>
+    <section id= "pantallaView">
+      <section id="infoUsuario">
+        <img class="portada" src="img/fondoPortada.jpg">
+        <figure>
+          <img id="userPhoto" class="userPhoto" src="img/foto-ejemplo.jpg" alt="Foto del usuario">
+        </figure>
+        <div>
+          <h4 id="userName" class="userName">Name User</h4>
+          <p id="userDescription" class="userDescription">Description User</p>
+        </div>
+      </section>
+      <section id= "bloquePosts">
+        <section id="escribirPost">
+          <textarea id="textToPost" class="textToPost" placeholder="¿Qué quieres compartir?"></textarea>
+          <div class= "icons">
+            <img id="btnFile" class="btnFile" src="img/agregar-img.png" alt="Botón para cargar imagen">
+            <input id="subirFile" type="file" accept="image/jpeg" style="display:none">
+            <button type= "submit" id="shareButton" >Compartir</button>
+          </div>
+        </section>
+        <section id="sectionPosts">
+          <table id="tablaPosts">
+            <tbody>
+              <tr>
+                <th>
+                  <div id="userPost">
+                    <img class="userPhotoPost" src="img/foto-ejemplo.jpg" alt="Foto del usuario">
+                    <p>Publicado por Mariana López</p>
+                  </div> 
+                  <div id="icon">
+                    <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
+                    <img id="#iconoDelete" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
+                  </div>
+                </th>
+              </tr>
+              <tr>
+                <td id="textPost" class="textPost" >
+                  <pre class="datePost">${new Date().toLocaleString('en-ES')}</pre>
+                  The user-select property specifies whether the text of an element can be selected.
+                  In web browsers, if you double-click on some text it will be selected/highlighted. This property can be used to prevent this.
+                </td>
+              </tr>
+              <tr>
+                <td id="userImage" style="display: none;"></td>
+              </tr>
+              <tr>
+                <td>
+                  <img id="logoLike" src="img/megusta.png" alt="Botón me gusta">
+                  <img id="logoComent" src="img/comentario.png" alt="Botón comentar">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+         </section>
+        </section>
+    </section>`;
 
   // Templates de publicaciones
   function postTemplate(photoUser, nameUser, datePublication, postUser, IDdocumento) {

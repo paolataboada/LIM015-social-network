@@ -8,30 +8,32 @@ export default () => {
   document.querySelector('nav').style.display = 'none';
   document.querySelector('footer').style.display = 'none';
   const divElement = document.createElement('div');
-  divElement.setAttribute('id', 'containerRegistro');
+  divElement.setAttribute('class', 'containerLogin');
   divElement.innerHTML = `
-    <div id="logoPrincipal">
-      <figure><img src="img/logo-azul.png"></figure>
-      <h2>Social Health</h2>
-    </div>
-    <div id="dataLogIn"> 
-      <p id="welcome">¡Bienvenid@ a Social Health!</p>
-      <form id="signIn" method='POST'>
-        <input type="email" placeholder="Email" id="emailLogIn" minlength="5" required>
-        <p id="errorEmailLogIn">Cuenta no encontrada o incorrecta</p>
-        <input type="password" placeholder="Contraseña" id="contraseñaLogIn" minlength="5" required>
-        <p id="errorPassLogIn">Contraseña de logueo incorrecta</p>
-        <button id="btnEntrar">Ingresar</button>
-      </form>
-    </div>
-    <div id="signUp">
-      <p>O bien ingresa con:</p>
-      <div id="logosRegister">
-        <img id="fb" src="img/Facebook.png">
-        <img id="google" src="img/Google.png">
+    <section class="containerLoginPage">
+      <div id="logoPrincipal" class="containerMainLogo">
+        <figure><img src="img/logo-azul.png"></figure>
+        <h2 class="logoFooter">Social Health</h2>
       </div>
-      <p>¿No tienes una cuenta?<a id="btnRegistrar" href="#/registro"> Regístrate</a></p>
-    </div> `;
+      <div id="dataLogIn" class="firstSubcontainerLogin"> 
+        <p class="welcomePhrase">¡Bienvenid@ a Social Health!</p>
+        <form id="signIn" class="loginForm" method='POST'>
+          <input type="email" id="emailLogIn" class="inputLogin" placeholder="Email" minlength="5" required>
+          <p id="errorEmailLogIn" class="errorLogin">Cuenta no encontrada o incorrecta</p>
+          <input type="password" id="contraseñaLogIn" class="inputLogin" placeholder="Contraseña" minlength="5" required>
+          <p id="errorPassLogIn" class="errorLogin">Contraseña de logueo incorrecta</p>
+          <button id="btnEntrar" class="loginButton">Ingresar</button>
+        </form>
+      </div>
+      <div id="subcontainerLogIn" class="secondSubcontainerLogIn">
+        <p class="enterWith">O bien ingresa con:</p>
+        <div id="logosRegister" class="registerWith">
+          <img id="fb" class="logoSN" src="img/Facebook.png">
+          <img id="google" class="logoSN" src="img/Google.png">
+        </div>
+        <p class="enterWith">¿No tienes una cuenta?<a id="btnRegistrar" class="registerButton" href="#/registro"> Regístrate</a></p>
+      </div>
+    </div>`;
 
   const btnIngresar = divElement.querySelector('#btnEntrar');
   btnIngresar.addEventListener('click', (e) => {

@@ -8,8 +8,7 @@ body {
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 /* Vista Modal */
-
-#modal {
+.containerRegister {
   display: flex;
   flex-flow: column;
   justify-items: center;
@@ -29,17 +28,16 @@ body {
   overflow: hidden;
 }
 @media (max-width: 768px) {
-  #modal {
+  .containerRegister {
     width: 60%;
   }
 }
 @media (max-width: 300px) {
-  #modal {
+  .containerRegister {
     width: 85%;
   }
 }
-#modal a {
-  /* position: relative; */
+.closeModal {
   font-family: Arial, Helvetica, sans-serif;
   right: 0;
   font-weight: 520;
@@ -50,16 +48,16 @@ body {
   padding: 15px 15px 0px 0px;
   float: right;
 }
-#signUp p a {
+.registerButton {
   color: #000;
   font-weight: bold;
   text-decoration: none;
 }
-#modal a:hover {
+.registerButton:hover {
   cursor: pointer;
   opacity: 0.7;
 }
-#modal h2 {
+.headerModal {
   color: #24baac;
   margin: 40px 0 50px 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
@@ -67,13 +65,13 @@ body {
   font-size: 26px;
   font-weight: bolder;
 }
-#container-modal {
+.registrationForm {
   margin: 0px 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-#container-modal input {
+.inputRegister {
   width: 270px;
   margin: 0px 0 5px 0;
   position: center;
@@ -84,10 +82,7 @@ body {
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
   outline: none;
 }
-#container-modal #errorNameSignUp,
-#container-modal #errorEmailSignUp,
-#container-modal #errorPassSignUp,
-#container-modal #errorPassConfSignUp {
+.errorRegister {
   font-size: 14px;
   color: #e00909;
   align-self: flex-start;
@@ -96,14 +91,14 @@ body {
   visibility: hidden;
 }
 @media (max-width: 768px) {
-  #container-modal input {
+  .inputRegister {
     width: 100%;
   }
 }
-#container-modal input::placeholder {
+.inputRegister::placeholder {
   font-size: 17px;
 }
-#container-modal button {
+.buttonSendData {
   width: 180px;
   padding: 10px 40px;
   margin-bottom: 25px;
@@ -131,7 +126,7 @@ body {
   background: #184e77;
   cursor: pointer;
 }
-#dataLogIn form button {
+.loginButton {
   width: 180px;
   justify-content: center;
   position: center;
@@ -150,58 +145,49 @@ body {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   cursor: pointer;
 }
-#container-modal button:hover {
+.loginButton:hover {
+  color: #000;
+}
+.buttonSendData:hover { /* mover a la línea 116 */
   opacity: 0.9;
   cursor: pointer;
 }
-/* Vista Registro */
-#containerRegistro {
-  /* background-image: url(img/img-fondo.jpg); */
-  /* background-color: rgba(5, 28, 39, 0.4); */
-  /* background-repeat: no-repeat; */
-  /* background-size: cover; */
+/* Vista Iniciar Sesión */
+.containerLogin {
   display: flex;
   flex-flow: column;
   justify-content: center;
   align-items: center;
-  /* background: #fdf8f8; */
   padding: 30px 0;
 }
-#containerRegistro .background{
-  background-image: url(img/img-fondo.jpg);
-  /* background-color: rgba(5, 28, 39, 0.4); */
-  background-repeat: no-repeat;
-  background-size: cover;
-  opacity: .5;
-}
-#logoPrincipal {
-  margin-top: 90px;
+.containerMainLogo {
+  margin-top: 70px;
   display: flex;
   flex-flow: column;
   align-items: center;
   color: #24baac;
 }
-#logoPrincipal h2 {
+.logoFooter {
   font-size: 28px;
 }
-#dataLogIn {
+.firstSubcontainerLogin {
   margin: 40px 0;
   display: flex;
   flex-flow: column;
   align-items: center;
 }
-#dataLogIn #welcome {
+.welcomePhrase {
   margin-bottom: 35px;
   align-self: center;
   font-size: 17px;
 }
-#dataLogIn form {
+.loginForm {
   display: flex;
   flex-flow: column;
   flex-direction: column;
   align-items: center;
 }
-#dataLogIn form input {
+.inputLogin {
   width: 270px;
   margin: 10px 0 5px 0;
   padding: 14px 20px;
@@ -211,40 +197,59 @@ body {
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
   outline: none;
 }
-#dataLogIn form input::placeholder {
+.inputLogin::placeholder {
   font-size: 17px;
   background-image: url(img/flecha.png);
   background-repeat: no-repeat;
   background-position: right center;
 }
-#dataLogIn #errorEmailLogIn,
-#dataLogIn #errorPassLogIn {
+.errorLogin {
   font-size: 14px;
   color: #e00909;
   align-self: flex-start;
   padding-left: 15px;
   visibility: hidden;
 }
-#signUp {
+.secondSubcontainerLogIn {
   display: flex;
   flex-flow: column;
   align-items: center;
 }
-#signUp p {
+.enterWith {
   margin: 16px 0;
   font-size: 16px;
 }
-
-#logosRegister {
+.registerWith {
   display: flex;
   width: 100px;
   flex-flow: row;
   justify-content: space-between;
 }
-#google {
+.logoSN {
   cursor: pointer;
 }
-
+.logoSN:hover {
+  opacity: 0.7;
+}
+@media (min-width: 768px) {
+  .containerLogin {
+    background-image: url(img/cover-page.png);
+  }
+  .containerLoginPage {
+    background: linear-gradient(#ffffff, #ffffff10);
+    width: 40%;
+  }
+  .containerMainLogo {
+    margin-top: 40px;
+  }
+  .welcomePhrase {
+    margin-bottom: 30px;
+  }
+  .inputLogin {
+    width: 260px;
+    margin: 5px 0;
+  }
+}
 /* Vista Inicio */
 #containerInicio {
   display: flex;

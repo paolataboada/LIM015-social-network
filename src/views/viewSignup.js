@@ -7,19 +7,19 @@ import {
 export default () => {
   const divElement = document.createElement('div');
   divElement.innerHTML = `
-    <section id="modal">
-      <a href="#/">x</a>
-      <h2>Registro de Usuario </h2>
-      <form id="container-modal">
-          <input type="text" id="usuario" placeholder="Nombre de usuario" autocomplete="off">
-          <p id="errorNameSignUp" >Por favor ingrese su nombre</p>
-          <input type="email" id="e-mail" placeholder="Email" autocomplete="off">
-          <p id="errorEmailSignUp">Ingrese un correo electrónico</p>
-          <input type="password" id="contraseña" placeholder="Contraseña" autocomplete="off">
-          <p id="errorPassSignUp">Debe contener más de 6 caracteres</p>
-          <input type="password" id="confirmarContraseña" placeholder="Confirmar contraseña" autocomplete="off">
-          <p id="errorPassConfSignUp">Las contraseñas no coinciden</p>
-          <button type="submit" id="btnEnviar">Enviar</button>
+    <section id="modal" class="containerRegister">
+      <a class="closeModal"href="#/">x</a>
+      <h2 class="headerModal">Registro de Usuario </h2>
+      <form id="container-modal" class="registrationForm">
+        <input type="text" id="usuario" class="inputRegister" placeholder="Nombre de usuario" autocomplete="off">
+        <p id="errorNameSignUp" class="errorRegister">Por favor ingrese su nombre</p>
+        <input type="email" id="e-mail" class="inputRegister" placeholder="Email" autocomplete="off">
+        <p id="errorEmailSignUp" class="errorRegister">Ingrese un correo electrónico</p>
+        <input type="password" id="contraseña" class="inputRegister" placeholder="Contraseña" autocomplete="off">
+        <p id="errorPassSignUp" class="errorRegister">Debe contener más de 6 caracteres</p>
+        <input type="password" id="confirmarContraseña" class="inputRegister" placeholder="Confirmar contraseña" autocomplete="off">
+        <p id="errorPassConfSignUp" class="errorRegister">Las contraseñas no coinciden</p>
+        <button type="submit" id="btnEnviar" class="buttonSendData">Enviar</button>
       </form>
     </section> `;
 

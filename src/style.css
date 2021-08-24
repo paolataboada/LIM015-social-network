@@ -432,7 +432,7 @@ body {
   width: 35px;
   height: 35px;
 }
-#logoLike:active {
+/* #logoLike:active {
   background: #c74c4c;
   border: none;
   transform: scale(1.2);
@@ -441,4 +441,4 @@ body {
   background: #c9c9c9;
   border: none;
   transform: scale(1.2);
-}
+} */

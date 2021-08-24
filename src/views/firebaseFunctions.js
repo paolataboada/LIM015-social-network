@@ -94,6 +94,7 @@ export function addPosts(name, postText, userPost) {
     userWhoPublishes: name,
     publishedText: postText.value,
     publicationDate: new Date().toLocaleString('en-ES'),
+    likesPost: 10,
   });
 }
 
@@ -110,9 +111,7 @@ export function deletePosts(docId) {
 }
 
 // Agregando datos al doc (data likeCounter)
-export function updateLikes(docId, count) {
+export function updateLikes(docId, likesPost) {
   const db = firebase.firestore();
-  return db.collection('posts').doc(docId).update({
-    counterLikes: count,
-  });
+  return db.collection('posts').doc(docId).update({ likesPost });
 }

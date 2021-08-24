@@ -77,7 +77,7 @@ export default () => {
     </section>`;
 
   // Templates de publicaciones
-  function postTemplate(photoUser, nameUser, datePublication, postUser, IDdocumento) {
+  function postTemplate(photoUser, nameUser, datePublication, postUser, IDdocumento, likesCount) {
     const tabla = divElement.querySelector('#tablaPosts');
     tabla.innerHTML += `
         <tbody>
@@ -105,7 +105,7 @@ export default () => {
           <tr>
             <td>
               <img id="logoLike" class="iconoLike" data-like="${IDdocumento}" src="img/megusta.png" style="margin-right: 5px;" alt="Botón me gusta">
-              <span id="${IDdocumento}" style="margin-right: 10px; align-self: center;">0</span>
+              <span id="${IDdocumento}" style="margin-right: 10px; align-self: center;">${likesCount}</span>
               <img id="logoComent" src="img/comentario.png" style="margin-right: 5px;" alt="Botón comentar">
               <span style="margin-right: 10px; align-self: center;">0</span>
             </td>
@@ -163,8 +163,9 @@ export default () => {
         const nombreUsuario = doc.data().userWhoPublishes;
         const fechaPost = doc.data().publicationDate;
         const textoPost = doc.data().publishedText;
+        const likes = doc.data().likesPost;
         const idDocumento = doc.id;
-        postTemplate(fotoUsuario, nombreUsuario, fechaPost, textoPost, idDocumento);
+        postTemplate(fotoUsuario, nombreUsuario, fechaPost, textoPost, idDocumento, likes);
 
         // Funcionalidad para eliminar
         const btnDelete = divElement.querySelectorAll('.iconoDelete');
@@ -182,18 +183,15 @@ export default () => {
         // Funcionalidad para dar like
         const btnLike = divElement.querySelectorAll('.iconoLike');
         btnLike.forEach((like) => {
-          let counter = 0;
           like.addEventListener('click', (e) => {
-            counter += 1;
+            const counter = [likes + 1];
+            const reducer = (accumulator, curr) => accumulator + curr;
+            /* console.log(counter);
+            console.log(counter.reduce(reducer)); */
             const changeSpan = divElement.querySelector(`#${e.target.dataset.like}`);
-            changeSpan.innerHTML = counter;
+            changeSpan.innerHTML = counter.reduce(reducer);
             e.target.style.background = '#c74c4c';
-            /* updateLikes(e.target.dataset.like, counter)
-              .then(() => {
-                const changeSpan = divElement.querySelector(`#${e.target.dataset.like}`);
-                changeSpan.innerHTML = doc.data().counterLikes;
-                e.target.style.background = '#c74c4c';
-              }); */
+            updateLikes(e.target.dataset.like, counter.reduce(reducer));
           });
         }); // FIN
       });

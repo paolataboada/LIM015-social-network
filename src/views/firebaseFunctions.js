@@ -108,3 +108,11 @@ export function deletePosts(docId) {
   const db = firebase.firestore();
   return db.collection('posts').doc(docId).delete();
 }
+
+// Agregando datos al doc (data likeCounter)
+export function updateLikes(docId, count) {
+  const db = firebase.firestore();
+  return db.collection('posts').doc(docId).update({
+    counterLikes: count,
+  });
+}

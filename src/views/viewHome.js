@@ -3,6 +3,7 @@ import {
   addPosts,
   onSnapshotPosts,
   deletePosts,
+  /* updateLikes, */
 } from './firebaseFunctions.js';
 
 export default () => {
@@ -103,8 +104,10 @@ export default () => {
           </tr>
           <tr>
             <td>
-              <img id="logoLike" src="img/megusta.png" alt="Botón me gusta">
-              <img id="logoComent" src="img/comentario.png" alt="Botón comentar">
+              <img id="logoLike" class="iconoLike" data-like="${IDdocumento}" src="img/megusta.png" style="margin-right: 5px;" alt="Botón me gusta">
+              <span id="${IDdocumento}" style="margin-right: 10px; align-self: center;">0</span>
+              <img id="logoComent" src="img/comentario.png" style="margin-right: 5px;" alt="Botón comentar">
+              <span style="margin-right: 10px; align-self: center;">0</span>
             </td>
           </tr>
         </tbody>
@@ -152,7 +155,7 @@ export default () => {
   // Mostrar todos los posts de la colección
   const tabla = divElement.querySelector('#tablaPosts');
   onSnapshotPosts().orderBy('publicationDate', 'desc')
-  // firebase.firestore().collection('postss').orderBy('publicationDate', 'desc')
+    // firebase.firestore().collection('postss').orderBy('publicationDate', 'desc')
     .onSnapshot((querySnapshot) => {
       tabla.innerHTML = '';
       querySnapshot.forEach((doc) => {
@@ -167,20 +170,36 @@ export default () => {
         const btnDelete = divElement.querySelectorAll('.iconoDelete');
         btnDelete.forEach((boton) => {
           boton.addEventListener('click', (e) => {
-            console.log(e.target.dataset.post);
-            deletePosts(e.target.dataset.post)
-              .then(() => {
-                console.log('Document successfully deleted!');
-              })
-              .catch((error) => {
-                console.error('Error removing document: ', error);
-              });
+            const confirmar = window.confirm('¿Estás seguro de que deseas borrar este post?');
+            if (confirmar) {
+              // console.log(e.target.dataset.post);
+              deletePosts(e.target.dataset.post);
+              console.log(userName.textContent, nombreUsuario);
+            }
           });
         });
+
+        // Funcionalidad para dar like
+        const btnLike = divElement.querySelectorAll('.iconoLike');
+        btnLike.forEach((like) => {
+          let counter = 0;
+          like.addEventListener('click', (e) => {
+            counter += 1;
+            const changeSpan = divElement.querySelector(`#${e.target.dataset.like}`);
+            changeSpan.innerHTML = counter;
+            e.target.style.background = '#c74c4c';
+            /* updateLikes(e.target.dataset.like, counter)
+              .then(() => {
+                const changeSpan = divElement.querySelector(`#${e.target.dataset.like}`);
+                changeSpan.innerHTML = doc.data().counterLikes;
+                e.target.style.background = '#c74c4c';
+              }); */
+          });
+        }); // FIN
       });
     });
 
-  // Funcion para cerar sesión
+  // Funcion para cerrar sesión
   const btnSalir = divElement.querySelector('#btnSalir');
   btnSalir.addEventListener('click', () => {
     const confirmar = window.confirm('¿Estás seguro de que deseas salir?');

@@ -264,10 +264,11 @@ body {
 .btnSalir:hover {
   cursor: pointer;
 }
-#infoUsuario {
+#datosUser{
   display: flex;
   flex-flow: row;
   align-items: center;
+  margin-left: 12px;
 }
 .portada{
   display:none;
@@ -283,10 +284,10 @@ body {
   cursor: pointer;
   overflow: hidden;
 }
-/* #infoUsuario figure img {
+#infoUsuario figure img {
   height: 120px;
   width: 120px;
-} */
+}
 .userName {
   color: #24baac;
   font-size: 20px;
@@ -297,22 +298,38 @@ body {
   color: #837777;
 }
 @media (min-width: 600px) {
-  #infoUsuario figure {
-    width: 200px;
-    height: 200px;
-    margin-left: 60px;
-    margin-right: 50px;
+  #pantallaView {
+    display: flex;
+    margin-left:50px;
+    margin-top:35px;
   }
-  .userPhoto {
-    height: 200px;
-    width: 200px;
+  #infoUsuario{
+    display: flex;
+    flex-flow: wrap;
+    align-items: center;
+    margin-left: 12px;
+    border-radius: 10px;
+    border: 1px solid #184e77;;
+    margin-bottom: 2000px;
+    margin-left: 0px;
+    margin-top: px;
+    width: 34%;
   }
-  .userName{
-    font-size: 26px;
-    padding-bottom: 10px;
+  .portada{
+    background-image: url(img/fondoPortada.jpg);
+    background-size:cover;
+    display: flex;
+    width: 436px;
+    height: 170px;
   }
-  .userDescription{
-    font-size: 24px;
+  #nameDescription{
+    flex-flow: wrap;
+  }
+  #bloquePosts {
+    width: 90%;
+  }
+  #sectionPosts{
+    margin-top: 40px;
   }
 }
 #escribirPost {

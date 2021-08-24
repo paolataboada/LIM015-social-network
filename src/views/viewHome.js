@@ -18,13 +18,15 @@ export default () => {
     </section>
     <section id= "pantallaView">
       <section id="infoUsuario">
-        <img class="portada" src="img/fondoPortada.jpg">
-        <figure>
-          <img id="userPhoto" class="userPhoto" src="img/foto-ejemplo.jpg" alt="Foto del usuario">
-        </figure>
-        <div>
-          <h4 id="userName" class="userName">Name User</h4>
-          <p id="userDescription" class="userDescription">Description User</p>
+        <img class="portada" >
+        <div id ="datosUser">
+          <figure>
+            <img id="userPhoto" class="userPhoto" src="img/foto-ejemplo.jpg" alt="Foto del usuario">
+          </figure>
+          <section id="nameDescription">
+            <h4 id="userName" class="userName">Name User</h4>
+            <p id="userDescription" class="userDescription">Description User</p>
+          </section>
         </div>
       </section>
       <section id= "bloquePosts">
@@ -45,7 +47,7 @@ export default () => {
                     <img class="userPhotoPost" src="img/foto-ejemplo.jpg" alt="Foto del usuario">
                     <p>Publicado por Mariana López</p>
                   </div> 
-                  <div id="icon">
+                  <div>
                     <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
                     <img id="#iconoDelete" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
                   </div>
@@ -59,7 +61,7 @@ export default () => {
                 </td>
               </tr>
               <tr>
-                <td id="userImage" style="display: none;"></td>
+                <td id="picturePost" style="display: none;"></td>
               </tr>
               <tr>
                 <td>

@@ -103,6 +103,14 @@ export function onSnapshotPosts() {
   return db.collection('posts');
 }
 
+// Editando documentos de la coleccion pots
+export function updatePosts(docId, newText) {
+  const db = firebase.firestore();
+  return db.collection('posts').doc(docId).update({
+    publishedText: newText,
+  });
+}
+
 // Eliminando documentos de la coleccion posts
 export function deletePosts(docId) {
   const db = firebase.firestore();
@@ -116,3 +124,4 @@ export function updateLikes(docId, count) {
     counterLikes: count,
   });
 }
+

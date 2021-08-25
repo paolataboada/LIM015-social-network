@@ -2,6 +2,7 @@ import {
   getDataUser,
   addPosts,
   onSnapshotPosts,
+  updatePosts,
   deletePosts,
   /* updateLikes, */
 } from './firebaseFunctions.js';
@@ -49,7 +50,7 @@ export default () => {
                     <p>Publicado por Mariana López</p>
                   </div> 
                   <div>
-                    <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
+                    <img id="iconoEdit" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar">
                     <img id="#iconoDelete" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
                   </div>
                 </th>
@@ -88,8 +89,8 @@ export default () => {
                 <p>${nameUser}</p>
               </div> 
             <div>  
-                <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
-                <img id="#iconoDelete" data-post="${IDdocumento}" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
+                <img id="iconoEdit" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar">
+                <img id="iconoDelete" data-post="${IDdocumento}" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
             </div>
             </th>
           </tr>
@@ -165,6 +166,15 @@ export default () => {
         const textoPost = doc.data().publishedText;
         const idDocumento = doc.id;
         postTemplate(fotoUsuario, nombreUsuario, fechaPost, textoPost, idDocumento);
+
+        // Funcionalidad para editar posts
+        const btnEdit = divElement.querySelectorAll('.iconoEdit');
+        btnEdit.forEach((botonEdit) => {
+          botonEdit.addEventListener('click', (e) => {
+            // updatePosts(e.target.dataset.post, userName.textContent);
+            console.log('editando');
+          });
+        });
 
         // Funcionalidad para eliminar
         const btnDelete = divElement.querySelectorAll('.iconoDelete');

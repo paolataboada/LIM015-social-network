@@ -467,3 +467,4 @@ body {
   border: none;
   transform: scale(1.2);
 } */
+#shareButton:active { opacity: 0.7; transform: scale(1.1);}

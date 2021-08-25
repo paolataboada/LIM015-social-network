@@ -3,7 +3,7 @@ import {
   addPosts,
   onSnapshotPosts,
   deletePosts,
-  /* updateLikes, */
+  updateLikes,
 } from './firebaseFunctions.js';
 
 export default () => {
@@ -33,51 +33,20 @@ export default () => {
       <section id= "bloquePosts">
         <section id="escribirPost">
           <textarea id="textToPost" class="textToPost" placeholder="¿Qué quieres compartir?"></textarea>
-          <div class= "icons">
-            <img id="btnFile" class="btnFile" src="img/agregar-img.png" alt="Botón para cargar imagen">
+          <div class= "icons" style="justify-content: flex-end;">
+            <img id="btnFile" class="btnFile" src="img/agregar-img.png" alt="Botón para cargar imagen" style="display:none">
             <input id="subirFile" type="file" accept="image/jpeg" style="display:none">
-            <button type= "submit" id="shareButton" >Compartir</button>
+            <button type="submit" id="shareButton">Compartir</button>
           </div>
         </section>
         <section id="sectionPosts">
-          <table id="tablaPosts">
-            <tbody>
-              <tr>
-                <th>
-                  <div id="userPost">
-                    <img class="userPhotoPost" src="img/foto-ejemplo.jpg" alt="Foto del usuario">
-                    <p>Publicado por Mariana López</p>
-                  </div> 
-                  <div>
-                    <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
-                    <img id="#iconoDelete" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
-                  </div>
-                </th>
-              </tr>
-              <tr>
-                <td id="textPost" class="textPost" >
-                  <pre class="datePost">${new Date().toLocaleString('en-ES')}</pre>
-                  The user-select property specifies whether the text of an element can be selected.
-                  In web browsers, if you double-click on some text it will be selected/highlighted. This property can be used to prevent this.
-                </td>
-              </tr>
-              <tr>
-                <td id="picturePost" style="display: none;"></td>
-              </tr>
-              <tr>
-                <td>
-                  <img id="logoLike" src="img/megusta.png" alt="Botón me gusta">
-                  <img id="logoComent" src="img/comentario.png" alt="Botón comentar">
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <table id="tablaPosts"></table>
          </section>
         </section>
     </section>`;
 
   // Templates de publicaciones
-  function postTemplate(photoUser, nameUser, datePublication, postUser, IDdocumento, likesCount) {
+  function postTemplate(photoUser, nameUser, datePublication, postUser, IDdocumento, finalCount) {
     const tabla = divElement.querySelector('#tablaPosts');
     tabla.innerHTML += `
         <tbody>
@@ -105,7 +74,7 @@ export default () => {
           <tr>
             <td>
               <img id="logoLike" class="iconoLike" data-like="${IDdocumento}" src="img/megusta.png" style="margin-right: 5px;" alt="Botón me gusta">
-              <span id="${IDdocumento}" style="margin-right: 10px; align-self: center;">${likesCount}</span>
+              <span id="${IDdocumento}" style="margin-right: 10px; align-self: center;">${finalCount}</span>
               <img id="logoComent" src="img/comentario.png" style="margin-right: 5px;" alt="Botón comentar">
               <span style="margin-right: 10px; align-self: center;">0</span>
             </td>
@@ -183,15 +152,13 @@ export default () => {
         // Funcionalidad para dar like
         const btnLike = divElement.querySelectorAll('.iconoLike');
         btnLike.forEach((like) => {
+          let counter = 0;
           like.addEventListener('click', (e) => {
-            const counter = [likes + 1];
-            const reducer = (accumulator, curr) => accumulator + curr;
-            /* console.log(counter);
-            console.log(counter.reduce(reducer)); */
+            counter += 1;
             const changeSpan = divElement.querySelector(`#${e.target.dataset.like}`);
-            changeSpan.innerHTML = counter.reduce(reducer);
+            changeSpan.innerHTML = counter;
             e.target.style.background = '#c74c4c';
-            updateLikes(e.target.dataset.like, counter.reduce(reducer));
+            /* updateLikes(e.target.dataset.like, counter += 1); */
           });
         }); // FIN
       });

@@ -457,14 +457,20 @@ body {
   width: 35px;
   height: 35px;
 }
-/* #logoLike:active {
+#logoLike:active {
   background: #c74c4c;
   border: none;
-  transform: scale(1.2);
+  transform: scale(0.7);
 }
-#logoComent:active {
+/* #logoComent:active {
   background: #c9c9c9;
   border: none;
   transform: scale(1.2);
 } */
-#shareButton:active { opacity: 0.7; transform: scale(1.1);}
+#shareButton:active { 
+  transform: scale(0.9);
+}
+.painted {
+  background: #c74c4c;
+  border: none;
+}

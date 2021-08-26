@@ -58,8 +58,10 @@ export default () => {
               <tr>
                 <td id="textPost" class="textPost" >
                   <pre class="datePost">${new Date().toLocaleString('en-ES')}</pre>
+                  <textarea>
                   The user-select property specifies whether the text of an element can be selected.
                   In web browsers, if you double-click on some text it will be selected/highlighted. This property can be used to prevent this.
+                  </textarea>
                 </td>
               </tr>
               <tr>
@@ -89,7 +91,7 @@ export default () => {
                 <p>${nameUser}</p>
               </div> 
             <div>  
-                <img id="iconoEdit" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar">
+                <img id="iconoEdit" data-edit="${IDdocumento}" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar">
                 <img id="iconoDelete" data-post="${IDdocumento}" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
             </div>
             </th>
@@ -97,7 +99,7 @@ export default () => {
           <tr>
             <td id="textPost" class="textPost">
               <pre class="datePost">${datePublication}</pre>
-              ${postUser}
+               ${postUser}
             </td>
           </tr>
           <tr>
@@ -170,9 +172,22 @@ export default () => {
         // Funcionalidad para editar posts
         const btnEdit = divElement.querySelectorAll('.iconoEdit');
         btnEdit.forEach((botonEdit) => {
-          botonEdit.addEventListener('click', (e) => {
-            // updatePosts(e.target.dataset.post, userName.textContent);
-            console.log('editando');
+          botonEdit.addEventListener('click', (e, textEdit) => {
+            divElement.querySelectorAll('#textToPosts').value = textEdit;
+            const submitEditar = divElement.querySelectorAll('#shareButton');
+            submitEditar.innerHTML = 'Editar';
+            submitEditar.addEventListener('click', () => {
+              const nuevoTexto = divElement.querySelectorAll('#textToPosts').value;
+              updatePosts(e.target.dataset.edit, nuevoTexto /* userName.textContent */)
+                .then(() => {
+                  console.log('Document successfully updated!');
+                  submitEditar.innerHTML = 'Compartir';
+                })
+                .catch((error) => {
+                // The document probably doesn't exist.
+                  console.error('Error updating document: ', error);
+                });
+            });
           });
         });
 

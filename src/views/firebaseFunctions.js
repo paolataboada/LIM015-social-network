@@ -124,4 +124,3 @@ export function updateLikes(docId, count) {
     counterLikes: count,
   });
 }
-

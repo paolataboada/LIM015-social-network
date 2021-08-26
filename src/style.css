@@ -440,7 +440,7 @@ body {
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
-#logoLike {
+.iconoLike {
   padding: 5px;
   border-radius: 50%;
   border: 1px solid #5da6a6;
@@ -457,12 +457,12 @@ body {
   width: 35px;
   height: 35px;
 }
-#logoLike:active {
+/* #logoLike:active {
   background: #c74c4c;
   border: none;
   transform: scale(0.7);
 }
-/* #logoComent:active {
+#logoComent:active {
   background: #c9c9c9;
   border: none;
   transform: scale(1.2);

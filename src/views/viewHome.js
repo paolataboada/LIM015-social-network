@@ -74,7 +74,7 @@ export default () => {
           </tr>
           <tr>
             <td>
-              <img id="logoLike" class="iconoLike" data-like="${IDdocumento}" src="img/megusta.png" style="margin-right: 5px;" alt="Botón me gusta">
+              <img id="like-${IDdocumento}" class="iconoLike" data-like="${IDdocumento}" src="img/megusta.png" style="margin-right: 5px;" alt="Botón me gusta">
               <span style="margin-right: 10px; align-self: center;">${upLike}</span>
               <img id="logoComent" src="img/comentario.png" style="margin-right: 5px;" alt="Botón comentar">
               <span style="margin-right: 10px; align-self: center;">0</span>
@@ -145,20 +145,31 @@ export default () => {
         const btnLike = divElement.querySelectorAll('.iconoLike');
         btnLike.forEach((like) => {
           like.addEventListener('click', (e) => {
-            // console.log(e.target);
+            /* const button = document.getElementById('button');
+            function myFunction() {
+              const element = document.getElementById('myDIV');
+              element.classList.toggle('mystyle');
+            }
+            button.addEventListener('click', myFunction); */
+
+            /* console.log(e.target); */
             if (e.target.classList.contains('painted')) {
               // e.target.style.background = 'none';
-              e.target.classList.remove('painted');
+              /* e.target.classList.remove('painted'); */
               firebase.firestore().collection('posts').doc(e.target.dataset.like).update({
                 likesPost: firebase.firestore.FieldValue.arrayRemove(idUsuario),
               });
+              /* const varrr = document.getElementById(`${e.target.id}`);
+              varrr.classList.remove('painted'); */
             } else {
+              // console.log(e.target.id);
               // e.target.classList.toggle('painted');
               // e.target.style.background = '#c74c4c';
-              e.target.classList.add('painted');
               firebase.firestore().collection('posts').doc(e.target.dataset.like).update({
                 likesPost: firebase.firestore.FieldValue.arrayUnion(idUsuario),
               });
+              /* const varrr = document.getElementById(`${e.target.id}`);
+              varrr.classList.add('painted'); */
             }
           });
         }); // FIN

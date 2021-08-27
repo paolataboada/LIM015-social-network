@@ -49,7 +49,7 @@ export default () => {
     </section>`;
 
   // Templates de publicaciones
-  function postTemplate(photoUser, nameUser, datePublication, postUser, IDdocumento, upLike) {
+  function postTemplate(photoUser, nameUser, datePublication, postUser, IDdocumento, upLike, colorLike) {
     const tabla = divElement.querySelector('#tablaPosts');
     tabla.innerHTML += `
         <tbody>
@@ -76,7 +76,7 @@ export default () => {
           </tr>
           <tr>
             <td>
-              <img id="like-${IDdocumento}" class="iconoLike" data-like="${IDdocumento}" src="img/megusta.png" style="margin-right: 5px;" alt="Botón me gusta">
+              <img id="like-${IDdocumento}" class="iconoLike ${colorLike}" data-like="${IDdocumento}" src="img/megusta.png" style="margin-right: 5px;" alt="Botón me gusta">
               <span style="margin-right: 10px; align-self: center;">${upLike}</span>
               <img id="logoComent" src="img/comentario.png" style="margin-right: 5px;" alt="Botón comentar">
               <span style="margin-right: 10px; align-self: center;">0</span>
@@ -95,7 +95,7 @@ export default () => {
   getDataUser()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => name de registro: ${doc.data().NameRegister} ID: ${doc.data().IdUserActive}`);
+        // console.log(`${doc.id} => name de registro: ${doc.data().NameRegister} ID: ${doc.data().IdUserActive}`);
         // console.log(`Id del usuario: ${user.uid}`);
         if (user.uid === doc.data().IdUserActive) {
           const nombreUsuarioCorreo = doc.data().NameRegister;
@@ -137,38 +137,25 @@ export default () => {
         const idUsuario = user.uid;
         const contadorLike = doc.data().likesPost;
         const idDocumento = doc.id;
-        postTemplate(fotoUsuario, nombreUsuario, fechaPost, textoPost, idDocumento, contadorLike.length);
-
-        firebase.firestore().collection('posts').doc(doc.id).update({
-          idDocumento: doc.id,
-        });
+        // eslint-disable-next-line no-nested-ternary
+        const btnHeart = (contadorLike.indexOf(idUsuario) !== -1) ? 'painted' : '';
+        postTemplate(fotoUsuario, nombreUsuario, fechaPost, textoPost, idDocumento, contadorLike.length, btnHeart);
 
         // Funcionalidad para dar like
         const btnLike = divElement.querySelectorAll('.iconoLike');
         btnLike.forEach((like) => {
           like.addEventListener('click', (e) => {
             if (!e.target.classList.contains('painted')) {
-              e.target.classList.add('painted');
               firebase.firestore().collection('posts').doc(e.target.dataset.like).update({
                 likesPost: firebase.firestore.FieldValue.arrayUnion(idUsuario),
               });
-              /* const eTargetId = document.getElementById(`${e.target.id}`);
-              eTargetId.addEventListener('click', () => {
-                eTargetId.classList.remove('painted');
-              }); */
-              // eTargetId.classList.remove('painted');
             } else {
-              e.target.classList.remove('painted');
               firebase.firestore().collection('posts').doc(e.target.dataset.like).update({
                 likesPost: firebase.firestore.FieldValue.arrayRemove(idUsuario),
               });
-              /* const eTargetId = document.getElementById(`${e.target.id}`);
-              eTargetId.addEventListener('click', () => {
-                eTargetId.classList.add('painted');
-              }); */
             }
           });
-        }); // FIN
+        });
 
         // Funcionalidad para eliminar
         const btnDelete = divElement.querySelectorAll('.iconoDelete');

@@ -39,7 +39,7 @@ export default () => {
           <div class= "icons" style="justify-content: flex-end;">
             <img id="btnFile" class="btnFile" src="img/agregar-img.png" alt="Botón para cargar imagen" style="display:none">
             <input id="subirFile" type="file" accept="image/jpeg" style="display:none">
-            <button type="submit" id="shareButton">Compartir</button>
+            <button id="shareButton">Compartir</button>
           </div>
         </section>
         <section id="sectionPosts">
@@ -203,11 +203,16 @@ export default () => {
             submitEditar.innerHTML = 'Editar';
             submitEditar.addEventListener('click', () => {
               const nuevoTexto = divElement.querySelector('#textToPost').value;
-              updatePosts(e.target.dataset.edit, nuevoTexto)
+              console.log(idPost, nuevoTexto);
+              // updatePosts(idPost, nuevoTexto)
+              const db = firebase.firestore();
+              return db.collection('posts').doc(idPost).update({
+                publishedText: nuevoTexto,
+              })
                 .then(() => {
                   console.log('Document successfully updated!');
                   const tablePost = divElement.querySelectorAll('#tablaPosts');
-                  tablePost.innerHTML = '';
+                  tablePost.innerHTML = nuevoTexto;
                   submitEditar.innerHTML = 'Compartir';
                 });
             });

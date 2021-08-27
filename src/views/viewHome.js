@@ -3,7 +3,9 @@ import {
   getDataUser,
   addPosts,
   onSnapshotPosts,
+  updatePosts,
   deletePosts,
+  getPost,
   /* updateLikes, */
 } from './firebaseFunctions.js';
 
@@ -47,7 +49,7 @@ export default () => {
     </section>`;
 
   // Templates de publicaciones
-  function postTemplate(photoUser, nameUser, datePublication, postUser, IDdocumento, upLike) {
+  function postTemplate(photoUser, nameUser, datePublication, postUser, IDdocumento, upLike, colorLike) {
     const tabla = divElement.querySelector('#tablaPosts');
     tabla.innerHTML += `
         <tbody>
@@ -58,15 +60,15 @@ export default () => {
                 <p>${nameUser}</p>
               </div> 
             <div>  
-                <img id="iconoEdit" class="icono-conf" src="img/btn-edit.png" alt="icono de editar">
-                <img id="#iconoDelete" data-post="${IDdocumento}" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
+                <img id="iconoEdit" data-edit="${IDdocumento}" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar">
+                <img id="iconoDelete" data-post="${IDdocumento}" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
             </div>
             </th>
           </tr>
           <tr>
             <td id="textPost" class="textPost">
               <pre class="datePost">${datePublication}</pre>
-              ${postUser}
+              <textarea id="publicacion" style="border:0; resize:none; outline: none; background-color: transparent; overflow: auto;">${postUser}</textarea>
             </td>
           </tr>
           <tr>
@@ -74,7 +76,7 @@ export default () => {
           </tr>
           <tr>
             <td>
-              <img id="like-${IDdocumento}" class="iconoLike" data-like="${IDdocumento}" src="img/megusta.png" style="margin-right: 5px;" alt="Botón me gusta">
+              <img id="like-${IDdocumento}" class="iconoLike ${colorLike}" data-like="${IDdocumento}" src="img/megusta.png" style="margin-right: 5px;" alt="Botón me gusta">
               <span style="margin-right: 10px; align-self: center;">${upLike}</span>
               <img id="logoComent" src="img/comentario.png" style="margin-right: 5px;" alt="Botón comentar">
               <span style="margin-right: 10px; align-self: center;">0</span>
@@ -132,38 +134,28 @@ export default () => {
         const nombreUsuario = doc.data().userWhoPublishes;
         const fechaPost = doc.data().publicationDate;
         const textoPost = doc.data().publishedText;
-        const idUsuario = doc.data().userIdent;
+        const idUsuario = user.uid;
         const contadorLike = doc.data().likesPost;
         const idDocumento = doc.id;
-        postTemplate(fotoUsuario, nombreUsuario, fechaPost, textoPost, idDocumento, contadorLike.length);
+        // eslint-disable-next-line no-nested-ternary
+        const btnHeart = (contadorLike.indexOf(idUsuario) !== -1) ? 'painted' : '';
+        postTemplate(fotoUsuario, nombreUsuario, fechaPost, textoPost, idDocumento, contadorLike.length, btnHeart);
 
         // Funcionalidad para dar like
         const btnLike = divElement.querySelectorAll('.iconoLike');
         btnLike.forEach((like) => {
           like.addEventListener('click', (e) => {
             if (!e.target.classList.contains('painted')) {
-              e.target.classList.add('painted');
-              firebase.firestore().collection('postss').doc(e.target.dataset.like).update({
+              firebase.firestore().collection('posts').doc(e.target.dataset.like).update({
                 likesPost: firebase.firestore.FieldValue.arrayUnion(idUsuario),
               });
-              /* const eTargetId = document.getElementById(`${e.target.id}`);
-              eTargetId.addEventListener('click', () => {
-                eTargetId.classList.remove('painted');
-              }); */
-              // eTargetId.classList.remove('painted');
             } else {
-              e.target.classList.remove('painted');
-              firebase.firestore().collection('postss').doc(e.target.dataset.like).update({
+              firebase.firestore().collection('posts').doc(e.target.dataset.like).update({
                 likesPost: firebase.firestore.FieldValue.arrayRemove(idUsuario),
               });
-              /* const eTargetId = document.getElementById(`${e.target.id}`);
-              eTargetId.addEventListener('click', () => {
-                eTargetId.classList.add('painted');
-              }); */
-              // eTargetId.classList.add('painted');
             }
           });
-        }); // FIN
+        });
 
         // Funcionalidad para eliminar
         const btnDelete = divElement.querySelectorAll('.iconoDelete');
@@ -172,8 +164,40 @@ export default () => {
             const confirmar = window.confirm('¿Estás seguro de que deseas borrar este post?');
             if (confirmar) {
               deletePosts(e.target.dataset.post);
-              console.log(userName.textContent, nombreUsuario);
+              console.log(userName.textContent.value, nombreUsuario);
             }
+          });
+        });
+
+        // const textoAeditar = divElement.querySelector('#publicacion').value;
+
+        // Funcionalidad para editar posts
+        const btnEdit = divElement.querySelectorAll('.iconoEdit');
+        btnEdit.forEach((botonEdit) => {
+          botonEdit.addEventListener('click', (e) => {
+            const idPost = e.target.dataset.edit;
+            // const textPublicado = e.target.dataset.textEditado;
+            console.log(idPost);
+            getPost(e.target.dataset.edit)
+              .then((docu) => {
+                console.log('Document data:', docu.data());
+                const data = docu.data();
+                divElement.querySelector('#textToPost').value = data.publishedText;
+              });
+            // const postData = post.data();
+            // console.log(post.publishedText);
+            const submitEditar = divElement.querySelector('#shareButton');
+            submitEditar.innerHTML = 'Editar';
+            submitEditar.addEventListener('click', () => {
+              const nuevoTexto = divElement.querySelector('#textToPost').value;
+              updatePosts(e.target.dataset.edit, nuevoTexto)
+                .then(() => {
+                  console.log('Document successfully updated!');
+                  const tablePost = divElement.querySelectorAll('#tablaPosts');
+                  tablePost.innerHTML = '';
+                  submitEditar.innerHTML = 'Compartir';
+                });
+            });
           });
         });
       });

@@ -98,7 +98,7 @@ export default () => {
           <tr>
             <td id="textPost" class="textPost">
               <pre class="datePost">${datePublication}</pre>
-              ${postUser}
+              <textarea id="publicacion" style="border:0; resize:none; outline: none; background-color: transparent; overflow: auto;">${postUser}</textarea>
             </td>
           </tr>
           <tr>
@@ -190,8 +190,12 @@ export default () => {
             const idPost = e.target.dataset.edit;
             // const textPublicado = e.target.dataset.textEditado;
             console.log(idPost);
-            getPost(e.target.dataset.edit);
-            console.log(userName.textContent);
+            getPost(e.target.dataset.edit)
+              .then((docu) => {
+                console.log('Document data:', docu.data());
+                const data = docu.data();
+                divElement.querySelector('#textToPost').value = data.publishedText;
+              });
             // const postData = post.data();
             // console.log(post.publishedText);
             const submitEditar = divElement.querySelector('#shareButton');
@@ -201,6 +205,8 @@ export default () => {
               updatePosts(e.target.dataset.edit, nuevoTexto)
                 .then(() => {
                   console.log('Document successfully updated!');
+                  const tablePost = divElement.querySelectorAll('#tablaPosts');
+                  tablePost.innerHTML = '';
                   submitEditar.innerHTML = 'Compartir';
                 });
             });

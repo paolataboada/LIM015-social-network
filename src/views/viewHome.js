@@ -4,6 +4,7 @@ import {
   onSnapshotPosts,
   updatePosts,
   deletePosts,
+  getPost,
   /* updateLikes, */
 } from './firebaseFunctions.js';
 
@@ -58,8 +59,8 @@ export default () => {
               <tr>
                 <td id="textPost" class="textPost" >
                   <pre class="datePost">${new Date().toLocaleString('en-ES')}</pre>
-                  The user-select property specifies whether the text of an element can be selected.
-                  In web browsers, if you double-click on some text it will be selected/highlighted. This property can be used to prevent this.
+                  <textarea id="publicacion">The user-select property specifies whether the text of an element can be selected.
+                  In web browsers, if you double-click on some text it will be selected/highlighted. This property can be used to prevent this.</textarea>
                 </td>
               </tr>
               <tr>
@@ -89,7 +90,11 @@ export default () => {
                 <p>${nameUser}</p>
               </div> 
             <div>  
+<<<<<<< HEAD
                 <img id="iconoEdit" data-publicacion="${IDdocumento}" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar">
+=======
+                <img id="iconoEdit" data-edit="${IDdocumento}" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar">
+>>>>>>> editar
                 <img id="iconoDelete" data-post="${IDdocumento}" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
             </div>
             </th>
@@ -97,7 +102,7 @@ export default () => {
           <tr>
             <td id="textPost" class="textPost">
               <pre class="datePost">${datePublication}</pre>
-              ${postUser}
+              <textarea id="publicacion" style="border:0; resize:none; outline: none; background-color: transparent; overflow: auto;">${postUser}</textarea>
             </td>
           </tr>
           <tr>
@@ -167,6 +172,7 @@ export default () => {
         const idDocumento = doc.id;
         postTemplate(fotoUsuario, nombreUsuario, fechaPost, textoPost, idDocumento);
 
+<<<<<<< HEAD
         // Funcionalidad para editar posts
         const btnEdit = divElement.querySelectorAll('.iconoEdit');
         btnEdit.forEach((botonEdit) => {
@@ -176,6 +182,8 @@ export default () => {
           });
         });
 
+=======
+>>>>>>> editar
         // Funcionalidad para eliminar
         const btnDelete = divElement.querySelectorAll('.iconoDelete');
         btnDelete.forEach((boton) => {
@@ -184,8 +192,40 @@ export default () => {
             if (confirmar) {
               // console.log(e.target.dataset.post);
               deletePosts(e.target.dataset.post);
-              console.log(userName.textContent, nombreUsuario);
+              console.log(userName.textContent.value, nombreUsuario);
             }
+          });
+        });
+
+        // const textoAeditar = divElement.querySelector('#publicacion').value;
+
+        // Funcionalidad para editar posts
+        const btnEdit = divElement.querySelectorAll('.iconoEdit');
+        btnEdit.forEach((botonEdit) => {
+          botonEdit.addEventListener('click', (e) => {
+            const idPost = e.target.dataset.edit;
+            // const textPublicado = e.target.dataset.textEditado;
+            console.log(idPost);
+            getPost(e.target.dataset.edit)
+              .then((docu) => {
+                console.log('Document data:', docu.data());
+                const data = docu.data();
+                divElement.querySelector('#textToPost').value = data.publishedText;
+              });
+            // const postData = post.data();
+            // console.log(post.publishedText);
+            const submitEditar = divElement.querySelector('#shareButton');
+            submitEditar.innerHTML = 'Editar';
+            submitEditar.addEventListener('click', () => {
+              const nuevoTexto = divElement.querySelector('#textToPost').value;
+              updatePosts(e.target.dataset.edit, nuevoTexto)
+                .then(() => {
+                  console.log('Document successfully updated!');
+                  const tablePost = divElement.querySelectorAll('#tablaPosts');
+                  tablePost.innerHTML = '';
+                  submitEditar.innerHTML = 'Compartir';
+                });
+            });
           });
         });
 

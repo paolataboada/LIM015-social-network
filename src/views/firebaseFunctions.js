@@ -86,6 +86,12 @@ export function getDataUser() {
   return db.collection('users').get();
 }
 
+// Obteniendo la data de la colleccion "posts"
+export function getPost(id) {
+  const db = firebase.firestore();
+  return db.collection('posts').doc(id).get();
+}
+
 // Agregando a la coleccion "postss" data que el usuario publico
 export function addPosts(name, postText, userPost) {
   const db = firebase.firestore();
@@ -124,4 +130,3 @@ export function updateLikes(docId, count) {
     counterLikes: count,
   });
 }
-

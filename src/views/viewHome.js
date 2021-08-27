@@ -147,31 +147,25 @@ export default () => {
         const btnLike = divElement.querySelectorAll('.iconoLike');
         btnLike.forEach((like) => {
           like.addEventListener('click', (e) => {
-            /* const button = document.getElementById('button');
-            function myFunction() {
-              const element = document.getElementById('myDIV');
-              element.classList.toggle('mystyle');
-            }
-            button.addEventListener('click', myFunction); */
-
-            /* console.log(e.target); */
-            if (e.target.classList.contains('painted')) {
-              // e.target.style.background = 'none';
-              /* e.target.classList.remove('painted'); */
-              firebase.firestore().collection('posts').doc(e.target.dataset.like).update({
-                likesPost: firebase.firestore.FieldValue.arrayRemove(idUsuario),
-              });
-              /* const varrr = document.getElementById(`${e.target.id}`);
-              varrr.classList.remove('painted'); */
-            } else {
-              // console.log(e.target.id);
-              // e.target.classList.toggle('painted');
-              // e.target.style.background = '#c74c4c';
+            if (!e.target.classList.contains('painted')) {
+              e.target.classList.add('painted');
               firebase.firestore().collection('posts').doc(e.target.dataset.like).update({
                 likesPost: firebase.firestore.FieldValue.arrayUnion(idUsuario),
               });
-              /* const varrr = document.getElementById(`${e.target.id}`);
-              varrr.classList.add('painted'); */
+              /* const eTargetId = document.getElementById(`${e.target.id}`);
+              eTargetId.addEventListener('click', () => {
+                eTargetId.classList.remove('painted');
+              }); */
+              // eTargetId.classList.remove('painted');
+            } else {
+              e.target.classList.remove('painted');
+              firebase.firestore().collection('posts').doc(e.target.dataset.like).update({
+                likesPost: firebase.firestore.FieldValue.arrayRemove(idUsuario),
+              });
+              /* const eTargetId = document.getElementById(`${e.target.id}`);
+              eTargetId.addEventListener('click', () => {
+                eTargetId.classList.add('painted');
+              }); */
             }
           });
         }); // FIN

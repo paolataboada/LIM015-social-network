@@ -172,18 +172,6 @@ export default () => {
         const idDocumento = doc.id;
         postTemplate(fotoUsuario, nombreUsuario, fechaPost, textoPost, idDocumento);
 
-<<<<<<< HEAD
-        // Funcionalidad para editar posts
-        const btnEdit = divElement.querySelectorAll('.iconoEdit');
-        btnEdit.forEach((botonEdit) => {
-          botonEdit.addEventListener('click', (e) => {
-            // updatePosts(e.target.dataset.post, userName.textContent);
-            console.log('editando', e.target.dataset.publicacion, userName.textContent);
-          });
-        });
-
-=======
->>>>>>> editar
         // Funcionalidad para eliminar
         const btnDelete = divElement.querySelectorAll('.iconoDelete');
         btnDelete.forEach((boton) => {

@@ -87,13 +87,15 @@ export function getDataUser() {
 }
 
 // Agregando a la coleccion "postss" data que el usuario publico
-export function addPosts(name, postText, userPost) {
+export function addPosts(name, postText, userPost, idUser) {
   const db = firebase.firestore();
   return db.collection('posts').add({
+    userIdent: idUser,
     userPhotoPost: !userPost.displayName ? 'img/userPhoto-default.png' : userPost.photoURL,
     userWhoPublishes: name,
     publishedText: postText.value,
     publicationDate: new Date().toLocaleString('en-ES'),
+    likesPost: [],
   });
 }
 
@@ -110,9 +112,9 @@ export function deletePosts(docId) {
 }
 
 // Agregando datos al doc (data likeCounter)
-export function updateLikes(docId, count) {
+export function updateLikes(docId, userLike) {
   const db = firebase.firestore();
   return db.collection('posts').doc(docId).update({
-    counterLikes: count,
+    likesPost: firebase.firestore.FieldValue.arrayUnion(userLike),
   });
 }

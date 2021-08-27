@@ -93,7 +93,7 @@ export default () => {
   getDataUser()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => name de registro: ${doc.data().NameRegister} ID: ${doc.data().IdUserActive}`);
+        // console.log(`${doc.id} => name de registro: ${doc.data().NameRegister} ID: ${doc.data().IdUserActive}`);
         // console.log(`Id del usuario: ${user.uid}`);
         if (user.uid === doc.data().IdUserActive) {
           const nombreUsuarioCorreo = doc.data().NameRegister;
@@ -132,44 +132,35 @@ export default () => {
         const nombreUsuario = doc.data().userWhoPublishes;
         const fechaPost = doc.data().publicationDate;
         const textoPost = doc.data().publishedText;
-        const idUsuario = user.uid;
+        const idUsuario = doc.data().userIdent;
         const contadorLike = doc.data().likesPost;
         const idDocumento = doc.id;
         postTemplate(fotoUsuario, nombreUsuario, fechaPost, textoPost, idDocumento, contadorLike.length);
-
-        firebase.firestore().collection('posts').doc(doc.id).update({
-          idDocumento: doc.id,
-        });
 
         // Funcionalidad para dar like
         const btnLike = divElement.querySelectorAll('.iconoLike');
         btnLike.forEach((like) => {
           like.addEventListener('click', (e) => {
-            /* const button = document.getElementById('button');
-            function myFunction() {
-              const element = document.getElementById('myDIV');
-              element.classList.toggle('mystyle');
-            }
-            button.addEventListener('click', myFunction); */
-
-            /* console.log(e.target); */
-            if (e.target.classList.contains('painted')) {
-              // e.target.style.background = 'none';
-              /* e.target.classList.remove('painted'); */
-              firebase.firestore().collection('posts').doc(e.target.dataset.like).update({
-                likesPost: firebase.firestore.FieldValue.arrayRemove(idUsuario),
-              });
-              /* const varrr = document.getElementById(`${e.target.id}`);
-              varrr.classList.remove('painted'); */
-            } else {
-              // console.log(e.target.id);
-              // e.target.classList.toggle('painted');
-              // e.target.style.background = '#c74c4c';
-              firebase.firestore().collection('posts').doc(e.target.dataset.like).update({
+            if (!e.target.classList.contains('painted')) {
+              e.target.classList.add('painted');
+              firebase.firestore().collection('postss').doc(e.target.dataset.like).update({
                 likesPost: firebase.firestore.FieldValue.arrayUnion(idUsuario),
               });
-              /* const varrr = document.getElementById(`${e.target.id}`);
-              varrr.classList.add('painted'); */
+              /* const eTargetId = document.getElementById(`${e.target.id}`);
+              eTargetId.addEventListener('click', () => {
+                eTargetId.classList.remove('painted');
+              }); */
+              // eTargetId.classList.remove('painted');
+            } else {
+              e.target.classList.remove('painted');
+              firebase.firestore().collection('postss').doc(e.target.dataset.like).update({
+                likesPost: firebase.firestore.FieldValue.arrayRemove(idUsuario),
+              });
+              /* const eTargetId = document.getElementById(`${e.target.id}`);
+              eTargetId.addEventListener('click', () => {
+                eTargetId.classList.add('painted');
+              }); */
+              // eTargetId.classList.add('painted');
             }
           });
         }); // FIN

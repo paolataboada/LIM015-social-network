@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import {
   getDataUser,
   addPosts,
@@ -35,51 +36,20 @@ export default () => {
       <section id= "bloquePosts">
         <section id="escribirPost">
           <textarea id="textToPost" class="textToPost" placeholder="¿Qué quieres compartir?"></textarea>
-          <div class= "icons">
-            <img id="btnFile" class="btnFile" src="img/agregar-img.png" alt="Botón para cargar imagen">
+          <div class= "icons" style="justify-content: flex-end;">
+            <img id="btnFile" class="btnFile" src="img/agregar-img.png" alt="Botón para cargar imagen" style="display:none">
             <input id="subirFile" type="file" accept="image/jpeg" style="display:none">
-            <button type= "submit" id="shareButton" >Compartir</button>
+            <button type="submit" id="shareButton">Compartir</button>
           </div>
         </section>
         <section id="sectionPosts">
-          <table id="tablaPosts">
-            <tbody>
-              <tr>
-                <th>
-                  <div id="userPost">
-                    <img class="userPhotoPost" src="img/foto-ejemplo.jpg" alt="Foto del usuario">
-                    <p>Publicado por Mariana López</p>
-                  </div> 
-                  <div>
-                    <img id="iconoEdit" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar">
-                    <img id="#iconoDelete" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
-                  </div>
-                </th>
-              </tr>
-              <tr>
-                <td id="textPost" class="textPost" >
-                  <pre class="datePost">${new Date().toLocaleString('en-ES')}</pre>
-                  <textarea id="publicacion">The user-select property specifies whether the text of an element can be selected.
-                  In web browsers, if you double-click on some text it will be selected/highlighted. This property can be used to prevent this.</textarea>
-                </td>
-              </tr>
-              <tr>
-                <td id="picturePost" style="display: none;"></td>
-              </tr>
-              <tr>
-                <td>
-                  <img id="logoLike" src="img/megusta.png" alt="Botón me gusta">
-                  <img id="logoComent" src="img/comentario.png" alt="Botón comentar">
-                </td>
-              </tr>
-            </tbody>
-          </table>
-         </section>
+          <table id="tablaPosts"></table>
         </section>
+      </section>
     </section>`;
 
   // Templates de publicaciones
-  function postTemplate(photoUser, nameUser, datePublication, postUser, IDdocumento) {
+  function postTemplate(photoUser, nameUser, datePublication, postUser, IDdocumento, upLike) {
     const tabla = divElement.querySelector('#tablaPosts');
     tabla.innerHTML += `
         <tbody>
@@ -90,11 +60,7 @@ export default () => {
                 <p>${nameUser}</p>
               </div> 
             <div>  
-<<<<<<< HEAD
-                <img id="iconoEdit" data-publicacion="${IDdocumento}" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar">
-=======
                 <img id="iconoEdit" data-edit="${IDdocumento}" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar">
->>>>>>> editar
                 <img id="iconoDelete" data-post="${IDdocumento}" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
             </div>
             </th>
@@ -110,8 +76,8 @@ export default () => {
           </tr>
           <tr>
             <td>
-              <img id="logoLike" class="iconoLike" data-like="${IDdocumento}" src="img/megusta.png" style="margin-right: 5px;" alt="Botón me gusta">
-              <span id="${IDdocumento}" style="margin-right: 10px; align-self: center;">0</span>
+              <img id="like-${IDdocumento}" class="iconoLike" data-like="${IDdocumento}" src="img/megusta.png" style="margin-right: 5px;" alt="Botón me gusta">
+              <span style="margin-right: 10px; align-self: center;">${upLike}</span>
               <img id="logoComent" src="img/comentario.png" style="margin-right: 5px;" alt="Botón comentar">
               <span style="margin-right: 10px; align-self: center;">0</span>
             </td>
@@ -127,7 +93,7 @@ export default () => {
   const userName = divElement.querySelector('#userName');
   const userDescription = divElement.querySelector('#userDescription');
   getDataUser()
-    .then((querySnapshot) => { // TODO: Mostrar 'User' en ingreso con correo al publicar
+    .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         console.log(`${doc.id} => name de registro: ${doc.data().NameRegister} ID: ${doc.data().IdUserActive}`);
         // console.log(`Id del usuario: ${user.uid}`);
@@ -149,8 +115,8 @@ export default () => {
   shareButton.addEventListener('click', () => {
     const textToPost = divElement.querySelector('#textToPost');
     if (textToPost.value !== '') {
-      // addPosts(name, postText);
-      addPosts(user.displayName ? user.displayName : userName.textContent, textToPost, user)
+      // eslint-disable-next-line max-len
+      addPosts(user.displayName ? user.displayName : userName.textContent, textToPost, user, user.uid)
         .then((docRef) => {
           console.log('Document written with ID: ', docRef.id);
         });
@@ -161,7 +127,6 @@ export default () => {
   // Mostrar todos los posts de la colección
   const tabla = divElement.querySelector('#tablaPosts');
   onSnapshotPosts().orderBy('publicationDate', 'desc')
-    // firebase.firestore().collection('postss').orderBy('publicationDate', 'desc')
     .onSnapshot((querySnapshot) => {
       tabla.innerHTML = '';
       querySnapshot.forEach((doc) => {
@@ -169,8 +134,47 @@ export default () => {
         const nombreUsuario = doc.data().userWhoPublishes;
         const fechaPost = doc.data().publicationDate;
         const textoPost = doc.data().publishedText;
+        const idUsuario = user.uid;
+        const contadorLike = doc.data().likesPost;
         const idDocumento = doc.id;
-        postTemplate(fotoUsuario, nombreUsuario, fechaPost, textoPost, idDocumento);
+        postTemplate(fotoUsuario, nombreUsuario, fechaPost, textoPost, idDocumento, contadorLike.length);
+
+        firebase.firestore().collection('posts').doc(doc.id).update({
+          idDocumento: doc.id,
+        });
+
+        // Funcionalidad para dar like
+        const btnLike = divElement.querySelectorAll('.iconoLike');
+        btnLike.forEach((like) => {
+          like.addEventListener('click', (e) => {
+            /* const button = document.getElementById('button');
+            function myFunction() {
+              const element = document.getElementById('myDIV');
+              element.classList.toggle('mystyle');
+            }
+            button.addEventListener('click', myFunction); */
+
+            /* console.log(e.target); */
+            if (e.target.classList.contains('painted')) {
+              // e.target.style.background = 'none';
+              /* e.target.classList.remove('painted'); */
+              firebase.firestore().collection('posts').doc(e.target.dataset.like).update({
+                likesPost: firebase.firestore.FieldValue.arrayRemove(idUsuario),
+              });
+              /* const varrr = document.getElementById(`${e.target.id}`);
+              varrr.classList.remove('painted'); */
+            } else {
+              // console.log(e.target.id);
+              // e.target.classList.toggle('painted');
+              // e.target.style.background = '#c74c4c';
+              firebase.firestore().collection('posts').doc(e.target.dataset.like).update({
+                likesPost: firebase.firestore.FieldValue.arrayUnion(idUsuario),
+              });
+              /* const varrr = document.getElementById(`${e.target.id}`);
+              varrr.classList.add('painted'); */
+            }
+          });
+        }); // FIN
 
         // Funcionalidad para eliminar
         const btnDelete = divElement.querySelectorAll('.iconoDelete');
@@ -178,7 +182,6 @@ export default () => {
           boton.addEventListener('click', (e) => {
             const confirmar = window.confirm('¿Estás seguro de que deseas borrar este post?');
             if (confirmar) {
-              // console.log(e.target.dataset.post);
               deletePosts(e.target.dataset.post);
               console.log(userName.textContent.value, nombreUsuario);
             }
@@ -216,24 +219,6 @@ export default () => {
             });
           });
         });
-
-        // Funcionalidad para dar like
-        const btnLike = divElement.querySelectorAll('.iconoLike');
-        btnLike.forEach((like) => {
-          let counter = 0;
-          like.addEventListener('click', (e) => {
-            counter += 1;
-            const changeSpan = divElement.querySelector(`#${e.target.dataset.like}`);
-            changeSpan.innerHTML = counter;
-            e.target.style.background = '#c74c4c';
-            /* updateLikes(e.target.dataset.like, counter)
-              .then(() => {
-                const changeSpan = divElement.querySelector(`#${e.target.dataset.like}`);
-                changeSpan.innerHTML = doc.data().counterLikes;
-                e.target.style.background = '#c74c4c';
-              }); */
-          });
-        }); // FIN
       });
     });
 

@@ -89,7 +89,7 @@ export default () => {
                 <p>${nameUser}</p>
               </div> 
             <div>  
-                <img id="iconoEdit" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar">
+                <img id="iconoEdit" data-publicacion="${IDdocumento}" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar">
                 <img id="iconoDelete" data-post="${IDdocumento}" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
             </div>
             </th>
@@ -172,7 +172,7 @@ export default () => {
         btnEdit.forEach((botonEdit) => {
           botonEdit.addEventListener('click', (e) => {
             // updatePosts(e.target.dataset.post, userName.textContent);
-            console.log('editando');
+            console.log('editando', e.target.dataset.publicacion, userName.textContent);
           });
         });
 

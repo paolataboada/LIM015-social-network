@@ -4,6 +4,7 @@ import {
   onSnapshotPosts,
   updatePosts,
   deletePosts,
+  getPost,
   /* updateLikes, */
 } from './firebaseFunctions.js';
 
@@ -58,10 +59,8 @@ export default () => {
               <tr>
                 <td id="textPost" class="textPost" >
                   <pre class="datePost">${new Date().toLocaleString('en-ES')}</pre>
-                  <textarea>
-                  The user-select property specifies whether the text of an element can be selected.
-                  In web browsers, if you double-click on some text it will be selected/highlighted. This property can be used to prevent this.
-                  </textarea>
+                  <textarea id="publicacion">The user-select property specifies whether the text of an element can be selected.
+                  In web browsers, if you double-click on some text it will be selected/highlighted. This property can be used to prevent this.</textarea>
                 </td>
               </tr>
               <tr>
@@ -99,7 +98,7 @@ export default () => {
           <tr>
             <td id="textPost" class="textPost">
               <pre class="datePost">${datePublication}</pre>
-               ${postUser}
+              ${postUser}
             </td>
           </tr>
           <tr>
@@ -169,28 +168,6 @@ export default () => {
         const idDocumento = doc.id;
         postTemplate(fotoUsuario, nombreUsuario, fechaPost, textoPost, idDocumento);
 
-        // Funcionalidad para editar posts
-        const btnEdit = divElement.querySelectorAll('.iconoEdit');
-        btnEdit.forEach((botonEdit) => {
-          botonEdit.addEventListener('click', (e, textEdit) => {
-            divElement.querySelectorAll('#textToPosts').value = textEdit;
-            const submitEditar = divElement.querySelectorAll('#shareButton');
-            submitEditar.innerHTML = 'Editar';
-            submitEditar.addEventListener('click', () => {
-              const nuevoTexto = divElement.querySelectorAll('#textToPosts').value;
-              updatePosts(e.target.dataset.edit, nuevoTexto /* userName.textContent */)
-                .then(() => {
-                  console.log('Document successfully updated!');
-                  submitEditar.innerHTML = 'Compartir';
-                })
-                .catch((error) => {
-                // The document probably doesn't exist.
-                  console.error('Error updating document: ', error);
-                });
-            });
-          });
-        });
-
         // Funcionalidad para eliminar
         const btnDelete = divElement.querySelectorAll('.iconoDelete');
         btnDelete.forEach((boton) => {
@@ -199,8 +176,34 @@ export default () => {
             if (confirmar) {
               // console.log(e.target.dataset.post);
               deletePosts(e.target.dataset.post);
-              console.log(userName.textContent, nombreUsuario);
+              console.log(userName.textContent.value, nombreUsuario);
             }
+          });
+        });
+
+        // const textoAeditar = divElement.querySelector('#publicacion').value;
+
+        // Funcionalidad para editar posts
+        const btnEdit = divElement.querySelectorAll('.iconoEdit');
+        btnEdit.forEach((botonEdit) => {
+          botonEdit.addEventListener('click', (e) => {
+            const idPost = e.target.dataset.edit;
+            // const textPublicado = e.target.dataset.textEditado;
+            console.log(idPost);
+            getPost(e.target.dataset.edit);
+            console.log(userName.textContent);
+            // const postData = post.data();
+            // console.log(post.publishedText);
+            const submitEditar = divElement.querySelector('#shareButton');
+            submitEditar.innerHTML = 'Editar';
+            submitEditar.addEventListener('click', () => {
+              const nuevoTexto = divElement.querySelector('#textToPost').value;
+              updatePosts(e.target.dataset.edit, nuevoTexto)
+                .then(() => {
+                  console.log('Document successfully updated!');
+                  submitEditar.innerHTML = 'Compartir';
+                });
+            });
           });
         });
 

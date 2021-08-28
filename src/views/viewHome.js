@@ -137,7 +137,6 @@ export default () => {
         const idUsuario = user.uid;
         const contadorLike = doc.data().likesPost;
         const idDocumento = doc.id;
-        // eslint-disable-next-line no-nested-ternary
         const btnHeart = (contadorLike.indexOf(idUsuario) !== -1) ? 'painted' : '';
         postTemplate(fotoUsuario, nombreUsuario, fechaPost, textoPost, idDocumento, contadorLike.length, btnHeart);
 

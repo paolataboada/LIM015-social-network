@@ -314,10 +314,10 @@ body {
     align-items: center;
     margin-left: 12px;
     border-radius: 10px;
-    border: 1px solid #184e77;;
+    border: 1px solid #184e77;
     margin-bottom: 2000px;
-    margin-left: 0px;
-    margin-top: px;
+    /* margin-left: 0px; */
+    margin-top: 0;
     width: 34%;
   }
   .portada{
@@ -356,7 +356,6 @@ body {
   background: #fdf8f8;
   height: 120px;
   overflow-wrap: break-word;
-  resize: none;
 }
 #escribirPost div {
   display: flex;

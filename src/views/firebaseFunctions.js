@@ -1,7 +1,7 @@
 /* ------------------- FIREBASE PARA SOCIAL HEALTH --------------- */
 
-/* // Configuración de firebase para Social Health
-const firebaseConfig = {
+// Configuración de firebase para Social Health
+/* const firebaseConfig = {
   apiKey: 'AIzaSyB8IDdhrhSpd9hXvAWU79ITlAxmaJcNurA',
   authDomain: 'proyect-social-network.firebaseapp.com',
   projectId: 'proyect-social-network',
@@ -60,10 +60,10 @@ export function addDataUser(usuario) {
   if (usuario.displayName !== null && usuario.photoURL !== null) {
     nameRegister = usuario.displayName;
     photoRegister = usuario.photoURL;
-  } else {
+  } /* else {
     nameRegister = 'User';
     photoRegister = 'img/userPhoto-default.png';
-  }
+  } */
   return db.collection('users').add({
     NameRegister: nameRegister,
     EmailRegister: usuario.email,
@@ -111,8 +111,19 @@ export function addPosts(name, postText, userPost, idUser) {
 // Obteniendo la data de la colleccion "postss" en tiempo real
 export function onSnapshotPosts() {
   const db = firebase.firestore();
-  return db.collection('posts');
+  return db.collection('posts').orderBy('publicationDate', 'desc');
 }
+/* export function onSnapshotPosts2(callback) {
+  const db = firebase.firestore();
+  return db.collection('posts').orderBy('publicationDate', 'desc')
+    .onSnapshot((shots) => {
+      const datos = [];
+      shots.forEach((doc) => {
+        datos.push({ id: doc.id, ...doc.data() });
+      });
+      callback(datos);
+    });
+} */
 
 // Editando documentos de la coleccion pots
 export function updatePosts(docId, newText) {
@@ -128,10 +139,27 @@ export function deletePosts(docId) {
   return db.collection('posts').doc(docId).delete();
 }
 
-// Agregando datos al doc (data likeCounter)
-export function updateLikes(docId, userLike) {
+// Agregando datos al doc (data likesPost)
+export function upLikes(docId, userLike) {
   const db = firebase.firestore();
   return db.collection('posts').doc(docId).update({
     likesPost: firebase.firestore.FieldValue.arrayUnion(userLike),
   });
+}
+
+// Quitando datos al doc (data likesPost)
+export function downLikes(docId, userLike) {
+  const db = firebase.firestore();
+  return db.collection('posts').doc(docId).update({
+    likesPost: firebase.firestore.FieldValue.arrayRemove(userLike),
+  });
+}
+
+// Actualizando el value 'like' del documento
+export function countLikes(target, idPost, idUsuario) {
+  if (!target.classList.contains('painted')) {
+    upLikes(idPost, idUsuario);
+  } else {
+    downLikes(idPost, idUsuario);
+  }
 }

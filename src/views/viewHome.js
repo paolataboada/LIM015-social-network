@@ -6,7 +6,7 @@ import {
   updatePosts,
   deletePosts,
   getPost,
-  /* updateLikes, */
+  countLikes,
 } from './firebaseFunctions.js';
 
 export default () => {
@@ -129,7 +129,7 @@ export default () => {
 
   // Mostrar todos los posts de la colección
   const tabla = divElement.querySelector('#tablaPosts');
-  onSnapshotPosts().orderBy('publicationDate', 'desc')
+  onSnapshotPosts()
     .onSnapshot((querySnapshot) => {
       tabla.innerHTML = '';
       querySnapshot.forEach((doc) => {
@@ -140,23 +140,15 @@ export default () => {
         const idUsuario = user.uid;
         const contadorLike = doc.data().likesPost;
         const idDocumento = doc.id;
-        // eslint-disable-next-line no-nested-ternary
         const btnHeart = (contadorLike.indexOf(idUsuario) !== -1) ? 'painted' : '';
         postTemplate(fotoUsuario, nombreUsuario, fechaPost, textoPost, idDocumento, contadorLike.length, btnHeart);
 
         // Funcionalidad para dar like
         const btnLike = divElement.querySelectorAll('.iconoLike');
         btnLike.forEach((like) => {
-          like.addEventListener('click', (e) => {
-            if (!e.target.classList.contains('painted')) {
-              firebase.firestore().collection('posts').doc(e.target.dataset.like).update({
-                likesPost: firebase.firestore.FieldValue.arrayUnion(idUsuario),
-              });
-            } else {
-              firebase.firestore().collection('posts').doc(e.target.dataset.like).update({
-                likesPost: firebase.firestore.FieldValue.arrayRemove(idUsuario),
-              });
-            }
+          like.addEventListener('click', (e) => { // console.log(e.target);
+            const idPost = e.target.dataset.like;
+            countLikes(e.target, idPost, idUsuario);
           });
         });
 
@@ -164,11 +156,16 @@ export default () => {
         const btnDelete = divElement.querySelectorAll('.iconoDelete');
         btnDelete.forEach((boton) => {
           boton.addEventListener('click', (e) => {
+            /* console.log(user.uid, doc.data().userIdent, idDocumento);
+            if (user.uid === doc.data().userIdent) { */
             const confirmar = window.confirm('¿Estás seguro de que deseas borrar este post?');
             if (confirmar) {
               deletePosts(e.target.dataset.post);
-              console.log(userName.textContent.value, nombreUsuario);
+              console.log(userName.textContent, nombreUsuario);
             }
+            /* } else {
+              console.log('no puedes editar, que pena');
+            } */
           });
         });
 

@@ -95,11 +95,11 @@ export default () => {
   btnGoogle.addEventListener('click', () => {
     ingresarConGoogle()
       .then((result) => {
-        const credential = result.credential;
-        const token = credential.accessToken;
-        const user = result.user;
-        console.log('El token del usuario es:', token, 'Credencial: ', credential);
-        console.log('El ID del usuario es:', user);
+        // const credential = result.credential;
+        // const token = credential.accessToken;
+        // const user = result.user;
+        // console.log('El token del usuario es:', token, 'Credencial: ', credential);
+        // console.log('El ID del usuario es:', user);
         addDataUser(result.user)
           .then((docRef) => {
             console.log('ID de Documento de la Colección Users: ', docRef.id);

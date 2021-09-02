@@ -57,10 +57,10 @@ export function addDataUser(usuario) {
   if (usuario.displayName !== null && usuario.photoURL !== null) {
     nameRegister = usuario.displayName;
     photoRegister = usuario.photoURL;
-  } else {
+  } /* else {
     nameRegister = 'User';
     photoRegister = 'img/userPhoto-default.png';
-  }
+  } */
   return db.collection('users').add({
     NameRegister: nameRegister,
     EmailRegister: usuario.email,

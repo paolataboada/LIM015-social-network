@@ -143,8 +143,7 @@ export default () => {
         // Funcionalidad para dar like
         const btnLike = divElement.querySelectorAll('.iconoLike');
         btnLike.forEach((like) => {
-          like.addEventListener('click', (e) => {
-            console.log(e.target);
+          like.addEventListener('click', (e) => { // console.log(e.target);
             const idPost = e.target.dataset.like;
             countLikes(e.target, idPost, idUsuario);
           });

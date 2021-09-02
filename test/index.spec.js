@@ -2,7 +2,7 @@
 import MockFirebase from 'mock-cloud-firestore';
 import {
   addDataUser,
-  /* addPosts, */
+  addPosts,
   getPost,
   getDataUser,
   upLikes,
@@ -78,6 +78,18 @@ describe('getDataUser', () => {
             expect(result.EmailRegister).toBe('labo@toria.com');
           }
         });
+      });
+  });
+});
+
+describe.skip('addPosts', () => {
+  it('Debería poder agregar un nuevo post', (done) => {
+    addPosts('Jimena', 'Mi post', '', '789XYZ')
+      .then((docPost) => {
+        const inDataPost = docPost;
+        console.log(inDataPost);
+        expect(inDataPost).not.toBeUndefined();
+        done();
       });
   });
 });

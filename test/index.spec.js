@@ -1,30 +1,49 @@
-import logIn from '../src/views/viewLogin';
-import { viewsDom } from '../src/views/dom';
+import MockFirebase from 'mock-cloud-firestore';
 
-describe('logIn', () => {
-  it('debería ser una función', () => {
-    expect(typeof logIn).toBe('function');
-  });
+import { deletePosts/* , getPost */ } from '../src/views/firebaseFunctions.js';
+
+const fixtureData = {
+  __collection__: {
+    posts: {
+      __doc__: {
+        abc123: {
+          userIdent: 'user123',
+          userPhotoPost: 'pepito.jpg',
+          userWhoPublishes: 'Dafne',
+          publishedText: 'Hola amigos',
+          publicationDate: '12 de enero',
+          likesPost: '3',
+        },
+        def456: {
+          userIdent: 'user456',
+          userPhotoPost: 'juanita.jpg',
+          userWhoPublishes: 'Juanita',
+          publishedText: 'Me encanta esta red social',
+          publicationDate: '31 de septiembre',
+          likesPost: '9',
+        },
+      },
+    },
+  },
+
+};
+
+global.firebase = new MockFirebase(fixtureData, { isNaiveSnapshotListenerEnabled: true });
+
+describe('Delete Post', () => {
+  it('Debería de poder eliminar un post con el id: abc123', () => deletePosts('abc123')
+    .then((data) => {
+      /* const deleted = getPost('abc123');
+      console.log(data); */
+      expect(data).toBe(undefined);
+    }));
 });
 
-describe('viewsDom', () => {
-  it('debería ser un objeto', () => {
-    expect(typeof viewsDom).toBe('object');
-  });
-});
-
-describe('templateLogin', () => {
-  it('debería ser una propiedad con valor tipo string', () => {
-    expect(typeof viewsDom.templateLogin).toBe('string');
-  });
-});
-
-// test('resuelve a limon', () =>
-// Es esencial que se agregue un statement de return
-// expect(Promise.resolve('limon')).resolves.toBe('limon'));
-
-// test('rejects to octopus', () =>
-// make sure to add a return statement
-// expect(hola.promesaIngresar.reject(new Error('octopus'))).rejects.toThrow(
-//   'octopus',
-// ));
+/* describe('deletePosts', () => {
+  it('Debería de poder eliminar un post con el id: abc123', () => deletePosts('abc123')
+    .then((posts) => {
+      getPost('abc123');
+      const result = posts.find((elemento) => elemento.id === 'abc123');
+      expect(result).toBe(undefined);
+    }));
+}); */

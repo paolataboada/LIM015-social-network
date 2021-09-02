@@ -1,6 +1,6 @@
 /* ------------------- FIREBASE PARA SOCIAL HEALTH --------------- */
 
-// Configuración de firebase para Social Health
+/* // Configuración de firebase para Social Health
 const firebaseConfig = {
   apiKey: 'AIzaSyB8IDdhrhSpd9hXvAWU79ITlAxmaJcNurA',
   authDomain: 'proyect-social-network.firebaseapp.com',
@@ -16,7 +16,7 @@ firebase.initializeApp(firebaseConfig);
 // Comandos de firebase: autenticación, firestore y analytics
 firebase.auth();
 firebase.firestore();
-firebase.analytics();
+firebase.analytics(); */
 
 /* --------- COMANDOS PARA AUTENTICACIÓN DE FIREBASE --------  */
 // -------------------- LOGIN O INGRESAR -----------------------
@@ -45,7 +45,10 @@ export function sendEmail() {
 }
 
 // objeto usuario Activo cuando se registra con correo y contraseña
-export const userActive = firebase.auth().currentUser;
+export function userActive() {
+  const auth = firebase.auth();
+  return auth.currentUser;
+}
 
 /* ---------------- COMANDOS PARA CLOUD FIRESTORE -----------------  */
 

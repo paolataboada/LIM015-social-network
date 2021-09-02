@@ -45,7 +45,10 @@ export function sendEmail() {
 }
 
 // objeto usuario Activo cuando se registra con correo y contraseña
-export const userActive = () => firebase.auth().currentUser;
+export function userActive() {
+  const auth = firebase.auth();
+  return auth.currentUser;
+}
 
 /* ---------------- COMANDOS PARA CLOUD FIRESTORE -----------------  */
 

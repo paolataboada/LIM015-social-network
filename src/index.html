@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="img/logo-azul.png">
   <title>Social Health</title>
 </head>
 
@@ -28,18 +29,22 @@
   <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-firestore.js"></script>
   <script>
-    // Your web app's Firebase configuration
-    var firebaseConfig = {
-      apiKey: "AIzaSyB8IDdhrhSpd9hXvAWU79ITlAxmaJcNurA",
-      authDomain: "proyect-social-network.firebaseapp.com",
-      projectId: "proyect-social-network",
-      storageBucket: "proyect-social-network.appspot.com",
-      messagingSenderId: "149252870254",
-      appId: "1:149252870254:web:dbafa1821ad07d8952d67f",
-      measurementId: "G-KCW1JG85PX"
+
+    // Configuración de firebase para Social Health
+    const firebaseConfig = {
+      apiKey: 'AIzaSyB8IDdhrhSpd9hXvAWU79ITlAxmaJcNurA',
+      authDomain: 'proyect-social-network.firebaseapp.com',
+      projectId: 'proyect-social-network',
+      storageBucket: 'proyect-social-network.appspot.com',
+      messagingSenderId: '149252870254',
+      appId: '1:149252870254:web:dbafa1821ad07d8952d67f',
+      measurementId: 'G-KCW1JG85PX',
     };
-    // Initialize Firebase
+
+    // Initialización de Firebase en la webapp
     firebase.initializeApp(firebaseConfig);
+    
+    // Comandos de firebase: autenticación, firestore y analytics
     firebase.auth();
     firebase.firestore();
     firebase.analytics();

@@ -114,18 +114,7 @@ body {
   color: white;
   letter-spacing: 1px;
 }
-#escribirPost div button {
-  padding: 10px 20px;
-  border-radius: 10px;
-  outline: none;
-  border: none;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  color: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  background: #184e77;
-  cursor: pointer;
-}
+
 .loginButton {
   width: 180px;
   justify-content: center;
@@ -257,7 +246,7 @@ body {
   justify-content: center;
   background: #fdf8f8;
 }
-#barraMenu {
+.barraMenu {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -266,10 +255,15 @@ body {
   color: #ffffff;
   justify-content: space-between;
 }
+/* #pantallaView {
+  display: flex;
+  margin-left:50px;
+  margin-top:35px;
+} */
 .btnSalir:hover {
   cursor: pointer;
 }
-#datosUser{
+.datosUser{
   display: flex;
   flex-flow: row;
   align-items: center;
@@ -280,7 +274,7 @@ body {
   width: 100px;
   height: 200px;
 }
-#infoUsuario figure {
+.contenedorFoto {
   width: 120px;
   height: 120px;
   margin: 20px 15px 20px 20px;
@@ -289,7 +283,7 @@ body {
   cursor: pointer;
   overflow: hidden;
 }
-#infoUsuario figure img {
+.userPhoto {
   height: 120px;
   width: 120px;
 }
@@ -302,6 +296,12 @@ body {
   font-size: 18px;
   color: #837777;
 }
+.publicidad{
+  display:none;
+  width: 100%;
+  margin-top: 100px;
+}
+
 @media (min-width: 600px) {
   #pantallaView {
     display: flex;
@@ -315,9 +315,8 @@ body {
     margin-left: 12px;
     border-radius: 10px;
     border: 1px solid #184e77;
-    margin-bottom: 2000px;
-    /* margin-left: 0px; */
-    margin-top: 0;
+    margin-bottom: 3000px;
+    margin-top:10 px;
     width: 34%;
   }
   .portada{
@@ -330,6 +329,11 @@ body {
   #nameDescription{
     flex-flow: wrap;
   }
+  .publicidad{
+    display:flex;
+    width: 100%;
+    margin-top: 100px;
+  }
   #bloquePosts {
     width: 90%;
   }
@@ -337,6 +341,7 @@ body {
     margin-top: 40px;
   }
 }
+
 #escribirPost {
   border: 0.5px solid #184e77;
   border-radius: 10px;
@@ -357,15 +362,31 @@ body {
   height: 120px;
   overflow-wrap: break-word;
 }
-#escribirPost div {
+#icons {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  /* justify-content: space-between; */
   margin: 15px 10px 0 10px;
 }
-.btnFile {
+#btnFile {
   cursor: pointer;
   border-radius: 5px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+#shareButton {
+  padding: 10px 20px;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background: #184e77;
+  cursor: pointer;
+}
+#shareButton:active { 
+  transform: scale(0.9);
 }
 #sectionPosts {
   display: flex;
@@ -380,32 +401,41 @@ body {
   border-spacing: 0;
   margin-top: 30px;
 }
-#sectionPosts table tbody{
+.cuerpoTabla{
   margin-bottom: 30px;
   align-self: center;
   width: 100%;
   display: flex;
   flex-direction: column;
 }
-#sectionPosts div {
+/* .headPost {
+  display: flex;
+} */
+.userWhoPost{
   display: flex;
 }
-#sectionPosts div .icono-conf {
+.editYdelete{
+  display: flex;
+}
+/* #sectionPosts div {
+  display: flex;
+} */
+.icono-conf {
   justify-content: flex-end;
   align-content: flex-end;
   height: 20px;
   margin-top: 4px;
 }
-#sectionPosts div .icono-conf:hover {
+.icono-conf:hover {
   cursor: pointer;
   opacity: 0.5;
 }
-#sectionPosts table tbody tr td pre{
+.datePost {
   color: #184e77;
   font-size: 12px;
   align-self: flex-end;
 }
-#sectionPosts table tbody tr th {
+.headPost {
   display: flex;
   justify-content: space-between;
   border: 1px solid #5da6a6;
@@ -432,12 +462,44 @@ body {
   font-size: 16px;
   line-height: 25px;
 }
-#sectionPosts table tbody tr .textPost {
+.textPost {
   flex-flow: column nowrap;
+  justify-items: flex-end;
 }
+
+.publicacion{
+  resize:none;
+  outline: none;
+  border: 0;
+  overflow:hidden;
+  background-color: transparent;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 15px;
+  
+}
+
 #sectionPosts table tbody tr:last-child td:first-child {
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+}
+
+.Editar{
+  align-self: flex-end;
+  margin: 15px 10px 0 10px;
+  width: 17%;
+  padding: 5px 10px;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background: #184e77;
+  cursor: pointer;
+}
+#Editar:active { 
+  transform: scale(0.9);
 }
 .iconoLike {
   padding: 5px;
@@ -466,9 +528,7 @@ body {
   border: none;
   transform: scale(1.2);
 } */
-#shareButton:active { 
-  transform: scale(0.9);
-}
+
 .painted {
   background: #c74c4c;
   border: none;

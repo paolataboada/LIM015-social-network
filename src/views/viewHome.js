@@ -15,16 +15,16 @@ export default () => {
   const divElement = document.createElement('div');
   divElement.setAttribute('id', 'containerInicio');
   divElement.innerHTML = `
-    <section id="barraMenu">
+    <section id="barraMenu" class="barraMenu">
       <img src="img/logo-blanco.png" alt="Logo Social Health Blanco">
-      <h3>Health Social</h3>
-      <img id="btnSalir" src="img/cerrar-sesion.png" alt="Botón cerrar sesión">
+      <h2>Social Health</h2>
+      <img id="btnSalir" class="btnSalir" src="img/cerrar-sesion.png" alt="Botón cerrar sesión">
     </section>
     <section id= "pantallaView">
       <section id="infoUsuario">
         <img class="portada" >
-        <div id ="datosUser">
-          <figure>
+        <div id ="datosUser" class="datosUser">
+          <figure class="contenedorFoto">
             <img id="userPhoto" class="userPhoto" src="img/foto-ejemplo.jpg" alt="Foto del usuario">
           </figure>
           <section id="nameDescription">
@@ -32,14 +32,17 @@ export default () => {
             <p id="userDescription" class="userDescription">Description User</p>
           </section>
         </div>
+        <img class="publicidad" src="img/publi.PNG">
+        <img class="publicidad" src="img/publicidad2.PNG">
+        <img class="publicidad" src="img/publicidad.jpg">
       </section>
       <section id= "bloquePosts">
         <section id="escribirPost">
           <textarea id="textToPost" class="textToPost" placeholder="¿Qué quieres compartir?"></textarea>
-          <div class= "icons" style="justify-content: flex-end;">
-            <img id="btnFile" class="btnFile" src="img/agregar-img.png" alt="Botón para cargar imagen" style="display:none">
+          <div id= "icons">
+            <img id="btnFile" src="img/agregar-img.png" alt="Botón para cargar imagen" style="display:none">
             <input id="subirFile" type="file" accept="image/jpeg" style="display:none">
-            <button type="submit" id="shareButton">Compartir</button>
+            <button id="shareButton">Compartir</button>
           </div>
         </section>
         <section id="sectionPosts">
@@ -52,23 +55,23 @@ export default () => {
   function postTemplate(photoUser, nameUser, datePublication, postUser, IDdocumento, upLike, colorLike) {
     const tabla = divElement.querySelector('#tablaPosts');
     tabla.innerHTML += `
-        <tbody>
+        <tbody class="cuerpoTabla">
           <tr>
-            <th>
-              <div id="userPost">
-                <img class="userPhotoPost" src="${photoUser}" alt="Foto del usuario">
-                <p>${nameUser}</p>
+            <th class="headPost">
+              <div class="userWhoPost">
+                <img class="userPhotoPost" src="${photoUser}" alt="Foto del usuario"><p>${nameUser}</p>
               </div> 
-            <div>  
+              <div class="editYdelete">  
                 <img id="iconoEdit" data-edit="${IDdocumento}" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar">
                 <img id="iconoDelete" data-post="${IDdocumento}" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
-            </div>
+              </div>
             </th>
           </tr>
           <tr>
             <td id="textPost" class="textPost">
               <pre class="datePost">${datePublication}</pre>
-              <textarea id="publicacion" style="border:0; resize:none; outline: none; background-color: transparent; overflow: auto;">${postUser}</textarea>
+              <textarea  id="publicacion" class="publicacion" rows="5" readonly >${postUser}</textarea>
+              <button id="Editar" class="Editar" style="display: none;">Editar</button>
             </td>
           </tr>
           <tr>
@@ -78,8 +81,8 @@ export default () => {
             <td>
               <img id="like-${IDdocumento}" class="iconoLike ${colorLike}" data-like="${IDdocumento}" src="img/megusta.png" style="margin-right: 5px;" alt="Botón me gusta">
               <span style="margin-right: 10px; align-self: center;">${upLike}</span>
-              <img id="logoComent" src="img/comentario.png" style="margin-right: 5px;" alt="Botón comentar">
-              <span style="margin-right: 10px; align-self: center;">0</span>
+              <img id="logoComent" src="img/comentario.png" style="margin-right: 5px; display:none;" alt="Botón comentar">
+              <span style="margin-right: 10px; align-self: center; display:none;">0</span>
             </td>
           </tr>
         </tbody>
@@ -172,27 +175,39 @@ export default () => {
         const btnEdit = divElement.querySelectorAll('.iconoEdit');
         btnEdit.forEach((botonEdit) => {
           botonEdit.addEventListener('click', (e) => {
+            console.log(e.target, e.target.id, e.target.className);
+            const activBtn = divElement.querySelectorAll('.Editar');
+            activBtn.forEach((btnEdicion) => {
+              btnEdicion.style.display = 'block';
+            });
             const idPost = e.target.dataset.edit;
             // const textPublicado = e.target.dataset.textEditado;
             console.log(idPost);
             getPost(e.target.dataset.edit)
               .then((docu) => {
                 console.log('Document data:', docu.data());
+                // divElement.querySelector('.publicacion').contentEditable = true;
+                divElement.querySelectorAll('.publicacion').readOnly = false;
                 const data = docu.data();
-                divElement.querySelector('#textToPost').value = data.publishedText;
+                divElement.querySelectorAll('.publicacion').value = data.publishedText;
               });
             // const postData = post.data();
             // console.log(post.publishedText);
-            const submitEditar = divElement.querySelector('#shareButton');
-            submitEditar.innerHTML = 'Editar';
-            submitEditar.addEventListener('click', () => {
-              const nuevoTexto = divElement.querySelector('#textToPost').value;
-              updatePosts(e.target.dataset.edit, nuevoTexto)
+            const btnEditar = divElement.querySelector('.Editar');
+            btnEditar.innerHTML = 'Editar';
+            btnEditar.addEventListener('click', () => {
+              const nuevoTexto = divElement.querySelector('.publicacion').value;
+              console.log(idPost, nuevoTexto);
+              updatePosts(idPost, nuevoTexto)
+              /* const db = firebase.firestore();
+              return db.collection('posts').doc(idPost).update({
+                publishedText: nuevoTexto,
+              }) */
                 .then(() => {
                   console.log('Document successfully updated!');
-                  const tablePost = divElement.querySelectorAll('#tablaPosts');
-                  tablePost.innerHTML = '';
-                  submitEditar.innerHTML = 'Compartir';
+                  // divElement.querySelector('.publicacion').contentEditable = false;
+                  divElement.querySelector('.publicacion').readOnly = true;
+                  divElement.querySelector('.Editar').style.display = 'none';
                 });
             });
           });

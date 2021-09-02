@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import MockFirebase from 'mock-cloud-firestore';
 import {
   addDataUser,
@@ -196,5 +195,22 @@ describe('upLikes y downLikes', () => {
 /* describe('logIn', () => {
   it('debería ser una función', () => {
     expect(typeof logIn).toBe('function');
-  });
+  }); */
+
+describe('Delete Post', () => {
+  it('Debería de poder eliminar un post con el id: abc123', () => deletePosts('abc123')
+    .then((data) => {
+      /* const deleted = getPost('abc123');
+      console.log(data); */
+      expect(data).toBe(undefined);
+    }));
+});
+
+/* describe('deletePosts', () => {
+  it('Debería de poder eliminar un post con el id: abc123', () => deletePosts('abc123')
+    .then((posts) => {
+      getPost('abc123');
+      const result = posts.find((elemento) => elemento.id === 'abc123');
+      expect(result).toBe(undefined);
+    }));
 }); */

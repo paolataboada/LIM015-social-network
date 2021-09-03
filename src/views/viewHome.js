@@ -62,7 +62,7 @@ export default () => {
                 <img class="userPhotoPost" src="${photoUser}" alt="Foto del usuario"><p>${nameUser}</p>
               </div> 
               <div class="editYdelete">  
-                <img id="iconoEdit-${IDdocumento}" data-edit="${IDdocumento}" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar">
+                <img id="${IDdocumento}" data-edit="${IDdocumento}" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar">
                 <img id="iconoDelete" data-post="${IDdocumento}" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
               </div>
             </th>
@@ -71,7 +71,7 @@ export default () => {
             <td id="textPost" class="textPost">
               <pre class="datePost">${datePublication}</pre>
               <textarea id="publicacion" class="publicacion" rows="5" readonly >${postUser}</textarea>
-              <button id="Editar-${IDdocumento}" class="Editar Editar-${IDdocumento}" data-edicion="${IDdocumento}" style="display: none;">Editar</button>
+              <button id="${IDdocumento}" class="Editar Editar-${IDdocumento}" data-edicion="${IDdocumento}" style="display: none;">Editar</button>
             </td>
           </tr>
           <tr>
@@ -177,16 +177,24 @@ export default () => {
 
         // Funcionalidad para editar posts
         const iconEdit = divElement.querySelectorAll('.iconoEdit');
+        const btnEditar = divElement.querySelectorAll('[data-edicion]');
         iconEdit.forEach((iconoEdit) => {
           iconoEdit.addEventListener('click', (e) => {
             // console.log(e.target, e.target.id, e.target.className);
-            // const btnEditar = divElement.querySelectorAll('[data-Edit]');
-            const btnEditar = divElement.querySelector(`.Editar-${idDocumento}`).dataset.edicion;
+            // const btnEditar = divElement.querySelectorAll('[data-edicion]');
+            // const btnEditar = divElement.querySelectorAll(`.Editar-${idDocumento}`);
+            // btnEditar.forEach((elemento) => {
+            //   if (e.target.dataset.edit === elemento.target.dataset.edicion) {
+            //     const cadaBtn = elemento.target.dataset.edicion;
+            //     console.log(cadaBtn);
+            //     cadaBtn.style.display = 'block';
+            //   }
+            // });
             // const btnEditar = divElement.querySelector(`.editar-${idDocumento}`);
             // const btnEditar = divElement.querySelectorAll('[data-edicion]');
-            const botonEditar = e.target.dataset.edicion;
+            // const botonEditar = e.target.dataset.edicion;
             // btnEditar.style.display = 'block';
-            console.log(e.target.dataset.edit, botonEditar, btnEditar);
+            console.log(iconEdit, btnEditar);
             const idPost = e.target.dataset.edit;
             // console.log(idPost);
             getPost(idPost)
@@ -210,7 +218,7 @@ export default () => {
             //     });
             // });
           });
-        });
+        });// FIN  EDITAR
       });
     });
 

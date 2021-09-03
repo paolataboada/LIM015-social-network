@@ -6,6 +6,7 @@ import {
   getDataUser,
   upLikes,
   downLikes,
+  deletePosts,
 } from '../src/views/firebaseFunctions';
 
 const fixtureData = {

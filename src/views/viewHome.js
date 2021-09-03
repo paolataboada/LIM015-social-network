@@ -25,11 +25,11 @@ export default () => {
         <img class="portada" >
         <div id ="datosUser" class="datosUser">
           <figure class="contenedorFoto">
-            <img id="userPhoto" class="userPhoto" src="img/foto-ejemplo.jpg" alt="Foto del usuario">
+            <img id="userPhoto" class="userPhoto" src="" >
           </figure>
           <section id="nameDescription">
-            <h4 id="userName" class="userName">Name User</h4>
-            <p id="userDescription" class="userDescription">Description User</p>
+            <h4 id="userName" class="userName"></h4>
+            <p id="userDescription" class="userDescription"></p>
           </section>
         </div>
         <img class="publicidad" src="img/publi.PNG">
@@ -62,7 +62,7 @@ export default () => {
                 <img class="userPhotoPost" src="${photoUser}" alt="Foto del usuario"><p>${nameUser}</p>
               </div> 
               <div class="editYdelete">  
-                <img id="iconoEdit" data-edit="${IDdocumento}" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar">
+                <img id="iconoEdit-${IDdocumento}" data-edit="${IDdocumento}" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar">
                 <img id="iconoDelete" data-post="${IDdocumento}" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
               </div>
             </th>
@@ -70,8 +70,8 @@ export default () => {
           <tr>
             <td id="textPost" class="textPost">
               <pre class="datePost">${datePublication}</pre>
-              <textarea  id="publicacion" class="publicacion" rows="5" readonly >${postUser}</textarea>
-              <button id="Editar" class="Editar" style="display: none;">Editar</button>
+              <textarea id="publicacion" class="publicacion" rows="5" readonly >${postUser}</textarea>
+              <button id="Editar-${IDdocumento}" class="Editar Editar-${IDdocumento}" data-edicion="${IDdocumento}" style="display: none;">Editar</button>
             </td>
           </tr>
           <tr>
@@ -98,8 +98,9 @@ export default () => {
   getDataUser()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        // console.log(`${doc.id} => name de registro: ${doc.data().NameRegister} ID: ${doc.data().IdUserActive}`);
-        // console.log(`Id del usuario: ${user.uid}`);
+        // console.log(doc.data());
+        // user.uid = es el UID de usuario que aparece en authentication de firebase
+        // doc.data().IdUserActive . IdUserActive es una propiedad que esta dentro del objeto doc y doc.data() muestra todos los documentos.
         if (user.uid === doc.data().IdUserActive) {
           const nombreUsuarioCorreo = doc.data().NameRegister;
           userName.textContent = nombreUsuarioCorreo;
@@ -109,6 +110,7 @@ export default () => {
       });
     });
 
+  // Evento Para agregar una imagen como post
   divElement.querySelector('#btnFile').addEventListener('click', () => {
     divElement.querySelector('#subirFile').click();
   });
@@ -119,6 +121,7 @@ export default () => {
     const textToPost = divElement.querySelector('#textToPost');
     if (textToPost.value !== '') {
       // eslint-disable-next-line max-len
+      console.log(userName.textContent, user.displayName);
       addPosts(user.displayName ? user.displayName : userName.textContent, textToPost, user, user.uid)
         .then((docRef) => {
           console.log('Document written with ID: ', docRef.id);
@@ -135,6 +138,7 @@ export default () => {
       querySnapshot.forEach((doc) => {
         const fotoUsuario = doc.data().userPhotoPost;
         const nombreUsuario = doc.data().userWhoPublishes;
+        console.log(nombreUsuario);
         const fechaPost = doc.data().publicationDate;
         const textoPost = doc.data().publishedText;
         const idUsuario = user.uid;
@@ -172,18 +176,20 @@ export default () => {
         // const textoAeditar = divElement.querySelector('#publicacion').value;
 
         // Funcionalidad para editar posts
-        const btnEdit = divElement.querySelectorAll('.iconoEdit');
-        btnEdit.forEach((botonEdit) => {
-          botonEdit.addEventListener('click', (e) => {
-            console.log(e.target, e.target.id, e.target.className);
-            const activBtn = divElement.querySelectorAll('.Editar');
-            activBtn.forEach((btnEdicion) => {
-              btnEdicion.style.display = 'block';
-            });
+        const iconEdit = divElement.querySelectorAll('.iconoEdit');
+        iconEdit.forEach((iconoEdit) => {
+          iconoEdit.addEventListener('click', (e) => {
+            // console.log(e.target, e.target.id, e.target.className);
+            // const btnEditar = divElement.querySelectorAll('[data-Edit]');
+            const btnEditar = divElement.querySelector(`.Editar-${idDocumento}`).dataset.edicion;
+            // const btnEditar = divElement.querySelector(`.editar-${idDocumento}`);
+            // const btnEditar = divElement.querySelectorAll('[data-edicion]');
+            const botonEditar = e.target.dataset.edicion;
+            // btnEditar.style.display = 'block';
+            console.log(e.target.dataset.edit, botonEditar, btnEditar);
             const idPost = e.target.dataset.edit;
-            // const textPublicado = e.target.dataset.textEditado;
-            console.log(idPost);
-            getPost(e.target.dataset.edit)
+            // console.log(idPost);
+            getPost(idPost)
               .then((docu) => {
                 console.log('Document data:', docu.data());
                 // divElement.querySelector('.publicacion').contentEditable = true;
@@ -193,23 +199,16 @@ export default () => {
               });
             // const postData = post.data();
             // console.log(post.publishedText);
-            const btnEditar = divElement.querySelector('.Editar');
-            btnEditar.innerHTML = 'Editar';
-            btnEditar.addEventListener('click', () => {
-              const nuevoTexto = divElement.querySelector('.publicacion').value;
-              console.log(idPost, nuevoTexto);
-              updatePosts(idPost, nuevoTexto)
-              /* const db = firebase.firestore();
-              return db.collection('posts').doc(idPost).update({
-                publishedText: nuevoTexto,
-              }) */
-                .then(() => {
-                  console.log('Document successfully updated!');
-                  // divElement.querySelector('.publicacion').contentEditable = false;
-                  divElement.querySelector('.publicacion').readOnly = true;
-                  divElement.querySelector('.Editar').style.display = 'none';
-                });
-            });
+            // btnEditar.addEventListener('click', () => {
+            //   const nuevoTexto = divElement.querySelector('.publicacion').value;
+            //   console.log(idPost, nuevoTexto);
+            //   updatePosts(idPost, nuevoTexto)
+            //     .then(() => {
+            //       console.log('Document successfully updated!');
+            //       divElement.querySelector('.publicacion').readOnly = true;
+            //       divElement.querySelector('.Editar').style.display = 'none';
+            //     });
+            // });
           });
         });
       });

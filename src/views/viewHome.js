@@ -146,7 +146,8 @@ export default () => {
         // Funcionalidad para dar like
         const btnLike = divElement.querySelectorAll('.iconoLike');
         btnLike.forEach((like) => {
-          like.addEventListener('click', (e) => { // console.log(e.target);
+          like.addEventListener('click', (e) => { //
+            console.log(typeof e.target);
             const idPost = e.target.dataset.like;
             countLikes(e.target, idPost, idUsuario);
           });
@@ -177,8 +178,8 @@ export default () => {
           botonEdit.addEventListener('click', (e) => {
             console.log(e.target, e.target.id, e.target.className);
             const activBtn = divElement.querySelectorAll('.Editar');
-            activBtn.forEach((btnEdicion) => {
-              btnEdicion.style.display = 'block';
+            activBtn.forEach((/* btnEdicion */) => {
+              // btnEdicion.style.display = 'block';
             });
             const idPost = e.target.dataset.edit;
             // const textPublicado = e.target.dataset.textEditado;

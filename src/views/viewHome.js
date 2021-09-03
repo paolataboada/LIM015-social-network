@@ -63,7 +63,7 @@ export default () => {
               </div> 
               <div class="editYdelete">  
                 <img id="iconoEdit" data-edit="${IDdocumento}" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar">
-                <img id="iconoDelete" data-post="${IDdocumento}" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
+                <img id="iconoDelete" data-post="${IDdocumento}" class="icono-conf iconoDelete ${IDdocumento}" src="img/btn-delete.png" style="display: none;" alt="icono delete">
               </div>
             </th>
           </tr>
@@ -146,27 +146,63 @@ export default () => {
         // Funcionalidad para dar like
         const btnLike = divElement.querySelectorAll('.iconoLike');
         btnLike.forEach((like) => {
-          like.addEventListener('click', (e) => { //
-            console.log(typeof e.target);
+          like.addEventListener('click', (e) => { // console.log(typeof e.target);
             const idPost = e.target.dataset.like;
             countLikes(e.target, idPost, idUsuario);
           });
         });
 
-        // Funcionalidad para eliminar
+        /* const userCatch = doc.data().userIdent; //
+        console.log('arriba', `(${user.uid})`, userCatch, idUsuario);
+        if (idUsuario === userCatch) {                                           <--- NO FUNCIONÓ! :c
+          console.log('Este post es del usuario en sesión: ', idUsuario);
+        } else {
+          console.log('Este post pertenece a otro usuario: ', userCatch);
+        } */
+
+        firebase.firestore().collection('posts')
+          .where('userIdent', '==', 'IDslo5BfD3ZsJ4Th9vVItTdRqD93')
+          .get()
+          .then((ids) => {
+            ids.forEach((id) => {
+              // console.log(id.id);
+              const dataSet = document.querySelectorAll(`.${id.id}`);
+              dataSet.forEach((single) => {
+                const newSingle = single;
+                // console.log(newSingle);
+                newSingle.style.display = 'block';
+              });
+            });
+          });
+
         const btnDelete = divElement.querySelectorAll('.iconoDelete');
+        // Funcionalidad para ocultar el botón eliminar post
+        /* const userCatch = doc.data().userIdent;
+        console.log(userCatch, idUsuario, idDocumento);
+        if (userCatch !== idUsuario) {
+          console.log('not same!');
+        } else {
+          console.log('same!');
+        } */
+        // const hiddenButton = divElement.querySelectorAll()
+
+        // Funcionalidad para eliminar posts
+        // const btnDelete = divElement.querySelectorAll('.iconoDelete');
         btnDelete.forEach((boton) => {
           boton.addEventListener('click', (e) => {
-            /* console.log(user.uid, doc.data().userIdent, idDocumento);
-            if (user.uid === doc.data().userIdent) { */
-            const confirmar = window.confirm('¿Estás seguro de que deseas borrar este post?');
-            if (confirmar) {
-              deletePosts(e.target.dataset.post);
-              console.log(userName.textContent, nombreUsuario);
-            }
-            /* } else {
-              console.log('no puedes editar, que pena');
-            } */
+            getPost(e.target.dataset.post)
+              .then((objectTarget) => { // console.log('Document userIdent:', objectTarget.data().userIdent);
+                if (objectTarget.data().userIdent === idUsuario) {
+                  console.log('esta vez si');
+                  const confirmar = window.confirm('¿Estás seguro de que deseas borrar este post?');
+                  if (confirmar) {
+                    deletePosts(e.target.dataset.post);
+                  }
+                } /* else {
+                  console.log('esta vez no');
+                  alert('Lo siento, no puedes editar este post');
+                } */
+              });
           });
         });
 
@@ -200,10 +236,10 @@ export default () => {
               const nuevoTexto = divElement.querySelector('.publicacion').value;
               console.log(idPost, nuevoTexto);
               updatePosts(idPost, nuevoTexto)
-              /* const db = firebase.firestore();
-              return db.collection('posts').doc(idPost).update({
-                publishedText: nuevoTexto,
-              }) */
+                /* const db = firebase.firestore();
+                return db.collection('posts').doc(idPost).update({
+                  publishedText: nuevoTexto,
+                }) */
                 .then(() => {
                   console.log('Document successfully updated!');
                   // divElement.querySelector('.publicacion').contentEditable = false;

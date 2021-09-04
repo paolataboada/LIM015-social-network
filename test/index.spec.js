@@ -1,11 +1,16 @@
+/**
+ * @jest-environment jsdom
+ */
 import MockFirebase from 'mock-cloud-firestore';
 import {
   addDataUser,
+  addDataUserCorreo,
   addPosts,
   getPost,
   getDataUser,
   upLikes,
   downLikes,
+  /* countLikes, */
   deletePosts,
 } from '../src/views/firebaseFunctions';
 
@@ -44,6 +49,7 @@ const fixtureData = {
   },
 };
 
+// Simula objeto devuelto al ingresar con Google
 const newDataUser = {
   displayName: 'Hola Mundo',
   email: 'hola@mundo.com',
@@ -65,6 +71,30 @@ describe('addDataUser', () => {
   });
 });
 
+// Simula los datos del usuario obtenidos al registrarse manualmente
+const uDataName = 'Patricia';
+const uDataEmail = 'paty@mail.com';
+const uDataID = { uid: '4ct1v0' };
+
+describe('addDataUserCorreo', () => {
+  it('Debería guardar los datos en la colección users', (done) => {
+    addDataUserCorreo(uDataName, uDataEmail, uDataID)
+      .then((docUser) => {
+        const inDataUser = docUser.id; // console.log(inDataUser);
+        getDataUser().then((registeredData) => { // console.log(registeredData);
+          registeredData.forEach((newDoc) => {
+            if (newDoc.id === inDataUser) {
+              const resultRegister = newDoc.data();
+              // console.log(resultRegister);
+              expect(typeof resultRegister).toBe('object');
+              done();
+            }
+          });
+        });
+      });
+  });
+});
+
 describe('getDataUser', () => {
   // eslint-disable-next-line arrow-body-style
   it('Debería poder obtener el correo del usuario con id=ghi789', () => {
@@ -82,14 +112,29 @@ describe('getDataUser', () => {
   });
 });
 
-describe.skip('addPosts', () => {
+// Simula objeto devuelto al ingresar con Google
+const userGoogle = {
+  displayName: null,
+  email: 'hola@mundo.com',
+  uid: 'BB007',
+  photoURL: null,
+};
+// Simula el valor del 'input text' obtenido al publicar
+const textPost = {
+  value: 'Mi post',
+};
+
+describe('addPosts', () => {
   it('Debería poder agregar un nuevo post', (done) => {
-    addPosts('Jimena', 'Mi post', '', '789XYZ')
-      .then((docPost) => {
-        const inDataPost = docPost;
-        console.log(inDataPost);
-        expect(inDataPost).not.toBeUndefined();
-        done();
+    addPosts('Jimena', textPost, userGoogle, userGoogle.uid)
+      .then((newPost) => {
+        const inDataPost = newPost.id;
+        // console.log(inDataPost);
+        getPost(inDataPost).then((docPost) => {
+          // console.log(docPost);
+          expect(typeof docPost).toBe('object');
+          done();
+        });
       });
   });
 });
@@ -106,10 +151,10 @@ describe('upLikes y downLikes', () => {
   // eslint-disable-next-line arrow-body-style
   it('Debería añadir un like al post con id: def456', () => {
     return upLikes('def456', 'ghi789')
-      .then(() => {
+      .then(() => { // abc123: ['123ABC', 'jkl010'], def456: ['123ABC']
         getPost('def456').then((postLike) => {
           const resultUp = postLike.data();
-          // console.log(resultUp.likesPost);
+          // console.log('likes length +', resultUp.likesPost);
           expect(resultUp.likesPost).toHaveLength(2);// toEqual(['123ABC', 'ghi789']);
         });
       });
@@ -117,86 +162,49 @@ describe('upLikes y downLikes', () => {
   // eslint-disable-next-line arrow-body-style
   it('Debería quitar un like al post con id: abc123', () => {
     return downLikes('abc123', '123ABC').then(() => {
-      getPost('abc123').then((postLike) => {
-        const resultDown = postLike.data();
-        // console.log(resultDown.likesPost);
-        expect(resultDown.likesPost).toHaveLength(1);
-      });
+      getPost('abc123')
+        .then((postLike) => { // abc123: ['123ABC', 'jkl010'], def456: ['123ABC']
+          const resultDown = postLike.data();
+          // console.log('likes length -', resultDown.likesPost);
+          const indexValue = resultDown.likesPost.indexOf('123ABC') === -1;
+          expect(indexValue).toBeTruthy(); // toHaveLength(1);
+        });
     });
   });
 });
 
-/* describe('addDataUser', () => {
-  it('Debería poder agregar los datos de un nuevo usuario', (done) => {
-    jest.setTimeout(30000);
-    addDataUser(newDataUser)
-      .then((docUser) => {
-        const inDataUser = docUser;
-        console.log(docUser);
-        getDataUser()
-          .then((query) => {
-            const result = query.filter((user) => console.log(user));
-            console.log(query, 'ohhhh', typeof result);
-            expect(inDataUser.IdUserActive).toBe('Hi345');
-            done();
-          });
-      });
+// Simula el DOM que contiene el botón de like (etiqueta img)
+/* const domTarget = document.createElement('div');
+domTarget.innerHTML = '<img class="iconoLike " src="img/megusta.png">';
+domTarget.innerHTML += '<img class="painted" src="img/megusta.png">';
+const likeTarget = domTarget.querySelector('.iconoLike');
+// console.log(likeTarget.className, typeof likeTarget);
+const unlikeTarget = domTarget.querySelector('.painted'); */
+
+describe.skip('countLikes', () => {
+  it('Debería ser una función', () => {
+    expect(typeof countLikes).toBe('function');
+  }); // abc123: ['123ABC', 'jkl010'], def456: ['123ABC']
+  it('Debería llevar el conteo de likes para el post con id: abc123', () => {
+    // countLikes(likeTarget, 'abc123', 'azaza');
+    console.log('no está pintado');
+    /* .then((counter) => {
+      console.log(counter);
+      const resultUp = counter.data();
+      // console.log(resultUp.likesPost);
+      expect(resultUp.likesPost).toHaveLength(4);
+    }); */
   });
-}); */
-/* describe('updatePosts', () => {
-  it('Debería poder actualizar el post con id: abc125', (done) => {
-    updatePosts('abc125', { post: 'Post actualizado' }).then(() => {
-      const callback = (postDoc) => {
-        // console.log(postDoc); // Actualizo el doc con id = 'abc125'
-        const result = postDoc.find((elemento) => elemento.id === 'abc125');
-        expect(result.post).toBe('Post actualizado');
-        done();
-      };
-      getPos(callback);
-    });
+  it('Debería llevar el conteo de likes para el post con ID: abc123', () => {
+    // countLikes(unlikeTarget, 'abc123', 'azaza');
+    /* .then((counter) => {
+      console.log(counter);
+      const resultUp = counter.data();
+      // console.log(resultUp.likesPost);
+      expect(resultUp.likesPost).toHaveLength(4);
+    }); */
   });
-}); */
-
-/* describe('Comprueba que se agregue un nuevo doc a la colección', () => {
-  it('Debería poder agregar un post del usuario', () =>
-  addPosts('', 'Este es mi post', 'Jimena', '03-user').then((data) => {
-    getPost('03-user').then((newData) => newData);
-    console.log(data);
-    expect(data).toBe('¡Pude publicar!');
-  }));
-}); */
-
-/* describe('addPosts', () => {
-  it('Debería poder agregar un post de usuario', () => {
-    addPosts('Paola', 'Texto publicado', 'src/img/userPhoto-default.png', '01-id-user')
-    .then(() => {
-        getPost(data => {
-          const callback = data.find(postCatch => { postCatch.publishedText === 'Texto publicado' })
-          expect(callback.publishedText).toBe('Texto publicado')
-        })
-      })
-    }
-}); */
-
-/* const fixtureData = {
-  __collection__: {
-    users: {
-      __doc__: {
-        user_a: {
-          EmailRegister: 'labo@toria.com',
-          IdUserActive: 'Labo123',
-          NameRegister: 'Laboratoria',
-          PhotoRegister: 'src/img/userPhoto-default.png',
-        },
-      },
-    },
-  },
-}; */
-
-/* describe('logIn', () => {
-  it('debería ser una función', () => {
-    expect(typeof logIn).toBe('function');
-  }); */
+});
 
 describe('Delete Post', () => {
   it('Debería de poder eliminar un post con el id: abc123', () => deletePosts('abc123')
@@ -209,9 +217,23 @@ describe('Delete Post', () => {
 
 /* describe('deletePosts', () => {
   it('Debería de poder eliminar un post con el id: abc123', () => deletePosts('abc123')
-    .then((posts) => {
-      getPost('abc123');
-      const result = posts.find((elemento) => elemento.id === 'abc123');
-      expect(result).toBe(undefined);
-    }));
+  .then((posts) => {
+    getPost('abc123');
+    const result = posts.find((elemento) => elemento.id === 'abc123');
+    expect(result).toBe(undefined);
+  }));
 }); */
+
+/* describe('Comprueba que se agregue un nuevo doc a la colección', () => {
+  it('Debería poder agregar un post del usuario', () =>
+  addPosts('', 'Este es mi post', 'Jimena', '03-user').then((data) => {
+    getPost('03-user').then((newData) => newData);
+    console.log(data);
+    expect(data).toBe('¡Pude publicar!');
+  }));
+}); */
+
+/* describe('logIn', () => {
+  it('debería ser una función', () => {
+    expect(typeof logIn).toBe('function');
+  }); */

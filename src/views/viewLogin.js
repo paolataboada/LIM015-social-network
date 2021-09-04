@@ -99,8 +99,8 @@ export default () => {
         // const token = credential.accessToken;
         // const user = result.user;
         // console.log('El token del usuario es:', token, 'Credencial: ', credential);
-        // console.log('El ID del usuario es:', user);
-        addDataUser(result.user)
+        console.log('El ID del usuario es:', result.user.uid);
+        addDataUser(result.user) // TODO: Review existing collections
           .then((docRef) => {
             console.log('ID de Documento de la Colección Users: ', docRef.id);
           })

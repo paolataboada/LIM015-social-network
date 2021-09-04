@@ -6,7 +6,10 @@ import {
   updatePosts,
   deletePosts,
   getPost,
-  countLikes,
+  upLikes,
+  downLikes,
+  /* countLikes, */
+  queryIdentity,
 } from './firebaseFunctions.js';
 
 export default () => {
@@ -61,9 +64,9 @@ export default () => {
               <div class="userWhoPost">
                 <img class="userPhotoPost" src="${photoUser}" alt="Foto del usuario"><p>${nameUser}</p>
               </div> 
-              <div class="editYdelete">  
+              <div class="editYdelete">
                 <img id="iconoEdit-${IDdocumento}" data-edit="${IDdocumento}" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar">
-                <img id="iconoDelete" data-post="${IDdocumento}" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
+                <img id="iconoDelete" data-post="${IDdocumento}" class="icono-conf iconoDelete ${IDdocumento}" src="img/btn-delete.png" style="display: none;" alt="icono delete">
               </div>
             </th>
           </tr>
@@ -150,26 +153,48 @@ export default () => {
         // Funcionalidad para dar like
         const btnLike = divElement.querySelectorAll('.iconoLike');
         btnLike.forEach((like) => {
-          like.addEventListener('click', (e) => { // console.log(e.target);
+          like.addEventListener('click', (e) => { // console.log(typeof e.target);
             const idPost = e.target.dataset.like;
-            countLikes(e.target, idPost, idUsuario);
+            if (!e.target.classList.contains('painted')) {
+              upLikes(idPost, idUsuario);
+            } else {
+              downLikes(idPost, idUsuario);
+            }
+            // countLikes(e.target, idPost, idUsuario);
           });
         });
 
-        // Funcionalidad para eliminar
+        // Función que muestra botón eliminar según el usuario activo
+        queryIdentity(idUsuario)
+          .then((ids) => {
+            ids.forEach((id) => {
+              // console.log(id.id);
+              const dataSet = document.querySelectorAll(`.${id.id}`);
+              dataSet.forEach((single) => {
+                const newSingle = single;
+                // console.log(newSingle);
+                newSingle.style.display = 'block';
+              });
+            });
+          });
+
+        // Funcionalidad para eliminar posts
         const btnDelete = divElement.querySelectorAll('.iconoDelete');
         btnDelete.forEach((boton) => {
           boton.addEventListener('click', (e) => {
-            /* console.log(user.uid, doc.data().userIdent, idDocumento);
-            if (user.uid === doc.data().userIdent) { */
-            const confirmar = window.confirm('¿Estás seguro de que deseas borrar este post?');
-            if (confirmar) {
-              deletePosts(e.target.dataset.post);
-              console.log(userName.textContent, nombreUsuario);
-            }
-            /* } else {
-              console.log('no puedes editar, que pena');
-            } */
+            getPost(e.target.dataset.post)
+              .then((objectTarget) => { // console.log('Document userIdent:', objectTarget.data().userIdent);
+                if (objectTarget.data().userIdent === idUsuario) {
+                  console.log('esta vez si');
+                  const confirmar = window.confirm('¿Estás seguro de que deseas borrar este post?');
+                  if (confirmar) {
+                    deletePosts(e.target.dataset.post);
+                  }
+                } /* else {
+                  console.log('esta vez no');
+                  alert('Lo siento, no puedes editar este post');
+                } */
+              });
           });
         });
 

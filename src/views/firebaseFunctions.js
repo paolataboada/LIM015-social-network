@@ -19,18 +19,6 @@ firebase.firestore();
 firebase.analytics(); */
 
 /* --------- COMANDOS PARA AUTENTICACIÓN DE FIREBASE --------  */
-// -------------------- LOGIN O INGRESAR -----------------------
-// Iniciar sesión con correo
-export function ingresarConEmail(email, pass) {
-  const auth = firebase.auth();
-  return auth.signInWithEmailAndPassword(email, pass);
-}
-
-// Iniciar sesión con Google
-export function ingresarConGoogle() {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  return firebase.auth().signInWithPopup(provider);
-}
 
 /* ----REGISTRO O SIGN UP ----- */
 // Crear nuevo usuario
@@ -38,16 +26,23 @@ export function createUser(email, pass) {
   const auth = firebase.auth();
   return auth.createUserWithEmailAndPassword(email, pass);
 }
+
+// -------------------- LOGIN O INGRESAR -----------------------
+// Iniciar sesión con correo
+export function ingresarConEmail(email, pass) {
+  const auth = firebase.auth();
+  return auth.signInWithEmailAndPassword(email, pass);
+}
+// Iniciar sesión con Google
+export function ingresarConGoogle() {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  return firebase.auth().signInWithPopup(provider);
+}
+
 // Enviar correo de verificacion
 export function sendEmail() {
   const auth = firebase.auth();
   return auth.currentUser.sendEmailVerification();
-}
-
-// objeto usuario Activo cuando se registra con correo y contraseña
-export function userActive() {
-  const auth = firebase.auth();
-  return auth.currentUser;
 }
 
 /* ---------------- COMANDOS PARA CLOUD FIRESTORE -----------------  */
@@ -155,11 +150,8 @@ export function downLikes(docId, userLike) {
   });
 }
 
-// Actualizando el value 'like' del documento
-export function countLikes(target, idPost, idUsuario) {
-  if (!target.classList.contains('painted')) {
-    upLikes(idPost, idUsuario);
-  } else {
-    downLikes(idPost, idUsuario);
-  }
+// Restringiendo el acceso a borrar posts
+export function queryIdentity(idUsuario) {
+  const db = firebase.firestore();
+  return db.collection('posts').where('userIdent', '==', idUsuario).get();
 }

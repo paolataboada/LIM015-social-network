@@ -6,7 +6,10 @@ import {
   updatePosts,
   deletePosts,
   getPost,
-  countLikes,
+  upLikes,
+  downLikes,
+  /* countLikes, */
+  queryIdentity,
 } from './firebaseFunctions.js';
 
 export default () => {
@@ -148,21 +151,17 @@ export default () => {
         btnLike.forEach((like) => {
           like.addEventListener('click', (e) => { // console.log(typeof e.target);
             const idPost = e.target.dataset.like;
-            countLikes(e.target, idPost, idUsuario);
+            if (!e.target.classList.contains('painted')) {
+              upLikes(idPost, idUsuario);
+            } else {
+              downLikes(idPost, idUsuario);
+            }
+            // countLikes(e.target, idPost, idUsuario);
           });
         });
 
-        /* const userCatch = doc.data().userIdent; //
-        console.log('arriba', `(${user.uid})`, userCatch, idUsuario);
-        if (idUsuario === userCatch) {                                           <--- NO FUNCIONÓ! :c
-          console.log('Este post es del usuario en sesión: ', idUsuario);
-        } else {
-          console.log('Este post pertenece a otro usuario: ', userCatch);
-        } */
-
-        firebase.firestore().collection('posts')
-          .where('userIdent', '==', 'IDslo5BfD3ZsJ4Th9vVItTdRqD93')
-          .get()
+        // Función que muestra botón eliminar según el usuario activo
+        queryIdentity(idUsuario)
           .then((ids) => {
             ids.forEach((id) => {
               // console.log(id.id);
@@ -175,19 +174,8 @@ export default () => {
             });
           });
 
-        const btnDelete = divElement.querySelectorAll('.iconoDelete');
-        // Funcionalidad para ocultar el botón eliminar post
-        /* const userCatch = doc.data().userIdent;
-        console.log(userCatch, idUsuario, idDocumento);
-        if (userCatch !== idUsuario) {
-          console.log('not same!');
-        } else {
-          console.log('same!');
-        } */
-        // const hiddenButton = divElement.querySelectorAll()
-
         // Funcionalidad para eliminar posts
-        // const btnDelete = divElement.querySelectorAll('.iconoDelete');
+        const btnDelete = divElement.querySelectorAll('.iconoDelete');
         btnDelete.forEach((boton) => {
           boton.addEventListener('click', (e) => {
             getPost(e.target.dataset.post)

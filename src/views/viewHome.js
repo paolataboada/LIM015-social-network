@@ -3,12 +3,11 @@ import {
   getDataUser,
   addPosts,
   onSnapshotPosts,
-  updatePosts,
+  /* updatePosts, */
   deletePosts,
   getPost,
   upLikes,
   downLikes,
-  /* countLikes, */
   queryIdentity,
 } from './firebaseFunctions.js';
 
@@ -66,7 +65,7 @@ export default () => {
               </div> 
               <div class="editYdelete">
                 <img id="iconoEdit-${IDdocumento}" data-edit="${IDdocumento}" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar">
-                <img id="iconoDelete" data-post="${IDdocumento}" class="icono-conf iconoDelete ${IDdocumento}" src="img/btn-delete.png" style="display: none;" alt="icono delete">
+                <img id="iconoDelete" data-post="${IDdocumento}" class="icono-conf iconoDelete" src="img/btn-delete.png" style="display: none;" alt="icono delete">
               </div>
             </th>
           </tr>
@@ -141,7 +140,7 @@ export default () => {
       querySnapshot.forEach((doc) => {
         const fotoUsuario = doc.data().userPhotoPost;
         const nombreUsuario = doc.data().userWhoPublishes;
-        console.log(nombreUsuario);
+        // console.log(nombreUsuario);
         const fechaPost = doc.data().publicationDate;
         const textoPost = doc.data().publishedText;
         const idUsuario = user.uid;
@@ -160,16 +159,14 @@ export default () => {
             } else {
               downLikes(idPost, idUsuario);
             }
-            // countLikes(e.target, idPost, idUsuario);
           });
         });
 
         // Función que muestra botón eliminar según el usuario activo
         queryIdentity(idUsuario)
           .then((ids) => {
-            ids.forEach((id) => {
-              // console.log(id.id);
-              const dataSet = document.querySelectorAll(`.${id.id}`);
+            ids.forEach((id) => { // console.log(id.id);
+              const dataSet = document.querySelectorAll(`[data-post='${id.id}']`);
               dataSet.forEach((single) => {
                 const newSingle = single;
                 // console.log(newSingle);
@@ -184,16 +181,10 @@ export default () => {
           boton.addEventListener('click', (e) => {
             getPost(e.target.dataset.post)
               .then((objectTarget) => { // console.log('Document userIdent:', objectTarget.data().userIdent);
-                if (objectTarget.data().userIdent === idUsuario) {
-                  console.log('esta vez si');
-                  const confirmar = window.confirm('¿Estás seguro de que deseas borrar este post?');
-                  if (confirmar) {
-                    deletePosts(e.target.dataset.post);
-                  }
-                } /* else {
-                  console.log('esta vez no');
-                  alert('Lo siento, no puedes editar este post');
-                } */
+                const confirmar = window.confirm('¿Estás seguro de que deseas borrar este post?');
+                if (objectTarget.data().userIdent === idUsuario && confirmar) {
+                  deletePosts(e.target.dataset.post);
+                }
               });
           });
         });
@@ -246,7 +237,7 @@ export default () => {
     if (confirmar === true) {
       firebase.auth().signOut();
       window.location.hash = '#/';
-      console.log('Se ha cerrado sesión');
+      // console.log('Se ha cerrado sesión');
     }
   });
   return divElement;

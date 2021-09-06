@@ -164,13 +164,11 @@ export default () => {
 
         // Función que muestra botón eliminar según el usuario activo
         queryIdentity(idUsuario)
-          .then((ids) => {
-            ids.forEach((id) => { // console.log(id.id);
-              const dataSet = document.querySelectorAll(`[data-post='${id.id}']`);
-              dataSet.forEach((single) => {
-                const newSingle = single;
-                // console.log(newSingle);
-                newSingle.style.display = 'block';
+          .then((objDocs) => {
+            objDocs.forEach((allDocs) => {
+              const btnElems = document.querySelectorAll(`[data-post='${allDocs.id}']`);
+              btnElems.forEach((el) => {
+                el.style.display = 'block';
               });
             });
           });
@@ -179,13 +177,10 @@ export default () => {
         const btnDelete = divElement.querySelectorAll('.iconoDelete');
         btnDelete.forEach((boton) => {
           boton.addEventListener('click', (e) => {
-            getPost(e.target.dataset.post)
-              .then((objectTarget) => { // console.log('Document userIdent:', objectTarget.data().userIdent);
-                const confirmar = window.confirm('¿Estás seguro de que deseas borrar este post?');
-                if (objectTarget.data().userIdent === idUsuario && confirmar) {
-                  deletePosts(e.target.dataset.post);
-                }
-              });
+            const confirmar = window.confirm('¿Estás seguro de que deseas borrar este post?');
+            if (confirmar) {
+              deletePosts(e.target.dataset.post);
+            }
           });
         });
 

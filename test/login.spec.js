@@ -18,11 +18,10 @@ global.firebase = new firebasemock.MockFirebaseSdk(
 );
 
 describe('createUser', () => {
-  it('Debería poder registrar un nuevo usuario', (done) => {
+  it('Debería poder registrar un nuevo usuario', () => {
     createUser('paola@gmail.com', '1234567')
       .then((user) => {
         expect(user.email).toBe('paola@gmail.com');
-        done();
       });
   });
 });
@@ -31,7 +30,8 @@ describe('ingresarConEmail', () => {
   it('Debería poder ingresar con un correo registrado', () => {
     ingresarConEmail('dafne@gmail.com', '7654321')
       .then((credential) => {
-        expect(credential.email).toBe('7654321');
+        const userEmail = credential.email;
+        expect(userEmail).toBe('dafne@gmail.com');
       });
   });
 });

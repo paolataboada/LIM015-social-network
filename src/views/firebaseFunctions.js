@@ -84,12 +84,6 @@ export function getDataUser() {
   return db.collection('users').get();
 }
 
-// Obteniendo la data de la colleccion "posts"
-export function getPost(id) {
-  const db = firebase.firestore();
-  return db.collection('posts').doc(id).get();
-}
-
 // Agregando a la coleccion "postss" data que el usuario publico
 export function addPosts(name, postText, userPost, idUser) {
   const db = firebase.firestore();
@@ -103,22 +97,17 @@ export function addPosts(name, postText, userPost, idUser) {
   });
 }
 
+// Obteniendo la data de la colleccion "posts"
+export function getPost(id) {
+  const db = firebase.firestore();
+  return db.collection('posts').doc(id).get();
+}
+
 // Obteniendo la data de la colleccion "postss" en tiempo real
 export function onSnapshotPosts() {
   const db = firebase.firestore();
   return db.collection('posts').orderBy('publicationDate', 'desc');
 }
-/* export function onSnapshotPosts2(callback) {
-  const db = firebase.firestore();
-  return db.collection('posts').orderBy('publicationDate', 'desc')
-    .onSnapshot((shots) => {
-      const datos = [];
-      shots.forEach((doc) => {
-        datos.push({ id: doc.id, ...doc.data() });
-      });
-      callback(datos);
-    });
-} */
 
 // Editando documentos de la coleccion pots
 export function updatePosts(docId, newText) {

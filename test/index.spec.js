@@ -1,17 +1,16 @@
-/**
- * @jest-environment jsdom
- */
 import MockFirebase from 'mock-cloud-firestore';
 import {
   addDataUser,
   addDataUserCorreo,
+  getDataUser,
   addPosts,
   getPost,
-  getDataUser,
+  /* onSnapshotPosts,
+  updatePosts, */
+  deletePosts,
   upLikes,
   downLikes,
-  /* countLikes, */
-  deletePosts,
+  queryIdentity,
 } from '../src/views/firebaseFunctions';
 
 const fixtureData = {
@@ -33,6 +32,22 @@ const fixtureData = {
           publishedText: 'Hola a todos',
           publicationDate: '',
           likesPost: ['123ABC'],
+        },
+        z1a02: {
+          userIdent: '456DEF',
+          userPhotoPost: '',
+          userWhoPublishes: 'Pablito',
+          publishedText: 'Me llaman Pablo',
+          publicationDate: '',
+          likesPost: [],
+        },
+        d3l3t3: {
+          userIdent: 'er4s3',
+          userPhotoPost: '',
+          userWhoPublishes: 'Danna',
+          publishedText: 'Este post será borrado',
+          publicationDate: '',
+          likesPost: [],
         },
       },
     },
@@ -64,7 +79,6 @@ describe('addDataUser', () => {
     addDataUser(newDataUser)
       .then((docUser) => {
         const inDataUser = docUser;
-        // console.log(inDataUser);
         expect(inDataUser).not.toBeUndefined();
         done();
       });
@@ -80,12 +94,11 @@ describe('addDataUserCorreo', () => {
   it('Debería guardar los datos en la colección users', (done) => {
     addDataUserCorreo(uDataName, uDataEmail, uDataID)
       .then((docUser) => {
-        const inDataUser = docUser.id; // console.log(inDataUser);
-        getDataUser().then((registeredData) => { // console.log(registeredData);
+        const inDataUser = docUser.id;
+        getDataUser().then((registeredData) => {
           registeredData.forEach((newDoc) => {
             if (newDoc.id === inDataUser) {
               const resultRegister = newDoc.data();
-              // console.log(resultRegister);
               expect(typeof resultRegister).toBe('object');
               done();
             }
@@ -96,20 +109,16 @@ describe('addDataUserCorreo', () => {
 });
 
 describe('getDataUser', () => {
-  // eslint-disable-next-line arrow-body-style
-  it('Debería poder obtener el correo del usuario con id=ghi789', () => {
-    return getDataUser()
-      .then((dataUser) => { // console.log(dataUser);
-        dataUser.forEach((doc) => { // console.log(doc);
-          if (doc.id === 'ghi789') {
-            const result = doc.data();
-            // console.log(doc.id, doc.data());
-            // const result = doc.data().find((element) => element === 'ghi789');
-            expect(result.EmailRegister).toBe('labo@toria.com');
-          }
-        });
+  it('Debería poder obtener el nombre y correo del usuario con id=ghi789', () => getDataUser()
+    .then((dataUser) => {
+      dataUser.forEach((doc) => {
+        if (doc.id === 'ghi789') {
+          const result = doc.data();
+          expect(result.NameRegister).toBe('Laboratoria');
+          expect(result.EmailRegister).toBe('labo@toria.com');
+        }
       });
-  });
+    }));
 });
 
 // Simula objeto devuelto al ingresar con Google
@@ -129,9 +138,7 @@ describe('addPosts', () => {
     addPosts('Jimena', textPost, userGoogle, userGoogle.uid)
       .then((newPost) => {
         const inDataPost = newPost.id;
-        // console.log(inDataPost);
         getPost(inDataPost).then((docPost) => {
-          // console.log(docPost);
           expect(typeof docPost).toBe('object');
           done();
         });
@@ -140,100 +147,47 @@ describe('addPosts', () => {
 });
 
 describe('getPost', () => {
-  it('Debería poder obtener el post con id=abc123', () => getPost('abc123').then((dataPost) => {
+  it('Debería poder obtener el texto del post con id=abc123', () => getPost('abc123').then((dataPost) => {
     const result = dataPost.data();
-    // console.log(result);
     expect(result.publishedText).toBe('Texto publicado');
   }));
 });
 
-describe('upLikes y downLikes', () => {
-  // eslint-disable-next-line arrow-body-style
-  it('Debería añadir un like al post con id: def456', () => {
-    return upLikes('def456', 'ghi789')
-      .then(() => { // abc123: ['123ABC', 'jkl010'], def456: ['123ABC']
-        getPost('def456').then((postLike) => {
-          const resultUp = postLike.data();
-          // console.log('likes length +', resultUp.likesPost);
-          expect(resultUp.likesPost).toHaveLength(2);// toEqual(['123ABC', 'ghi789']);
-        });
-      });
-  });
-  // eslint-disable-next-line arrow-body-style
-  it('Debería quitar un like al post con id: abc123', () => {
-    return downLikes('abc123', '123ABC').then(() => {
-      getPost('abc123')
-        .then((postLike) => { // abc123: ['123ABC', 'jkl010'], def456: ['123ABC']
-          const resultDown = postLike.data();
-          // console.log('likes length -', resultDown.likesPost);
-          const indexValue = resultDown.likesPost.indexOf('123ABC') === -1;
-          expect(indexValue).toBeTruthy(); // toHaveLength(1);
-        });
-    });
-  });
-});
-
-// Simula el DOM que contiene el botón de like (etiqueta img)
-/* const domTarget = document.createElement('div');
-domTarget.innerHTML = '<img class="iconoLike " src="img/megusta.png">';
-domTarget.innerHTML += '<img class="painted" src="img/megusta.png">';
-const likeTarget = domTarget.querySelector('.iconoLike');
-// console.log(likeTarget.className, typeof likeTarget);
-const unlikeTarget = domTarget.querySelector('.painted'); */
-
-describe.skip('countLikes', () => {
-  it('Debería ser una función', () => {
-    expect(typeof countLikes).toBe('function');
-  }); // abc123: ['123ABC', 'jkl010'], def456: ['123ABC']
-  it('Debería llevar el conteo de likes para el post con id: abc123', () => {
-    // countLikes(likeTarget, 'abc123', 'azaza');
-    console.log('no está pintado');
-    /* .then((counter) => {
-      console.log(counter);
-      const resultUp = counter.data();
-      // console.log(resultUp.likesPost);
-      expect(resultUp.likesPost).toHaveLength(4);
-    }); */
-  });
-  it('Debería llevar el conteo de likes para el post con ID: abc123', () => {
-    // countLikes(unlikeTarget, 'abc123', 'azaza');
-    /* .then((counter) => {
-      console.log(counter);
-      const resultUp = counter.data();
-      // console.log(resultUp.likesPost);
-      expect(resultUp.likesPost).toHaveLength(4);
-    }); */
-  });
-});
-
 describe('Delete Post', () => {
-  it('Debería de poder eliminar un post con el id: abc123', () => deletePosts('abc123')
+  it('Debería de poder eliminar el post con el id: d3l3t3', () => deletePosts('d3l3t3')
     .then((data) => {
-      /* const deleted = getPost('abc123');
-      console.log(data); */
       expect(data).toBe(undefined);
     }));
 });
 
-/* describe('deletePosts', () => {
-  it('Debería de poder eliminar un post con el id: abc123', () => deletePosts('abc123')
-  .then((posts) => {
-    getPost('abc123');
-    const result = posts.find((elemento) => elemento.id === 'abc123');
-    expect(result).toBe(undefined);
+describe('upLikes y downLikes', () => {
+  it('Debería añadir un like al post con id: def456', () => upLikes('def456', 'ghi789')
+    .then(() => {
+      getPost('def456').then((postLike) => {
+        const resultUp = postLike.data();
+        expect(resultUp.likesPost).toHaveLength(2);
+        expect(resultUp.likesPost).toEqual(['123ABC', 'ghi789']);
+      });
+    }));
+  it('Debería quitar un like al post con id: abc123', () => downLikes('abc123', '123ABC').then(() => {
+    getPost('abc123')
+      .then((postLike) => {
+        const resultDown = postLike.data();
+        const indexValue = resultDown.likesPost.indexOf('123ABC') === -1;
+        expect(indexValue).toBeTruthy();
+        expect(resultDown.likesPost).toHaveLength(1);
+      });
   }));
-}); */
+});
 
-/* describe('Comprueba que se agregue un nuevo doc a la colección', () => {
-  it('Debería poder agregar un post del usuario', () =>
-  addPosts('', 'Este es mi post', 'Jimena', '03-user').then((data) => {
-    getPost('03-user').then((newData) => newData);
-    console.log(data);
-    expect(data).toBe('¡Pude publicar!');
-  }));
-}); */
-
-/* describe('logIn', () => {
-  it('debería ser una función', () => {
-    expect(typeof logIn).toBe('function');
-  }); */
+describe('queryIdentity', () => {
+  it('Debería consultar la data que coincida con el ID del usuario activo', () => {
+    queryIdentity('456DEF')
+      .then((userActive) => {
+        userActive.forEach((docs) => {
+          const userInDocs = docs.data().userIdent;
+          expect(userInDocs).toBe('456DEF');
+        });
+      });
+  });
+});

@@ -64,17 +64,17 @@ export default () => {
               <div class="userWhoPost">
                 <img class="userPhotoPost" src="${photoUser}" alt="Foto del usuario"><p>${nameUser}</p>
               </div> 
-              <div class="editYdelete">
-                <img id="iconoEdit-${IDdocumento}" data-edit="${IDdocumento}" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar">
-                <img id="iconoDelete" data-post="${IDdocumento}" class="icono-conf iconoDelete ${IDdocumento}" src="img/btn-delete.png" style="display: none;" alt="icono delete">
+              <div class="editYdelete">  
+                <img data-edit="${IDdocumento}" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar">
+                <img data-post="${IDdocumento}" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
               </div>
             </th>
           </tr>
           <tr>
             <td id="textPost" class="textPost">
               <pre class="datePost">${datePublication}</pre>
-              <textarea id="publicacion" class="publicacion" rows="5" readonly >${postUser}</textarea>
-              <button id="Editar-${IDdocumento}" class="Editar Editar-${IDdocumento}" data-edicion="${IDdocumento}" style="display: none;">Editar</button>
+              <textarea id="publicacion-${IDdocumento}" class="publicacion" data-texto="${IDdocumento}" rows="5" readonly >${postUser}</textarea>
+              <button id="editar-${IDdocumento}" class="editar" data-edicion="${IDdocumento}"  >Guardar</button>
             </td>
           </tr>
           <tr>
@@ -198,44 +198,32 @@ export default () => {
           });
         });
 
-        // const textoAeditar = divElement.querySelector('#publicacion').value;
-
         // Funcionalidad para editar posts
         const iconEdit = divElement.querySelectorAll('.iconoEdit');
         iconEdit.forEach((iconoEdit) => {
           iconoEdit.addEventListener('click', (e) => {
-            // console.log(e.target, e.target.id, e.target.className);
-            // const btnEditar = divElement.querySelectorAll('[data-Edit]');
-            const btnEditar = divElement.querySelector(`.Editar-${idDocumento}`).dataset.edicion;
-            // const btnEditar = divElement.querySelector(`.editar-${idDocumento}`);
-            // const btnEditar = divElement.querySelectorAll('[data-edicion]');
-            const botonEditar = e.target.dataset.edicion;
-            // btnEditar.style.display = 'block';
-            console.log(e.target.dataset.edit, botonEditar, btnEditar);
             const idPost = e.target.dataset.edit;
-            // console.log(idPost);
+            const publicacion = divElement.querySelector(`#publicacion-${idPost}`);
+            publicacion.readOnly = false;
+            const btnGuardar = divElement.querySelector(`#editar-${idPost}`);
+            btnGuardar.style.display = 'block';
             getPost(idPost)
               .then((docu) => {
-                console.log('Document data:', docu.data());
-                // divElement.querySelector('.publicacion').contentEditable = true;
-                divElement.querySelectorAll('.publicacion').readOnly = false;
                 const data = docu.data();
-                divElement.querySelectorAll('.publicacion').value = data.publishedText;
+                publicacion.value = data.publishedText;
               });
-            // const postData = post.data();
-            // console.log(post.publishedText);
-            // btnEditar.addEventListener('click', () => {
-            //   const nuevoTexto = divElement.querySelector('.publicacion').value;
-            //   console.log(idPost, nuevoTexto);
-            //   updatePosts(idPost, nuevoTexto)
-            //     .then(() => {
-            //       console.log('Document successfully updated!');
-            //       divElement.querySelector('.publicacion').readOnly = true;
-            //       divElement.querySelector('.Editar').style.display = 'none';
-            //     });
-            // });
+            // Para guardar la publicación editada
+            btnGuardar.addEventListener('click', () => {
+              const nuevoTexto = divElement.querySelector('.publicacion').value;
+              updatePosts(idPost, nuevoTexto)
+                .then(() => {
+                  publicacion.readOnly = false;
+                  btnGuardar.style.display = 'block';
+                  console.log('Document successfully updated!');
+                });
+            });
           });
-        });
+        });// FIN  EDITAR
       });
     });
 

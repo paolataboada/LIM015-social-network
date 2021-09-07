@@ -103,17 +103,18 @@ export function getPost(id) {
   return db.collection('posts').doc(id).get();
 }
 
-// Obteniendo la data de la colleccion "postss" en tiempo real
+// Obteniendo la data de la colleccion "posts" en tiempo real
 export function onSnapshotPosts() {
   const db = firebase.firestore();
   return db.collection('posts').orderBy('publicationDate', 'desc');
 }
 
-// Editando documentos de la coleccion pots
+// Editando documentos de la coleccion posts
 export function updatePosts(docId, newText) {
   const db = firebase.firestore();
   return db.collection('posts').doc(docId).update({
     publishedText: newText,
+    publicationDate: new Date().toLocaleString('en-ES'),
   });
 }
 

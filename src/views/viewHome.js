@@ -64,8 +64,8 @@ export default () => {
                 <img class="userPhotoPost" src="${photoUser}" alt="Foto del usuario"><p>${nameUser}</p>
               </div> 
               <div class="editYdelete">  
-                <img data-edit="${IDdocumento}" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar">
-                <img data-post="${IDdocumento}" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete">
+                <img data-edit="${IDdocumento}" class="icono-conf iconoEdit" src="img/btn-edit.png" alt="icono de editar" style="display: none;">
+                <img data-post="${IDdocumento}" class="icono-conf iconoDelete" src="img/btn-delete.png" alt="icono delete" style="display: none;">
               </div>
             </th>
           </tr>
@@ -166,9 +166,13 @@ export default () => {
         queryIdentity(idUsuario)
           .then((objDocs) => {
             objDocs.forEach((allDocs) => {
-              const btnElems = document.querySelectorAll(`[data-post='${allDocs.id}']`);
-              btnElems.forEach((el) => {
+              const btnsDelete = document.querySelectorAll(`[data-post='${allDocs.id}']`);
+              const btnsEdit = document.querySelectorAll(`[data-edit='${allDocs.id}']`);
+              btnsDelete.forEach((el) => {
                 el.style.display = 'block';
+              });
+              btnsEdit.forEach((ele) => {
+                ele.style.display = 'block';
               });
             });
           });

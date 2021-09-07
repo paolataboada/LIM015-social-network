@@ -5,8 +5,8 @@ import {
   getDataUser,
   addPosts,
   getPost,
-  /* onSnapshotPosts,
-  updatePosts, */
+  // onSnapshotPosts,
+  updatePosts,
   deletePosts,
   upLikes,
   downLikes,
@@ -22,7 +22,7 @@ const fixtureData = {
           userPhotoPost: '',
           userWhoPublishes: 'Paola',
           publishedText: 'Texto publicado',
-          publicationDate: '',
+          publicationDate: '01/01/2021',
           likesPost: ['123ABC', 'jkl010'],
         },
         def456: {
@@ -30,7 +30,7 @@ const fixtureData = {
           userPhotoPost: '',
           userWhoPublishes: 'Dafne',
           publishedText: 'Hola a todos',
-          publicationDate: '',
+          publicationDate: '02/01/2021',
           likesPost: ['123ABC'],
         },
         z1a02: {
@@ -38,7 +38,7 @@ const fixtureData = {
           userPhotoPost: '',
           userWhoPublishes: 'Pablito',
           publishedText: 'Me llaman Pablo',
-          publicationDate: '',
+          publicationDate: '03/01/2021',
           likesPost: [],
         },
         d3l3t3: {
@@ -46,7 +46,7 @@ const fixtureData = {
           userPhotoPost: '',
           userWhoPublishes: 'Danna',
           publishedText: 'Este post será borrado',
-          publicationDate: '',
+          publicationDate: '04/01/2021',
           likesPost: [],
         },
       },
@@ -134,13 +134,12 @@ const textPost = {
 };
 
 describe('addPosts', () => {
-  it('Debería poder agregar un nuevo post', (done) => {
+  it('Debería poder agregar un nuevo post', () => {
     addPosts('Jimena', textPost, userGoogle, userGoogle.uid)
       .then((newPost) => {
         const inDataPost = newPost.id;
         getPost(inDataPost).then((docPost) => {
           expect(typeof docPost).toBe('object');
-          done();
         });
       });
   });
@@ -153,11 +152,39 @@ describe('getPost', () => {
   }));
 });
 
+// describe('onSnapshotPosts', () => {
+//   it('Debería obtener y presentar en tiempo real los posts', () => {
+//     onSnapshotPosts()
+//       .onSnapshot((querySnapshot) => {
+//         console.log(querySnapshot.id);
+//         expect(querySnapshot.id).toEqual('abc123', 'def456', 'z1a02', 'q9n07');
+//       });
+//   });
+// });
+
 describe('Delete Post', () => {
   it('Debería de poder eliminar el post con el id: d3l3t3', () => deletePosts('d3l3t3')
     .then((data) => {
       expect(data).toBe(undefined);
     }));
+});
+
+// Simula el nuevo valor de publishedText
+const newText = 'Publicacion editada';
+
+describe('updatePosts', () => {
+  it('Debería poder actualizar(editar) la publicacion de un post', () => {
+    updatePosts('def456', newText)
+      .then(() => {
+        getPost('def456').then((doc) => {
+          const newPost = doc.data().publishedText;
+          expect(newPost).toBe('Publicacion editada');
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
 });
 
 describe('upLikes y downLikes', () => {

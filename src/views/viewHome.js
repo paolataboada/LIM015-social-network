@@ -13,7 +13,6 @@ import {
 
 export default () => {
   document.querySelector('nav').style.display = 'none';
-  document.querySelector('footer').style.display = 'none';
   const divElement = document.createElement('div');
   divElement.setAttribute('id', 'containerInicio');
   divElement.innerHTML = `
@@ -42,8 +41,6 @@ export default () => {
         <section id="escribirPost">
           <textarea id="textToPost" class="textToPost" placeholder="¿Qué quieres compartir?"></textarea>
           <div id= "icons">
-            <img id="btnFile" src="img/agregar-img.png" alt="Botón para cargar imagen" style="display:none">
-            <input id="subirFile" type="file" accept="image/jpeg" style="display:none">
             <button id="shareButton">Compartir</button>
           </div>
         </section>
@@ -101,9 +98,6 @@ export default () => {
   getDataUser()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        // console.log(doc.data());
-        // user.uid = es el UID de usuario que aparece en authentication de firebase
-        // doc.data().IdUserActive . IdUserActive es una propiedad que esta dentro del objeto doc y doc.data() muestra todos los documentos.
         if (user.uid === doc.data().IdUserActive) {
           const nombreUsuarioCorreo = doc.data().NameRegister;
           userName.textContent = nombreUsuarioCorreo;
@@ -113,22 +107,12 @@ export default () => {
       });
     });
 
-  // Evento Para agregar una imagen como post
-  divElement.querySelector('#btnFile').addEventListener('click', () => {
-    divElement.querySelector('#subirFile').click();
-  });
-
   // Función para publicar post
   const shareButton = divElement.querySelector('#shareButton');
   shareButton.addEventListener('click', () => {
     const textToPost = divElement.querySelector('#textToPost');
     if (textToPost.value !== '') {
-      // eslint-disable-next-line max-len
-      console.log(userName.textContent, user.displayName);
-      addPosts(user.displayName ? user.displayName : userName.textContent, textToPost, user, user.uid)
-        .then((docRef) => {
-          console.log('Document written with ID: ', docRef.id);
-        });
+      addPosts(user.displayName ? user.displayName : userName.textContent, textToPost, user, user.uid);
     }
     textToPost.value = '';
   });
@@ -141,7 +125,6 @@ export default () => {
       querySnapshot.forEach((doc) => {
         const fotoUsuario = doc.data().userPhotoPost;
         const nombreUsuario = doc.data().userWhoPublishes;
-        // console.log(nombreUsuario);
         const fechaPost = doc.data().publicationDate;
         const textoPost = doc.data().publishedText;
         const idUsuario = user.uid;
@@ -153,7 +136,7 @@ export default () => {
         // Funcionalidad para dar like
         const btnLike = divElement.querySelectorAll('.iconoLike');
         btnLike.forEach((like) => {
-          like.addEventListener('click', (e) => { // console.log(typeof e.target);
+          like.addEventListener('click', (e) => {
             const idPost = e.target.dataset.like;
             if (!e.target.classList.contains('painted')) {
               upLikes(idPost, idUsuario);
@@ -205,16 +188,15 @@ export default () => {
               });
             // Para guardar la publicación editada
             btnGuardar.addEventListener('click', () => {
-              const nuevoTexto = divElement.querySelector('.publicacion').value;
+              const nuevoTexto = divElement.querySelector(`#publicacion-${idPost}`).value;
               updatePosts(idPost, nuevoTexto)
                 .then(() => {
                   publicacion.readOnly = false;
                   btnGuardar.style.display = 'block';
-                  console.log('Document successfully updated!');
                 });
             });
           });
-        });// FIN  EDITAR
+        });
       });
     });
 
@@ -225,7 +207,6 @@ export default () => {
     if (confirmar === true) {
       firebase.auth().signOut();
       window.location.hash = '#/';
-      // console.log('Se ha cerrado sesión');
     }
   });
   return divElement;

@@ -5,8 +5,6 @@ import {
 } from './firebaseFunctions.js';
 
 export default () => {
-  document.querySelector('nav').style.display = 'none';
-  document.querySelector('footer').style.display = 'none';
   const divElement = document.createElement('div');
   divElement.setAttribute('class', 'containerLogin');
   divElement.innerHTML = `
@@ -95,25 +93,14 @@ export default () => {
   btnGoogle.addEventListener('click', () => {
     ingresarConGoogle()
       .then((result) => {
-        // const credential = result.credential;
-        // const token = credential.accessToken;
-        // const user = result.user;
-        // console.log('El token del usuario es:', token, 'Credencial: ', credential);
-        console.log('El ID del usuario es:', result.user.uid);
-        addDataUser(result.user) // TODO: Review existing collections
-          .then((docRef) => {
-            console.log('ID de Documento de la Colección Users: ', docRef.id);
-          })
-          .catch((error) => {
-            console.error('Error al añadir el documento: ', error);
-          });
+        addDataUser(result.user);
         window.location.hash = '#/inicio';
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log('error!=> ', errorCode, errorMessage);
       });
+    // .catch((error) => {
+    //   const errorCode = error.code;
+    //   const errorMessage = error.message;
+    //   console.log('error!=> ', errorCode, errorMessage);
+    // });
   });
   return divElement;
 };

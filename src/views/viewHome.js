@@ -51,7 +51,8 @@ export default () => {
           <table id="tablaPosts"></table>
         </section>
       </section>
-    </section>`;
+    </section>
+    <footer>&copy Created by Paola Vitalia y Dafne Aquino</footer>`;
 
   // Templates de publicaciones
   function postTemplate(photoUser, nameUser, datePublication, postUser, IDdocumento, upLike, colorLike) {

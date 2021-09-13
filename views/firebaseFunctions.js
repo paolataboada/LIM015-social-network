@@ -1,23 +1,4 @@
 /* ------------------- FIREBASE PARA SOCIAL HEALTH --------------- */
-
-// Configuración de firebase para Social Health
-/* const firebaseConfig = {
-  apiKey: 'AIzaSyB8IDdhrhSpd9hXvAWU79ITlAxmaJcNurA',
-  authDomain: 'proyect-social-network.firebaseapp.com',
-  projectId: 'proyect-social-network',
-  storageBucket: 'proyect-social-network.appspot.com',
-  messagingSenderId: '149252870254',
-  appId: '1:149252870254:web:dbafa1821ad07d8952d67f',
-  measurementId: 'G-KCW1JG85PX',
-};
-
-// Initialización de Firebase en la webapp
-firebase.initializeApp(firebaseConfig);
-// Comandos de firebase: autenticación, firestore y analytics
-firebase.auth();
-firebase.firestore();
-firebase.analytics(); */
-
 /* --------- COMANDOS PARA AUTENTICACIÓN DE FIREBASE --------  */
 
 /* ----REGISTRO O SIGN UP ----- */
@@ -27,7 +8,7 @@ export function createUser(email, pass) {
   return auth.createUserWithEmailAndPassword(email, pass);
 }
 
-// -------------------- LOGIN O INGRESAR -----------------------
+// ------------ LOGIN O INGRESAR ------------------
 // Iniciar sesión con correo
 export function ingresarConEmail(email, pass) {
   const auth = firebase.auth();
@@ -50,15 +31,12 @@ export function sendEmail() {
 // Agregando a la coleccion "users" data que el usuario ingrese al momento de registrarse con GMail
 export function addDataUser(usuario) {
   const db = firebase.firestore();
-  let nameRegister;
-  let photoRegister;
+  let nameRegister = 0;
+  let photoRegister = '';
   if (usuario.displayName !== null && usuario.photoURL !== null) {
     nameRegister = usuario.displayName;
     photoRegister = usuario.photoURL;
-  } /* else {
-    nameRegister = 'User';
-    photoRegister = 'img/userPhoto-default.png';
-  } */
+  }
   return db.collection('users').add({
     NameRegister: nameRegister,
     EmailRegister: usuario.email,

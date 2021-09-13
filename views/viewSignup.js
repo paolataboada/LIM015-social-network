@@ -5,6 +5,7 @@ import {
 } from './firebaseFunctions.js';
 
 export default () => {
+  document.querySelector('nav').style.display = 'none';
   const divElement = document.createElement('div');
   divElement.innerHTML = `
     <section id="modal" class="containerRegister">
@@ -71,29 +72,18 @@ export default () => {
       createUser(email, password)
         .then((userCredential) => {
           containerModal.reset();
-          console.log('Registro exitoso:', firebase.auth().currentUser.uid, userCredential.user.uid, name, email, password);
           // -----* Agregar documento de datos del usuario a la coleccion "USERS"
-          addDataUserCorreo(name, email, userCredential.user)
-            .then((docRef) => {
-              console.log('ID de Documento de la Colección Users: ', docRef.id);
-            })
-            .catch((error) => {
-              console.error('Error al añadir el documento: ', error);
-            });
+          addDataUserCorreo(name, email, userCredential.user);
           // ----- * Enviar mensaje de verificación firebase
           sendEmail()
             .then(() => {
               // eslint-disable-next-line no-alert
               alert('Se ha enviado un correo de verificación');
               window.location.hash = '#/';
-            }).catch((error) => {
-              console.log(error);
             });
         })
         .catch((error) => {
           const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log(errorCode, errorMessage);
           // Verificación de campos de registro
           if (errorCode === 'auth/invalid-email') {
             errorEmailSignUp.style.visibility = 'visible';

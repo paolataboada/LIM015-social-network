@@ -5,6 +5,7 @@ import {
 } from './firebaseFunctions.js';
 
 export default () => {
+  document.querySelector('nav').style.display = 'none';
   const divElement = document.createElement('div');
   divElement.innerHTML = `
     <section id="modal" class="containerRegister">
